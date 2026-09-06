@@ -27,6 +27,19 @@ test_pagination_repeat_is_explicit_gap (test_collector.EtherscanTests.test_pagin
 test_provider_rejection_not_empty (test_collector.EtherscanTests.test_provider_rejection_not_empty) ... ok
 test_receipt_enrichment_keeps_identical_distinct_transfers (test_collector.EtherscanTests.test_receipt_enrichment_keeps_identical_distinct_transfers) ... ok
 test_receipt_mismatch_does_not_create_index_event (test_collector.EtherscanTests.test_receipt_mismatch_does_not_create_index_event) ... ok
+test_execution_cap_violation_keeps_full_value_and_halts_next_calls (test_dune_live.DuneLiveTests.test_execution_cap_violation_keeps_full_value_and_halts_next_calls) ... ok
+test_existing_single_page_receipt_is_recognized_as_complete (test_dune_live.DuneLiveTests.test_existing_single_page_receipt_is_recognized_as_complete) ... ok
+test_export_fee_unknown_keeps_full_two_and_known_execution (test_dune_live.DuneLiveTests.test_export_fee_unknown_keeps_full_two_and_known_execution) ... ok
+test_failed_poll_preserves_known_charge_and_terminal_state (test_dune_live.DuneLiveTests.test_failed_poll_preserves_known_charge_and_terminal_state) ... ok
+test_only_contiguous_fixed_size_pages_and_no_post_terminal_page (test_dune_live.DuneLiveTests.test_only_contiguous_fixed_size_pages_and_no_post_terminal_page) ... ok
+test_settled_execution_only_job_cannot_later_export (test_dune_live.DuneLiveTests.test_settled_execution_only_job_cannot_later_export) ... ok
+test_uncertain_page_does_not_become_successful_end_or_retry (test_dune_live.DuneLiveTests.test_uncertain_page_does_not_become_successful_end_or_retry) ... ok
+test_complete_page_raw_receipt_and_missing_actual_frontier (test_dune_observed_replay.SavedDuneReplayTests.test_complete_page_raw_receipt_and_missing_actual_frontier) ... ok
+test_outside_saved_time_not_claimed_complete (test_dune_observed_replay.SavedDuneReplayTests.test_outside_saved_time_not_claimed_complete) ... ok
+test_partial_page_never_substitutes_complete_interval (test_dune_observed_replay.SavedDuneReplayTests.test_partial_page_never_substitutes_complete_interval) ... ok
+test_physical_duplicate_not_extra_capacity_and_malformed_is_gap (test_dune_observed_replay.SavedDuneReplayTests.test_physical_duplicate_not_extra_capacity_and_malformed_is_gap) ... ok
+test_raw_payload_mismatch_rejects_saved_page (test_dune_observed_replay.SavedDuneReplayTests.test_raw_payload_mismatch_rejects_saved_page) ... ok
+test_template_accepts_equivalent_partition_but_rejects_limit (test_dune_observed_replay.SavedDuneReplayTests.test_template_accepts_equivalent_partition_but_rejects_limit) ... ok
 test_behavior_and_deployer_not_ownership (test_labels.LabelsTests.test_behavior_and_deployer_not_ownership) ... ok
 test_dune_internal_conflict (test_labels.LabelsTests.test_dune_internal_conflict) ... ok
 test_dune_priority_preserves_raw_conflict (test_labels.LabelsTests.test_dune_priority_preserves_raw_conflict) ... ok
@@ -92,6 +105,6 @@ test_unbound_log_and_refund_cannot_pass (test_weth.WethTests.test_unbound_log_an
 test_wrong_credited_recipient_rejects_evidence (test_weth.WethTests.test_wrong_credited_recipient_rejects_evidence) ... ok
 
 ----------------------------------------------------------------------
-Ran 92 tests in 1.643s
+Ran 105 tests in 2.261s
 
 OK

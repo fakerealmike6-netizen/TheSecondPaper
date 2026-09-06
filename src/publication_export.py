@@ -19,11 +19,13 @@ SOURCE_NAMES = (
     "lp_run.py", "lp_test_receipt.py", "network.py", "provider_dune.py",
     "provider_etherscan.py", "provider_receipts.py", "reference_core.py",
     "reference_recompute.py", "reference_replay.py", "run_tests.py",
-    "weth_component.py", "publication_export.py",
+    "weth_component.py", "publication_export.py", "dune_live.py",
+    "dune_observed_replay.py", "dune_sql_candidate.py",
 )
 TEST_NAMES = (
     "test_archive.py", "test_budget.py", "test_collector.py", "test_labels.py",
     "test_lp.py", "test_provider_dune.py", "test_weth.py", "test_publication_export.py",
+    "test_dune_live.py", "test_dune_observed_replay.py",
 )
 EXCLUSIONS = {
     "src/labels_build.py": "Local orchestration embeds historical snapshot/run paths; reusable queue factored into label_queue.py.",
