@@ -13,6 +13,7 @@ from collector import Collector, FetchResult, NATIVE, Scope, strictly_after
 from collector_inputs import load_exact_seed
 from provider_dune import build_interval_sql, normalize_rows, timestamp, integer
 from cache_probe import fixed_graph
+from physical_facts import PhysicalFactRegistry, CONFLICT_STATUS
 
 
 def sha(path):
@@ -115,13 +116,13 @@ def load_completed_job(folder, work):
     if status_total is not None and integer(status_total) != total:
         raise ValueError('Status/export result totals differ')
     events, gaps = normalize_rows(rows)
-    unique = {}
+    registry=PhysicalFactRegistry()
     for event in events:
         event = replace(event, provenance='DUNE_EXECUTION:' + execution + ':SQL:' + logical_sha)
-        if event.event_id in unique and event != unique[event.event_id]:
-            gaps.append(dict(reason='DUNE_EVENT_IDENTITY_CONFLICT', event_id=event.event_id))
-        unique[event.event_id] = event
-    return dict(scope=scope, events=list(unique.values()), normalization_gaps=gaps,
+        registry.add(event)
+    snapshot=registry.snapshot();gaps.extend(snapshot['conflicts'])
+    from collector import Event
+    return dict(scope=scope, events=[Event(**e) for e in snapshot['events']], normalization_gaps=gaps,
                 logical_job_id=job['logical_job_id'], execution_id=execution,
                 sql_sha256=logical_sha, sql_file_sha256=sha(sqlpath), job_file_sha256=sha(folder / 'job.json'),
                 job_path=folder.as_posix(), exported_rows=total, pages=page_evidence,
@@ -133,6 +134,7 @@ class SavedDuneProvider:
 
     def __init__(self, jobs_root, work):
         self.jobs, self.rejected_jobs, self.requests, self.used_jobs = [], [], [], set()
+        self.fact_registry=PhysicalFactRegistry()
         for folder in sorted(Path(jobs_root).iterdir()):
             if not folder.is_dir():
                 continue
@@ -140,6 +142,14 @@ class SavedDuneProvider:
                 self.jobs.append(load_completed_job(folder, work))
             except (ValueError, KeyError, TypeError, OSError) as exc:
                 self.rejected_jobs.append(dict(job_path=folder.as_posix(), reason=str(exc), exception_type=type(exc).__name__))
+        # Reconcile all saved jobs before selecting any interval. A different
+        # job's contradictory version cannot be hidden by the match ranking.
+        for job in self.jobs:
+            for event in job['events']:self.fact_registry.add(event)
+            for gap in job['normalization_gaps']:
+                for version in gap.get('versions',[]):
+                    self.fact_registry.add(version['facts']|{'event_id':version['event_id'],'provenance':json.dumps(version.get('provenance',[]))},source=job['logical_job_id'],raw=version.get('raw'))
+        self.fact_snapshot=self.fact_registry.snapshot()
 
     def fetch_interval(self, address, asset, start_block, end_block, *, start_time, end_time, global_end_time):
         request = dict(address=address, asset=asset, start_block=start_block, end_block=end_block,
@@ -151,22 +161,31 @@ class SavedDuneProvider:
             self.requests.append(request | dict(available_saved_interval=False))
             return FetchResult([], [request | dict(provider='Dune', complete=False, basis='NO_COMPLETED_SAVED_DUNE_INTERVAL')],
                                False, [dict(reason='DUNE_SAVED_INTERVAL_MISSING', **request)], cache_hits=1)
-        job = sorted(matches, key=lambda j: (len(j['normalization_gaps']), j['exported_rows'], j['logical_job_id']))[0]
-        self.used_jobs.add(job['logical_job_id'])
-        selected = [e for e in job['events'] if start_block <= e.block <= end_block
-                    and start_time <= e.timestamp <= request['end_time']]
-        complete = not job['normalization_gaps']
-        evidence = request | dict(provider='Dune', complete=complete, export_complete=True,
-                                  basis='COMPLETE_EXPORTED_RECOGNIZED_DUNE_QUERY_INTERVAL',
-                                  execution_id=job['execution_id'], logical_job_id=job['logical_job_id'],
-                                  sql_sha256=job['sql_sha256'], exported_rows=job['exported_rows'],
-                                  returned_events=len(selected), pages=job['pages'])
-        self.requests.append(request | dict(available_saved_interval=True, logical_job_id=job['logical_job_id']))
-        return FetchResult(selected, [evidence], complete, job['normalization_gaps'], cache_hits=1)
+        matches=sorted(matches,key=lambda j:j['logical_job_id'])
+        ids={e.event_id for job in matches for e in job['events']}
+        for job in matches:
+            self.used_jobs.add(job['logical_job_id'])
+            for gap in job['normalization_gaps']:
+                ids.update(gap.get('event_ids',[]))
+        conflicts=[c for c in self.fact_snapshot['conflicts'] if ids.intersection(c['event_ids'])]
+        gaps=[gap for job in matches for gap in job['normalization_gaps']]
+        gaps.extend(c for c in conflicts if c not in gaps)
+        from collector import Event
+        canonical={self.fact_registry.get(eid)['event_id']:self.fact_registry.get(eid) for eid in ids if self.fact_registry.get(eid) is not None}
+        selected=[] if conflicts else [Event(**d) for d in sorted(canonical.values(),key=lambda d:d['event_id']) if start_block<=d['block']<=end_block and start_time<=d['timestamp']<=request['end_time']]
+        complete=not gaps
+        evidence=[request|dict(provider='Dune',complete=complete,export_complete=True,
+                  basis=CONFLICT_STATUS if conflicts else 'COMPLETE_EXPORTED_RECOGNIZED_DUNE_QUERY_INTERVAL',
+                  execution_id=job['execution_id'],logical_job_id=job['logical_job_id'],sql_sha256=job['sql_sha256'],
+                  exported_rows=job['exported_rows'],returned_events=len(selected),pages=job['pages']) for job in matches]
+        self.requests.append(request|dict(available_saved_interval=True,logical_job_ids=[j['logical_job_id'] for j in matches]))
+        return FetchResult(selected,evidence,complete,gaps,cache_hits=len(matches),fact_conflicts=conflicts,
+                           quarantined_facts=[v for c in conflicts for v in c['versions']])
 
 
 def live_fixed_graph(result, seed):
     graph, scope = fixed_graph(result, seed)
+    if graph['scope']==CONFLICT_STATUS:return graph,scope
     by_id = {e['event_id']: e for e in result.candidate_events}
     from collector import Event
     ordered = [Event(**{k: v for k, v in by_id[e['id']].items() if k != 'context_only'}) for e in graph['events']]

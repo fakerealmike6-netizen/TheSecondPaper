@@ -9,6 +9,7 @@ from collections import defaultdict
 from dataclasses import asdict
 from collector import Collector,Event,FetchResult,Scope,utc_seconds
 from collector_inputs import load_exact_seed
+from physical_facts import PhysicalFactRegistry, CONFLICT_STATUS
 
 def rows(path):
     opener=gzip.open if path.suffix=='.gz' else open
@@ -56,7 +57,16 @@ def run(policy_path,events_path,members_path,registry_path,out):
     print(json.dumps(metrics,indent=2))
 
 def fixed_graph(result,seed):
-    events=result.candidate_events; bytx=defaultdict(list)
+    registry=PhysicalFactRegistry();registry.add(seed)
+    for event in result.candidate_events:registry.add(event)
+    snapshot=registry.snapshot()
+    conflicts=list(getattr(result,'fact_conflicts',[]))+snapshot['conflicts']
+    if result.status==CONFLICT_STATUS or conflicts or any(g.get('reason') in ('PHYSICAL_FACT_CONFLICT','DUNE_EVENT_IDENTITY_CONFLICT') for g in result.gaps):
+        scope={'status':CONFLICT_STATUS,'online_complete':False,'fact_conflicts':conflicts,'lp_allowed':False}
+        return {'scenario_id':result.query_id,'scope':CONFLICT_STATUS,'events':[],'target_accounts':[],
+                'objective_groups':{},'initial_balances':{},'fact_validation':{'status':'CONFLICT'},
+                'fact_conflicts':conflicts,'assumptions':['Contradictory physical facts are quarantined; no amount model is permitted.']},scope
+    events=[e for e in snapshot['events'] if e['event_id'] in {r['event_id'].lower() for r in result.candidate_events}]; bytx=defaultdict(list)
     for e in events: bytx[e['tx_hash']].append(e)
     ambiguous=[tx for tx,ee in bytx.items() if len(ee)>1 and not all(e['kind']=='erc20' for e in ee) and not (len(ee)==2 and any(e['kind']=='top' for e in ee))]
     targets=sorted({s['state']['address'] for s in result.stops if s['reason']=='FIRST_IDENTIFIED_SERVICE'})
@@ -70,6 +80,8 @@ def fixed_graph(result,seed):
         if e['recipient'] in targets: groups[e['recipient']+'|'+asset].append(e['event_id'])
     scope={'status':'ASSUMPTION_CONDITIONAL' if not ambiguous else 'ORDER_UNRESOLVED_MODEL_NOT_SOLVABLE','ambiguous_transactions':ambiguous,'online_complete':False,'missing_balance_anchors':True,'gas_context_complete':False,'unobserved_flows_zero_is_not_claimed':True,'real_world_conservative_guarantee':False}
     graph={'scenario_id':result.query_id,'scope':scope['status'],'initial_balances':balances,'target_accounts':targets,'events':actual,'objective_groups':dict(groups),'assumptions':['Only actual-frontier-reachable inherited observed candidate edges are modeled; cache acquisition was reference-targeted and interval-incomplete.','All actual initial balance bounds unknown; no missing balance is set to zero.','Unobserved source-bearing routes, gas, and unsupported conversions are not represented. Endpoints apply only to this fixed graph, not all possible real chain flows.','No acquisition depth or 90-day source-age constraint is added to the fixed-graph LP.']}
+    graph['fact_validation']={'status':'CONSISTENT_OBSERVED_FACTS','physical_event_count':len(events)}
+    graph['physical_fact_manifest']=events
     return graph,scope
 
 if __name__=='__main__':

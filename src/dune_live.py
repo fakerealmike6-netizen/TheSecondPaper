@@ -5,8 +5,10 @@ from decimal import Decimal, ROUND_CEILING
 from pathlib import Path
 from budget import Ledger
 from network import NoRedirect
+from page_attempts import AttemptStore, atomic_json, RequestBlocked
+from page_contract import validate_page, initial_progress, exact_count, PageContractError
 
-def dump(p,v):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(v,indent=2,ensure_ascii=False,default=str)+'\n',encoding='utf-8')
+def dump(p,v):atomic_json(p,v)
 def read(p):return json.loads(p.read_text(encoding='utf-8'))
 class Live:
     def __init__(self,work):
@@ -14,17 +16,23 @@ class Live:
         self.confirm=read(self.w/'private/dune_user_confirmation.json')
         assert self.confirm['status']=='USER_CONFIRMED' and self.confirm['execution_cap_credits']=='1'
         assert self.confirm['payment_method_added'] is False and self.confirm['extra_credits_enabled'] is False
+        self.account_context_ref=self.confirm.get('account_context_ref','USER_CONFIRMED_ACCOUNT_NO_MISMATCH')
+        self.attempts=AttemptStore(self.w/'private/dune_request_attempts.sqlite')
     def ensure_not_halted(self):
         if (self.w/'private/dune_live_halt.json').exists():
             raise RuntimeError('Dune submissions/exports halted after a recorded execution-cap violation')
         if any(x['overrun'] or x['actual_exceeded_reservation'] for x in self.db.snapshot().values()):
             raise RuntimeError('Stage halted after recorded budget overrun')
+    def job_caps(self,state):
+        # Ordinary jobs retain the original caps. Only RevisionLive's ledger-
+        # bound override can identify the single explicit exception.
+        return {'execution':Decimal(1),'export':None,'logical':Decimal(2),'authorization_id':None}
     def pending_job(self,state):
         rows=[r for r in self.db.rows() if r['request_id']==state['logical_job_id'] and r['unit']=='dune_credits']
         if len(rows)!=1 or rows[0]['actual'] is not None or rows[0]['status'] not in ('RESERVED','UNKNOWN_RESERVED'):
             raise RuntimeError('Dune job has no pending shared reservation; settled jobs cannot export')
-        if Decimal(rows[0]['reserved'])!=Decimal('2'):
-            raise RuntimeError('Dune transport requires its entire 2-credit logical-job reservation')
+        if Decimal(rows[0]['reserved'])!=self.job_caps(state)['logical']:
+            raise RuntimeError('Dune transport requires its entire authorized logical-job reservation')
         return rows[0]
     def observe_execution_charge(self,state,body,receipt):
         if not isinstance(body,dict) or body.get('execution_cost_credits') is None:return
@@ -37,8 +45,9 @@ class Live:
         state['known_execution_cost_credits']=str(cost)
         state.setdefault('execution_charge_observations',[]).append({'request_id':receipt['request_id'],'utc':receipt.get('utc'),
             'state':body.get('state'),'execution_cost_credits':str(cost)})
-        if cost>Decimal('1'):
-            violation={'reason':'EXECUTION_CAP_EXCEEDED','execution_cap_credits':'1','observed_execution_cost_credits':str(cost),
+        execution_cap=self.job_caps(state)['execution']
+        if cost>execution_cap:
+            violation={'reason':'EXECUTION_CAP_EXCEEDED','execution_cap_credits':str(execution_cap),'observed_execution_cost_credits':str(cost),
                        'logical_job_id':state['logical_job_id'],'execution_id':state.get('execution_id'),
                        'receipt_request_id':receipt['request_id'],'utc':receipt.get('utc'),
                        'subsequent_submit_export_allowed':False,'unknown_export_charge_must_remain_reserved':True}
@@ -51,11 +60,11 @@ class Live:
             raise RuntimeError('Inconsistent export attempt history; retain reservation')
         response=state.get('status_response') or {}
         md=response.get('result_metadata') or {}
-        total=md.get('total_row_count',md.get('row_count'))
+        total=md.get('total_row_count')
         if total is None:raise RuntimeError('Total export rows unknown')
-        total=int(total)
-        if total<0:raise RuntimeError('Invalid total export rows')
-        progress={'page_size':None,'next_offset':0,'observed_rows':0,'complete':False,'successful_pages':0}
+        try:total=exact_count(total,'status total_row_count')
+        except PageContractError as exc:raise RuntimeError(str(exc)) from exc
+        progress=initial_progress(total)
         for offset in offsets:
             if progress['complete'] or offset!=progress['next_offset']:
                 raise RuntimeError('Overlapping, noncontiguous or post-terminal export history')
@@ -71,21 +80,14 @@ class Live:
             if progress['page_size'] is not None and size!=progress['page_size']:
                 raise RuntimeError('Page size changed within one logical export')
             progress['page_size']=size
-            result=page.get('result') or {};rows=result.get('rows')
-            if page.get('state') not in (None,'QUERY_STATE_COMPLETED') or not isinstance(rows,list) or len(rows)>size:
-                raise RuntimeError('Saved page does not certify successful result rows')
-            if page.get('execution_id') not in (None,state['execution_id']):
-                raise RuntimeError('Export page execution identity mismatch')
-            end=offset+len(rows);nxt=page.get('next_offset')
-            if end>total:raise RuntimeError('Export rows exceed declared full result count')
-            if nxt is not None and (not isinstance(nxt,int) or isinstance(nxt,bool) or nxt!=end or nxt<=offset):
-                raise RuntimeError('Result cursor creates overlap or a gap')
-            if end==total:
-                progress['complete']=True;progress['next_offset']=None
-            elif nxt is None or not rows:
-                raise RuntimeError('Missing cursor before declared export completion; keep incomplete')
-            else:progress['next_offset']=nxt
-            progress['observed_rows']=end;progress['successful_pages']+=1
+            identity=AttemptStore.identity(self.account_context_ref,state['logical_job_id'],state['execution_id'],'results',params)
+            registered=self.attempts.get(identity)
+            try:
+                if registered:self.attempts.cached(identity)
+                progress=validate_page(page,execution_id=state['execution_id'],offset=offset,limit=size,
+                    progress=progress,status_metadata=md,receipt=receipt,parameters=params)
+            except (PageContractError,RequestBlocked,OSError) as exc:
+                raise RuntimeError('A submitted export page failed or remains uncertain: '+str(exc)) from exc
         return progress
     def call(self,op,execution=None,payload=None,params=None):
         if execution is not None and not re.fullmatch('[A-Z0-9]{26}',execution):raise ValueError('Invalid execution ID')
@@ -111,6 +113,7 @@ class Live:
         return body,receipt
     def submit(self,sqlpath,label):
         self.ensure_not_halted()
+        if self.attempts.unresolved(self.account_context_ref):raise RequestBlocked('Unresolved request blocks replacement SQL without explicit recovery authorization')
         sql=Path(sqlpath).read_text(encoding='utf-8');digest=hashlib.sha256(sql.encode()).hexdigest();job='dune_live:'+digest
         if not sql.lstrip().startswith('--') or any(x in sql.upper() for x in ('INSERT INTO','DELETE FROM','DROP TABLE')):raise ValueError('Only reviewed read SQL')
         folder=self.w/'private/dune_live_jobs'/digest
@@ -152,7 +155,8 @@ class Live:
         if progress['page_size'] is not None and limit!=progress['page_size']:raise RuntimeError('Export page size is frozen')
         cost=response.get('execution_cost_credits')
         if cost is None:raise RuntimeError('Execution cost unknown')
-        if Decimal(str(cost))>1:
+        caps=self.job_caps(state)
+        if Decimal(str(cost))>caps['execution']:
             self.observe_execution_charge(state,response,state.get('status_receipt') or {'request_id':'saved_status','utc':None})
             dump(folder/'job.json',state)
             raise RuntimeError('Execution cost exceeded cap; future Dune submissions/exports halted')
@@ -161,15 +165,28 @@ class Live:
         # Conservative maximum of both currently documented billing schemes.
         export_max=max(Decimal(int(rows)*cols)/1000,Decimal(int(size))/1000000*20,Decimal(int(size))/100000)
         export_max+=Decimal('0.02')*((int(rows)+limit-1)//limit+1)
-        if Decimal(str(cost))+export_max>2:raise RuntimeError('Entire paginated export cannot fit combined 2-credit job; preserve execution without export')
-        state['full_export_conservative_reservation']=str(export_max);state['export_offsets'].append(offset);state['export_requests']+=1;dump(folder/'job.json',state)
-        body,r=self.call('results',state['execution_id'],params={'limit':limit,'offset':offset})
-        dump(folder/f'page_{offset}.json',body);dump(folder/f'page_{offset}_receipt.json',r)
+        if Decimal(str(cost))+export_max>caps['logical']:raise RuntimeError('Entire paginated export cannot fit combined authorized job cap; preserve execution without export')
+        if caps['export'] is not None and export_max>caps['export']:raise RuntimeError('Entire export exceeds separately authorized export cap')
+        params={'limit':limit,'offset':offset}
+        identity=AttemptStore.identity(self.account_context_ref,state['logical_job_id'],state['execution_id'],'results',params)
+        aid=self.attempts.dispatch(identity)
+        try:
+            state['full_export_conservative_reservation']=str(export_max);state['export_offsets'].append(offset);state['export_requests']+=1;dump(folder/'job.json',state)
+            body,r=self.call('results',state['execution_id'],params=params)
+            self.attempts.save_response(aid,body,r,folder/f'page_{offset}.json',folder/f'page_{offset}_receipt.json')
+        except BaseException as exc:
+            self.attempts.mark(aid,'UNKNOWN_TRANSPORT',type(exc).__name__)
+            raise
         state['last_export_receipt']=r;state['last_next_offset']=body.get('next_offset') if isinstance(body,dict) else None
         try:
+            validated=validate_page(body,execution_id=state['execution_id'],offset=offset,limit=limit,
+                progress=progress,status_metadata=md,receipt=r,parameters=params)
+            self.attempts.validated(aid,validated)
             state['verified_export_progress']=self.export_progress(folder,state)
             state['export_status']='COMPLETED_DECLARED_RESULT_ROWS' if state['verified_export_progress']['complete'] else 'PARTIAL_CONTIGUOUS_EXPORT'
-        except RuntimeError as ex:
+        except (RuntimeError,PageContractError) as ex:
+            if self.attempts.get(identity)['state']!='SUCCESS_VALIDATED':
+                self.attempts.mark(aid,'UNKNOWN_TRANSPORT' if r.get('http_status') is None or r.get('error_class') else 'INVALID_RESPONSE',str(ex))
             state['export_status']='EXPORT_FAILED_OR_UNCERTAIN';state['export_gap']=str(ex)
         dump(folder/'job.json',state)
         print(json.dumps({'http_status':r['http_status'],'raw_bytes':r['raw_bytes'],'state':None if not body else body.get('state'),'rows':None if not body else len(body.get('result',{}).get('rows',[])),'metadata':None if not body else body.get('result',{}).get('metadata'),'next_offset':None if not body else body.get('next_offset')},default=str))

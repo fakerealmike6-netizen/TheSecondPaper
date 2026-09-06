@@ -1,45 +1,13 @@
-# TheSecondPaper: Stage1B research prototype
+# TheSecondPaper: Stage1B-R1
 
-Public source, synthetic controls, and a limited research-review snapshot.
-External acceptance is **PENDING_REVIEW**. Real probes remain **PARTIAL** until
-their full declared intervals are evidenced; mock tests and sparse cache replay
-are not provider validation. See [review status](00_REVIEW_INDEX.md).
+Bounded Ethereum event collection, four verified implementation repairs, versioned ownership policy and a time-expanded LP research prototype. External acceptance **PENDING_REVIEW**; see [review index](00_REVIEW_INDEX.md) and explicit real-probe gaps.
 
-Use Python 3.11 or newer. The reviewed environment used Python 3.14.3,
-NumPy 2.4.2, SciPy 1.17.1 and its bundled HiGHS solver.
+Tested with Python 3.14.3, NumPy 2.4.2 and SciPy 1.17.1. Install requirements in an isolated environment, then run without credentials or network:
 
 ```text
-python -m venv .venv
-python -m pip install -r requirements.txt
-python src/run_tests.py
-python src/lp_run.py --fixtures fixtures/controlled --output derived/replayed_lp
-python src/collector_replay.py
+python -B src/run_tests.py --output validation/tests.json
+python -B src/lp_run.py --fixtures fixtures/controlled --output validation/controlled_lp
+python -B src/validate_review_bundle_r1.py --tree . --kind public --output ../fresh_validation
 ```
 
-Activate the project environment using the normal command for your shell before
-installing dependencies. Tests remove credential variables and block outbound
-sockets. No key, account, historical project tree, real blockchain cache or
-Windows drive is required. All bundled fixtures are synthetic.
-
-`lp_model.py` consumes event graphs, not hidden allocations or Oracle files.
-`lp_oracle.py` independently enumerates rational vertices. The collector accepts
-an exact seed, outer scope, identity resolver and provider callbacks; it does
-not load reference targets as neighbors. Network adapters require separately
-authorized current entitlements and the same persistent shared budget.
-
-Private-data reconstruction tools accept explicit input paths. To reproduce
-real evidence, obtain the original data under its own terms, verify the stated
-source versions/hashes in the local review, and supply the necessary canonical
-events, seed members and label snapshot. Full third-party labels, reference
-tables and RPC/account caches are deliberately absent from this repository.
-No claim dependent on those missing data can be independently reproduced from
-the public package alone.
-
-Re-exporting is an explicit local action, with no publication side effect:
-
-```text
-python src/publication_export.py --source-work SOURCE_STAGE_DIRECTORY --destination NEW_EXPORT_DIRECTORY --stage-task Stage1B
-```
-
-Read [NOTICE](NOTICE.md) before reuse. Original code licensing awaits the
-researcher's selection; public visibility does not grant an unstated license.
+The public archive intentionally includes synthetic fixtures only. The local MIN additionally replays the required real input subsets, reference deltas and WETH evidence; neither establishes complete-chain coverage. Source/test/fixture equivalence is in manifests/PUBLIC_SOURCE_MAPPING.json.

@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from weth_component import WETH, DEPOSIT_TOPIC, verify_component
+from weth_evidence import payload_hash
 
 class WethTests(unittest.TestCase):
     def inputs(self):
@@ -20,12 +21,21 @@ class WethTests(unittest.TestCase):
         # Synthetic bytecode only. This proves verifier behavior, never mainnet.
         code = "0x6001600055"
         attestation = {"reference_runtime_code": code, "source_sha256": hashlib.sha256(b"synthetic source").hexdigest(), "source_url": "https://example.invalid/synthetic-weth", "chain_id": 1, "contract": WETH, "deposit_semantics": "balanceOf[msg.sender] += msg.value; Deposit(msg.sender,msg.value)"}
-        return policy, tx, receipt, internal, {"call_trace": trace, "historical_code": code, "source_attestation": attestation}
+        context = {"kind": "SYNTHETIC", "records": {
+            "trace": {"chain_id": 1, "payload_sha256": payload_hash(trace),
+                      "request": {"method": "debug_traceTransaction", "params": [tx_hash, {"tracer": "callTracer", "tracerConfig": {"withLog": True}}]}},
+            "historical_code": {"chain_id": 1, "payload_sha256": payload_hash(code),
+                                "request": {"method": "eth_getCode", "params": [WETH, "0x7b"]}}}}
+        return policy, tx, receipt, internal, {"call_trace": trace, "historical_code": code, "source_attestation": attestation, "evidence_context": context}
 
     def test_complete_synthetic_proof_and_separate_gas(self):
         policy, tx, receipt, internal, extra = self.inputs()
         result = verify_component(policy, tx, receipt, internal, **extra)
-        self.assertEqual("CERTIFIED_LOCAL_WETH_DEPOSIT", result["status"])
+        # R1 correction: synthetic semantics can pass but cannot enable real LP.
+        self.assertEqual("SYNTHETIC_COMPONENT_VERIFIED_NOT_REAL", result["status"])
+        self.assertTrue(result['synthetic_component_verified'])
+        self.assertFalse(result['real_component_certified'])
+        self.assertFalse(result['semantic_unit']['next_state']['enabled_for_real_collection'])
         self.assertEqual([0], result["native_locator"]["actual_call_tree_path"])
         unit = result["semantic_unit"]
         self.assertEqual("10", unit["input_port"]["amount_raw"])

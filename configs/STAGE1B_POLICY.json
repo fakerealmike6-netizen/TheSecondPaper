@@ -1,114 +1,44 @@
 {
-  "budgets": {
-    "account_or_billing_changes_authorized": false,
-    "alchemy": {
-      "max_compute_units": 50000,
-      "must_also_fit_rpc_rest_operation_limit": true,
-      "pricing_and_allowance_required": true
-    },
-    "all_tasks_share_limits": true,
-    "bigquery": {
-      "dry_run_required": true,
-      "job_max_bytes_billed": 1073741824,
-      "maximum_bytes_billed_required": true,
-      "published_free_allowance_is_spendable_balance": false,
-      "stage_max_bytes_billed": 5368709120
-    },
-    "dune": {
-      "large_engine_allowed": false,
-      "max_logical_job_credits_including_all_pages": 2,
-      "max_new_frontier_label_sql_jobs": 5,
-      "require_enforceable_cap_and_available_allowance": true,
-      "total_credits_including_export": 10
-    },
-    "etherscan": {
-      "explicit_entitlement_required": true,
-      "included_in_rpc_rest_limit": true,
-      "max_nametag_addresses": 5
-    },
-    "paid_overage_authorized": false,
-    "reset_on_restart": false,
-    "rpc_rest": {
-      "batch_member_counts_as_operation": true,
-      "max_individual_operations_all_providers": 500
-    }
-  },
-  "checkpoint": "CHECKPOINT_1B_REACHED",
-  "daily_metasleuth_schedule_enabled": false,
-  "external_acceptance_status": "PENDING_REVIEW",
-  "label_policy": {
-    "dune_behavior_is_not_ownership": true,
-    "dune_internal_conflict_auto_resolved": false,
-    "freeze_final_paper_denominator": false,
-    "new_labels_can_change_first_service_stops": true,
-    "preserve_raw_conflicts": true,
-    "rule": "DUNE_PREFERRED_WHEN_EXPLICIT_AND_INTERNALLY_CONSISTENT",
-    "undisclosed_method_value": null,
-    "unknown_intermediate_blocks_reference": false
-  },
-  "prototype": {
-    "controlled_scenarios_max": 12,
-    "controlled_scenarios_min": 8,
-    "different_wrapper_same_solver_is_independent_oracle": false,
-    "formal_baselines_this_stage": false,
-    "independent_oracle_required": true,
-    "network_block_must_not_block_offline_prototype": true,
-    "real_query_conditional_lp_attempt": true
-  },
-  "publication_scope": "PUBLIC_POLICY_SUBSET; ceilings are task limits, not current account balances or executable entitlement",
   "query_pilots": [
     {
-      "end_block": 17427582,
-      "end_time_utc": "2023-06-07T09:23:11Z",
-      "incident_id": "INC_ATOMIC_WALLET_2023",
-      "max_acquisition_depth": 2,
       "name": "atomic_simple_transfer",
+      "incident_id": "INC_ATOMIC_WALLET_2023",
       "query_id": "qry:05cfd5ec8c97a12a3ea2d41c409be644967541c4e0c58075462bf6abc67fa070",
       "seed_event_id": "eip155:1:tx:0x61346a6b350c073428b7fdc84dd0f378bbaaa561f9238dad7b5ca7a4273abfb9:top",
       "start_block": 17395962,
-      "start_time_utc": "2023-06-02T22:20:11Z"
+      "end_block": 17427582,
+      "start_time_utc": "2023-06-02T22:20:11Z",
+      "end_time_utc": "2023-06-07T09:23:11Z",
+      "max_acquisition_depth": 2
     },
     {
-      "end_block": 16403140,
-      "end_time_utc": "2023-01-14T06:06:11Z",
-      "incident_id": "INC_HARMONY_BRIDGE_2022",
-      "max_acquisition_depth": 5,
       "name": "harmony_high_branch",
+      "incident_id": "INC_HARMONY_BRIDGE_2022",
       "query_id": "qry:aae1bd3d05643eb3940a43b49966dc1f23152ef440ea91e487ab30d66db73e26",
       "seed_event_id": "eip155:1:tx:0x17d0d000d507ba5660d6bef0d8aedbd6a6c8a1ac77deb272431d31807f58e30b:top",
       "start_block": 16402635,
-      "start_time_utc": "2023-01-14T04:24:35Z"
+      "end_block": 16403140,
+      "start_time_utc": "2023-01-14T04:24:35Z",
+      "end_time_utc": "2023-01-14T06:06:11Z",
+      "max_acquisition_depth": 5
     }
   ],
+  "sampling_rules": {
+    "chain_id": 1,
+    "local_window_days": 90,
+    "seed_receipt_depth": 0,
+    "depth_and_90_days_only_control_acquisition": true,
+    "lp_has_strict_time_order": true,
+    "lp_has_path_hop_limit": false,
+    "lp_has_fund_age_limit": false,
+    "reference_paths_as_neighbor_whitelist": false,
+    "first_identified_service_stops_branch": true
+  },
   "resource_limits": {
     "per_query_max_candidate_events": 25000,
     "per_query_max_expanded_addresses": 1000,
     "per_query_max_online_collection_wall_minutes": 90,
     "stage_new_raw_bytes_limit": 536870912,
     "stop_is_incomplete_not_semantic_pruning": true
-  },
-  "sampling_rules": {
-    "chain_id": 1,
-    "depth_and_90_days_only_control_acquisition": true,
-    "first_identified_service_stops_branch": true,
-    "local_window_days": 90,
-    "lp_has_fund_age_limit": false,
-    "lp_has_path_hop_limit": false,
-    "lp_has_strict_time_order": true,
-    "reference_paths_as_neighbor_whitelist": false,
-    "seed_receipt_depth": 0
-  },
-  "schema_version": "stage1b-policy-1.0",
-  "weth_component": {
-    "amount_raw": "150000000000000000000",
-    "block_number": 20582941,
-    "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-    "credited_address": "0x5c7bcd6e7de5423a257d81b442095a1a6ced35c5",
-    "cross_chain_tracing": false,
-    "deposit_log_index": 210,
-    "input_trace_address": "1",
-    "max_additional_simple_component_transactions": 1,
-    "status_at_start": "CANDIDATE_NOT_CERTIFIED",
-    "tx_hash": "0xfd9f05f2eb3673eebfd4c2b3af50fa8503a3486a5c7f00e92bf5213d774f6b9c"
   }
 }

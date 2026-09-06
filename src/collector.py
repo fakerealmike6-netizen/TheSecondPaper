@@ -11,6 +11,7 @@ import heapq
 import json
 import time
 from pathlib import Path
+from physical_facts import PhysicalFactRegistry, canonical_event, CONFLICT_STATUS
 
 NATIVE = "native:eip155:1"
 
@@ -35,15 +36,15 @@ class Event:
     success: bool = True
     provenance: str = ""
     gas_raw: int | None = None
+    chain_id: str = 'eip155:1'
+    block_hash: str | None = None
+    gas_used: int | None = None
+    gas_price: int | None = None
 
     def __post_init__(self):
-        if not self.event_id or self.amount_raw < 0:
+        if not self.event_id:
             raise ValueError("exact event identity and nonnegative integer amount required")
-        if isinstance(self.amount_raw, bool) or not isinstance(self.amount_raw, int):
-            raise ValueError("amount_raw must be integer")
-        object.__setattr__(self, "sender", self.sender.lower())
-        object.__setattr__(self, "recipient", self.recipient.lower())
-        object.__setattr__(self, "tx_hash", self.tx_hash.lower())
+        for name,value in canonical_event(self).items():object.__setattr__(self,name,value)
 
     def stable_key(self):
         # Deterministic presentation only; never used to claim trace/log chronology.
@@ -108,6 +109,8 @@ class FetchResult:
     new_raw_bytes: int = 0
     real_requests: int = 0
     cache_hits: int = 0
+    fact_conflicts: list[dict] = field(default_factory=list)
+    quarantined_facts: list[dict] = field(default_factory=list)
 
 @dataclass
 class Limits:
@@ -127,6 +130,9 @@ class CollectionResult:
     coverage: list[dict]
     gaps: list[dict]
     metrics: dict
+    fact_conflicts: list[dict] = field(default_factory=list)
+    quarantined_facts: list[dict] = field(default_factory=list)
+    invalidated_evidence: dict = field(default_factory=dict)
 
     def write(self, path):
         data = asdict(self)
@@ -152,6 +158,8 @@ class Collector:
         if not seed.success or seed.amount_raw <= 0 or not (scope.start_block <= seed.block <= scope.end_block) or not (scope.start_time <= seed.timestamp <= scope.end_time):
             raise ValueError("exact positive successful seed must lie inside declared scope")
         heap, seen, expanded, candidates, context = [], set(), set(), {seed.event_id: seed}, {}
+        registry=PhysicalFactRegistry();registry.add(seed)
+        fact_conflicts=[];quarantined=[]
         processed, stops, pending, coverage, gaps, membership = [], [], [], [], [], []
         online_seconds, provider_wall_seconds, requests, hits, raw_bytes = 0.0, 0.0, 0, 0, 0
         prior_online_seconds = 0.0
@@ -217,9 +225,24 @@ class Collector:
             raw_bytes += result.new_raw_bytes
             coverage.extend([{**row, "state_key": list(state.key())} for row in result.coverage])
             gaps.extend([{**row, "address": state.address, "arrival_event_id": state.arrival.event_id} for row in result.gaps])
+            # Validate the whole batch against every earlier interval before
+            # allowing any candidate/stop derived from this response.
+            for event in result.events:registry.add(event)
+            fact_snapshot=registry.snapshot()
+            fact_conflicts=result.fact_conflicts+fact_snapshot['conflicts']
+            fact_conflicts += [g for g in result.gaps if g.get('reason') in ('PHYSICAL_FACT_CONFLICT','DUNE_EVENT_IDENTITY_CONFLICT') and g not in fact_conflicts]
+            if fact_conflicts:
+                quarantined=result.quarantined_facts+fact_snapshot['quarantined_versions']
+                for conflict in fact_conflicts:
+                    for version in conflict.get('versions',[]):
+                        if version not in quarantined:quarantined.append(version)
+                interrupted=CONFLICT_STATUS
+                pending.append({**base,'reason':CONFLICT_STATUS})
+                break
             if not result.complete:
                 pending.append({**base, "reason": "INTERVAL_INCOMPLETE", "coverage": result.coverage})
-            for event in sorted(result.events, key=Event.stable_key):
+            batch={registry.get(e.event_id)['event_id']:Event(**registry.get(e.event_id)) for e in result.events}
+            for event in sorted(batch.values(), key=Event.stable_key):
                 # Keep all received facts; failed transfers and gas are context only.
                 reason = None
                 if not event.success:
@@ -264,8 +287,21 @@ class Collector:
             status = "COMPLETED_WITH_RECORDED_DATA_GAPS"
         else:
             status = "COMPLETED_WITHIN_DECLARED_SCOPE"
+        invalidated={}
+        if fact_conflicts:
+            # A prior branch may already have produced a service stop before a
+            # later interval contradicted it. Preserve it as invalid evidence,
+            # never as an active target or a usable candidate capacity.
+            invalidated={'candidate_events':[asdict(e) for e in candidates.values()],
+                         'context_events':list(context.values()),'states':processed,
+                         'stops':stops,'membership':membership,'coverage':coverage}
+            candidates={};context={};processed=[];stops=[];membership=[]
+            coverage=[{**c,'complete':False,'invalidated_reason':CONFLICT_STATUS} for c in coverage]
+            gaps.append({'reason':'PHYSICAL_FACT_CONFLICT','conflict_count':len(fact_conflicts),'query_invalidated':True})
+        else:
+            candidates={registry.get(eid)['event_id']:Event(**registry.get(eid)) for eid in candidates}
         checkpoint()
         facts = [asdict(e) | {"context_only": False} for e in sorted(candidates.values(), key=Event.stable_key)]
         stable = {"candidate_events": facts, "stops": stops, "membership": membership, "coverage": [{k: v for k, v in c.items() if k not in ("cache_hit", "raw_path")} for c in coverage]}
         digest = hashlib.sha256(json.dumps(stable, sort_keys=True).encode()).hexdigest()
-        return CollectionResult(scope.query_id, status, facts, list(context.values()), processed, stops, pending, coverage, gaps, {"candidate_event_count": len(candidates), "candidate_transaction_count": len({e.tx_hash for e in candidates.values()}), "expanded_address_count": len(expanded), "candidate_address_count": len({e.recipient for e in candidates.values()}), "state_count": len(processed), "service_entry_state_count": sum(s["reason"] == "FIRST_IDENTIFIED_SERVICE" for s in stops), "service_address_count": len({s["state"]["address"] for s in stops if s["reason"] == "FIRST_IDENTIFIED_SERVICE"}), "real_requests": requests, "cache_hits": hits, "new_raw_bytes": raw_bytes, "online_collection_seconds": online_seconds, "cumulative_online_collection_seconds": prior_online_seconds + online_seconds, "provider_total_wall_seconds": provider_wall_seconds, "candidate_stop_coverage_sha256": digest, "candidate_membership": membership})
+        return CollectionResult(scope.query_id, status, facts, list(context.values()), processed, stops, pending, coverage, gaps, {"candidate_event_count": len(candidates), "candidate_transaction_count": len({e.tx_hash for e in candidates.values()}), "expanded_address_count": len(expanded), "candidate_address_count": len({e.recipient for e in candidates.values()}), "state_count": len(processed), "service_entry_state_count": sum(s["reason"] == "FIRST_IDENTIFIED_SERVICE" for s in stops), "service_address_count": len({s["state"]["address"] for s in stops if s["reason"] == "FIRST_IDENTIFIED_SERVICE"}), "real_requests": requests, "cache_hits": hits, "new_raw_bytes": raw_bytes, "online_collection_seconds": online_seconds, "cumulative_online_collection_seconds": prior_online_seconds + online_seconds, "provider_total_wall_seconds": provider_wall_seconds, "candidate_stop_coverage_sha256": digest, "candidate_membership": membership,'fact_validation_status':'CONFLICT' if fact_conflicts else 'CONSISTENT_OBSERVED_FACTS'},fact_conflicts,quarantined,invalidated)

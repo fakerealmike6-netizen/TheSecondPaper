@@ -107,6 +107,8 @@ def build_model(graph: dict) -> Model:
     Validated semantic operations are atomic; callers must establish ordering
     and certification before supplying real conversion operations.
     """
+    from physical_facts import assert_graph_facts_safe
+    assert_graph_facts_safe(graph)
     if graph.get('scope') == 'ORDER_UNRESOLVED_MODEL_NOT_SOLVABLE':
         raise ValueError('Unresolved physical execution order cannot be solved by invented ordinal')
     events = sorted(graph["events"], key=lambda e: e["order"])

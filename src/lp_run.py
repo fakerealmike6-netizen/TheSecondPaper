@@ -126,7 +126,20 @@ def controlled_verification(fixtures_dir, output_dir):
 
 def fixed_graph_run(graph_path, output_dir):
     output_dir.mkdir(parents=True,exist_ok=True)
-    graph=read(graph_path);model=build_model(graph)
+    graph=read(graph_path)
+    from physical_facts import assert_graph_facts_safe,CONFLICT_STATUS
+    try:assert_graph_facts_safe(graph)
+    except ValueError as exc:
+        blocked={'graph_file_sha256':hashlib.sha256(graph_path.read_bytes()).hexdigest(),
+                 'status':CONFLICT_STATUS,'scope':CONFLICT_STATUS,'model':None,'results':{},
+                 'reason':str(exc),'amounts_allowed':False,'fact_conflicts':graph.get('fact_conflicts',[])}
+        # Replace this output's previous amount artifact with an explicit
+        # invalidation receipt, so a rerun cannot leave apparently current old
+        # endpoints behind. The source graph/previous stage remain untouched.
+        write_json(output_dir/'lp_fixed_graph_result.json',blocked)
+        print(json.dumps({'status':CONFLICT_STATUS,'amounts_allowed':False}))
+        return blocked
+    model=build_model(graph)
     result={"graph_file_sha256":hashlib.sha256(graph_path.read_bytes()).hexdigest(),"model":model.statistics(),
             "scope":graph.get("scope","ASSUMPTION_CONDITIONAL"),"assumptions":graph.get("assumptions",[]),
             "results":solve_target_groups(model,graph.get("objective_groups",{}))}

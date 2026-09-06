@@ -13,6 +13,8 @@ import hashlib,json,re
 from datetime import datetime,timezone
 from pathlib import Path
 from collector import Event,FetchResult,NATIVE
+from page_attempts import AttemptStore, RequestBlocked
+from page_contract import validate_page, initial_progress
 
 VERSION='stage1b-dune-index-adapter-1.0'
 
@@ -107,7 +109,8 @@ ORDER BY block_number,tx_index,tx_hash,event_kind,log_index,trace_address
 '''
 
 def normalize_rows(rows):
-    events=[];gaps=[]
+    from physical_facts import PhysicalFactRegistry
+    registry=PhysicalFactRegistry();gaps=[]
     for n,r in enumerate(rows):
         try:
             tx=exact_hex(r['tx_hash'],32);kind=r['event_kind']
@@ -126,9 +129,18 @@ def normalize_rows(rows):
                 log=integer(r['log_index']);suffix='log:'+str(log)
                 asset='erc20:eip155:1:'+exact_hex(r['contract_address'],20)
             else:raise ValueError('unknown event kind')
-            events.append(Event('eip155:1:tx:'+tx+':'+suffix,tx,sender,recipient,asset,integer(r['amount_raw']),integer(r['block_number']),integer(r.get('tx_index'),optional=True),timestamp(r['block_time']),kind,log,trace,None,r['success'],'DUNE_INDEX_'+VERSION,gas))
+            event=Event('eip155:1:tx:'+tx+':'+suffix,tx,sender,recipient,asset,integer(r['amount_raw']),integer(r['block_number']),integer(r.get('tx_index'),optional=True),timestamp(r['block_time']),kind,log,trace,integer(r.get('execution_index'),optional=True),r['success'],'DUNE_INDEX_'+VERSION,gas,
+                        chain_id=r.get('chain_id','eip155:1'),block_hash=exact_hex(r['block_hash'],32) if r.get('block_hash') else None,
+                        gas_used=integer(r.get('gas_used'),optional=True),gas_price=integer(r.get('gas_price'),optional=True))
+            registry.add(event,raw=r)
         except (KeyError,TypeError,ValueError) as exc:
             gaps.append({'reason':'DUNE_NORMALIZATION_UNRESOLVED','row_index':n,'exception_type':type(exc).__name__})
+    snapshot=registry.snapshot();gaps.extend(snapshot['conflicts'])
+    events=[Event(**e) for e in snapshot['events']]
+    # Deterministic presentation retains the historical top/trace/log grouping;
+    # this key is not evidence of trace-versus-log execution chronology.
+    events.sort(key=lambda e:(e.block,e.tx_index if e.tx_index is not None else -1,e.tx_hash,
+                             {'top':0,'internal':1,'erc20':2}[e.kind],e.event_id))
     return events,gaps
 
 def atomic_json(path,data):
@@ -144,55 +156,115 @@ class DuneProvider:
     Metadata/status polling request counts can be returned in `_request_count`.
     Callbacks may raise a budget denial; uncertain submissions are never retried.
     """
-    def __init__(self,execute_and_wait,export_page,cache_dir,*,page_size=50,max_pages=50,max_rows=25000,replay_only=False,raw_limit_bytes=536870912):
+    def __init__(self,execute_and_wait,export_page,cache_dir,*,page_size=50,max_pages=50,max_rows=25000,replay_only=False,raw_limit_bytes=536870912,account_context_ref='INJECTED_CALLER_ACCOUNT_CONTEXT'):
         if not 1<=page_size<=1000:raise ValueError('page_size must be 1..1000')
         self.execute_and_wait=execute_and_wait;self.export_page=export_page;self.cache=Path(cache_dir)
         self.cache.mkdir(parents=True,exist_ok=True);self.page_size=page_size;self.max_pages=max_pages;self.max_rows=max_rows
         self.replay_only=replay_only;self.raw_limit_bytes=raw_limit_bytes;self.new_raw_bytes=0;self.request_log=[]
+        self.account_context_ref=account_context_ref
+        self.attempts=AttemptStore(self.cache/'request_attempts.sqlite')
+        from physical_facts import PhysicalFactRegistry
+        self.fact_registry=PhysicalFactRegistry();self._fact_returns=[]
+        # Rebuild facts only from hash-validated successful request receipts.
+        # This read-only replay prevents a fresh provider instance from losing
+        # contradictions learned in earlier jobs of the same account context.
+        for record in self.attempts.rows():
+            identity=json.loads(record['identity'])
+            if record['state']=='SUCCESS_VALIDATED' and identity['operation']=='results' and identity['account_context_ref']==self.account_context_ref:
+                response,_,_=self.attempts.cached(identity)
+                self._remember_facts(response['result']['rows'],identity['logical_job_id']+':'+identity['execution_id'])
+
+    def _remember_facts(self,rows,source):
+        events,gaps=normalize_rows(rows)
+        for event in events:self.fact_registry.add(event,source=self.account_context_ref+':'+source)
+        for gap in gaps:
+            for version in gap.get('versions',[]):
+                self.fact_registry.add(version['facts']|{'event_id':version['event_id'],'provenance':json.dumps(version.get('provenance',[]))},source=self.account_context_ref+':'+source,raw=version.get('raw'))
+        ids={e.event_id for e in events}|{eid for g in gaps for eid in g.get('event_ids',[])}
+        return ids,gaps
 
     def fetch_interval(self,address,asset,start_block,end_block,*,start_time,end_time,global_end_time):
         sql=build_interval_sql(address,asset,start_block,end_block,start_time=start_time,end_time=min(end_time,global_end_time))
+        known=[c for c in self.fact_registry.snapshot()['conflicts'] if any(
+            address.lower() in (v['facts']['sender'],v['facts']['recipient']) and
+            integer(start_block)<=v['facts']['block']<=integer(end_block) and timestamp(start_time)<=v['facts']['timestamp']<=min(timestamp(end_time),timestamp(global_end_time))
+            for v in c['versions'])]
+        if known:
+            return FetchResult([], [{'provider':'Dune','complete':False,'basis':'PHYSICAL_FACT_CONFLICT','address':address}],False,known,
+                               cache_hits=1,fact_conflicts=known,quarantined_facts=[v for c in known for v in c['versions']])
         jobid='dune:'+hashlib.sha256(sql.encode()).hexdigest();folder=self.cache/jobid.split(':')[1];folder.mkdir(exist_ok=True)
         sqlpath=folder/'query.sql'
         if sqlpath.exists() and sqlpath.read_text(encoding='utf-8')!=sql:raise ValueError('SQL hash collision')
         if not sqlpath.exists():sqlpath.write_text(sql,encoding='utf-8')
         jobpath=folder/'job.json';coverage=[];gaps=[];allrows=[];requests=0;hits=0;newbytes=0;complete=False
+        progress=initial_progress();execution_identity=None
         try:
+            execution_identity=AttemptStore.identity(self.account_context_ref,jobid,'SQL:'+jobid.split(':')[1],'execute',{'sql_sha256':jobid.split(':')[1]})
             if jobpath.exists():
                 job=json.loads(jobpath.read_text());hits+=1
                 if job.get('state')!='QUERY_STATE_COMPLETED' or not job.get('execution_id'):
                     return FetchResult(gaps=[{'reason':'DUNE_PRIOR_JOB_UNRESOLVED_NO_AUTOMATIC_RESUBMISSION','logical_job_id':jobid}],cache_hits=hits)
             else:
                 if self.replay_only:raise RuntimeError('DUNE_CACHE_MISS_REPLAY_ONLY')
-                atomic_json(jobpath,{'state':'SUBMITTING_OR_UNCERTAIN','logical_job_id':jobid})
-                job=self.execute_and_wait(sql,jobid);requests+=int(job.get('_request_count',1))
-                atomic_json(jobpath,job)
+                # SQLite commits the unique right to dispatch before any callback.
+                aid=self.attempts.dispatch(execution_identity)
+                try:
+                    atomic_json(jobpath,{'state':'SUBMITTING_OR_UNCERTAIN','logical_job_id':jobid})
+                    requests+=1
+                    job=self.execute_and_wait(sql,jobid)
+                    requests+=max(0,int(job.get('_request_count',1))-1)
+                    receipt={'operation':'execute','logical_job_id':jobid,'request_identity':execution_identity,'_callback_returned':True}
+                    self.attempts.save_response(aid,job,receipt,jobpath,folder/'execution_receipt.json')
+                    if job.get('state')!='QUERY_STATE_COMPLETED' or not job.get('execution_id'):
+                        self.attempts.mark(aid,'INVALID_RESPONSE','Execution was not completed and explicitly bound')
+                    else:self.attempts.validated(aid,{'complete':True,'next_offset':None})
+                except BaseException as exc:
+                    self.attempts.mark(aid,'UNKNOWN_TRANSPORT',type(exc).__name__)
+                    raise
                 if job.get('state')!='QUERY_STATE_COMPLETED' or not job.get('execution_id'):
                     return FetchResult(gaps=[{'reason':'DUNE_EXECUTION_NOT_COMPLETED','logical_job_id':jobid,'state':job.get('state')}],real_requests=requests)
             execution=job['execution_id'];offset=0;seen_offsets=set();total=None
             for page in range(self.max_pages):
                 if offset in seen_offsets:raise ValueError('repeated offset')
                 seen_offsets.add(offset);path=folder/f'page_{offset}.json';cache_hit=path.exists()
-                if cache_hit:response=json.loads(path.read_text());hits+=1
+                params={'limit':self.page_size,'offset':offset}
+                identity=AttemptStore.identity(self.account_context_ref,jobid,execution,'results',params)
+                if cache_hit:
+                    registered=self.attempts.get(identity)
+                    if registered:
+                        response,receipt,_=self.attempts.cached(identity)
+                    else:
+                        response=json.loads(path.read_text());receipt=None
+                    hits+=1
                 else:
                     if self.replay_only:raise RuntimeError('DUNE_PAGE_CACHE_MISS_REPLAY_ONLY')
                     if self.new_raw_bytes+self.page_size*4096>self.raw_limit_bytes:raise RuntimeError('DUNE_RAW_BYTES_RESOURCE_LIMIT')
+                    if self.attempts.get(execution_identity) is None:
+                        raise RequestBlocked('Legacy completed SQL has no dispatch history; missing page is not proof of an unsubmitted request')
                     # Never set filters/sample_count/allow_partial_results or
                     # ignore_max_credits_per_request, and never trust next_uri.
-                    response=self.export_page(execution,{'limit':self.page_size,'offset':offset},jobid)
-                    requests+=int(response.get('_request_count',1));atomic_json(path,response)
+                    aid=self.attempts.dispatch(identity)
+                    try:
+                        requests+=1
+                        response=self.export_page(execution,params,jobid)
+                        if isinstance(response,dict):requests+=max(0,int(response.get('_request_count',1))-1)
+                        receipt={'operation':'results','execution_id':execution,'logical_job_id':jobid,'parameters':params,'http_status':200,'error_class':None,'evidence_type':'INJECTED_CALLBACK_RESPONSE'}
+                        self.attempts.save_response(aid,response,receipt,path,folder/f'page_{offset}_receipt.json')
+                    except BaseException as exc:
+                        self.attempts.mark(aid,'UNKNOWN_TRANSPORT',type(exc).__name__)
+                        raise
                     size=path.stat().st_size;newbytes+=size;self.new_raw_bytes+=size
-                if response.get('execution_id')!=execution or response.get('state')!='QUERY_STATE_COMPLETED':raise ValueError('execution mismatch or incomplete result')
-                data=response.get('result',{});values=data.get('rows');md=data.get('metadata',{})
-                if not isinstance(values,list):raise ValueError('missing result rows')
-                row_total=integer(md.get('total_row_count'))
-                if total is not None and row_total!=total:raise ValueError('total row count changed')
-                total=row_total;next_offset=response.get('next_offset')
-                if next_offset is not None:next_offset=integer(next_offset)
-                if next_offset is not None and (not values or next_offset!=offset+len(values)):raise ValueError('noncontiguous pagination')
+                try:
+                    next_progress=validate_page(response,execution_id=execution,offset=offset,limit=self.page_size,progress=progress,status_metadata=job.get('result_metadata'),receipt=receipt,parameters=params)
+                    if not cache_hit:self.attempts.validated(aid,next_progress)
+                except Exception as exc:
+                    if not cache_hit:self.attempts.mark(aid,'INVALID_RESPONSE',str(exc))
+                    raise
+                progress=next_progress
+                data=response['result'];values=data['rows'];md=data['metadata'];total=progress['total'];next_offset=progress['next_offset']
                 allrows.extend(values)
                 terminal=next_offset is None
-                page_complete=terminal and len(allrows)==total
+                page_complete=progress['complete']
                 coverage.append({'provider':'Dune','logical_job_id':jobid,'execution_id':execution,'sql_sha256':jobid.split(':')[1],'address':address,'asset':asset,'start_block':start_block,'end_block':end_block,'start_time':start_time,'end_time':end_time,'offset':offset,'returned_rows':len(values),'total_row_count':total,'next_offset':next_offset,'complete':page_complete,'raw_path':str(path),'response_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'cache_hit':cache_hit})
                 if terminal:
                     if not page_complete:gaps.append({'reason':'DUNE_TOTAL_COUNT_OR_PAGINATION_GAP','downloaded_rows':len(allrows),'total_row_count':total})
@@ -203,9 +275,24 @@ class DuneProvider:
             else:gaps.append({'reason':'DUNE_PAGE_RESOURCE_LIMIT','next_offset':offset})
         except Exception as exc:
             gaps.append({'reason':getattr(exc,'reason','DUNE_TRANSPORT_BUDGET_OR_RESULT_UNRESOLVED'),'exception_type':type(exc).__name__,'logical_job_id':jobid})
-        events,ngaps=normalize_rows(allrows);gaps.extend(ngaps);unique={}
-        for e in events:
-            if e.event_id in unique and e!=unique[e.event_id]:gaps.append({'reason':'DUNE_EVENT_IDENTITY_CONFLICT','event_id':e.event_id})
-            else:unique[e.event_id]=e
+        ids,ngaps=self._remember_facts(allrows,jobid+':'+str(locals().get('execution','UNRESOLVED')))
+        gaps.extend(ngaps);snapshot=self.fact_registry.snapshot()
+        conflicts=[c for c in snapshot['conflicts'] if ids.intersection(c['event_ids'])]
+        gaps.extend(c for c in conflicts if c not in gaps)
+        unique={self.fact_registry.get(eid)['event_id']:Event(**self.fact_registry.get(eid)) for eid in ids if self.fact_registry.get(eid) is not None}
+        if conflicts:
+            unique={};coverage=[{**c,'complete':False,'invalidated_reason':'PHYSICAL_FACT_CONFLICT'} for c in coverage]
+        # References returned earlier by this live provider are also revoked;
+        # Collector independently invalidates all query descendants and stops.
+        for prior,prior_ids in self._fact_returns:
+            relevant=[c for c in snapshot['conflicts'] if prior_ids.intersection(c['event_ids'])]
+            if relevant:
+                prior.events=[];prior.complete=False;prior.fact_conflicts=relevant
+                prior.quarantined_facts=[v for c in relevant for v in c['versions']]
+                prior.coverage=[{**c,'complete':False,'invalidated_reason':'PHYSICAL_FACT_CONFLICT'} for c in prior.coverage]
+                prior.gaps.extend(c for c in relevant if c not in prior.gaps)
         self.request_log.extend(coverage)
-        return FetchResult(list(unique.values()),coverage,complete and not gaps,gaps,newbytes,requests,hits)
+        result=FetchResult(list(unique.values()),coverage,complete and not gaps,gaps,newbytes,requests,hits,
+                           fact_conflicts=conflicts,quarantined_facts=[v for c in conflicts for v in c['versions']])
+        self._fact_returns.append((result,ids))
+        return result

@@ -1,0 +1,206 @@
+{
+  "run_id": "20260906T212828+0800_stage1b_r1",
+  "checkpoint": "CHECKPOINT_1B_R1_REACHED",
+  "status": "PARTIAL",
+  "external_acceptance_status": "PENDING_REVIEW",
+  "original_external_acceptance": "REVISE_REQUIRED",
+  "base_run": "20260906T181303+0800_stage1b",
+  "base_min_sha256": "111ad42a860dae2b53d19b5c57b7ea4320266a5be2179ca713e8071132d6a879",
+  "repair_ids": {
+    "R2-02": "COMPLETED",
+    "R2-01": "COMPLETED",
+    "R2-03": "COMPLETED",
+    "R2-04": "COMPLETED"
+  },
+  "repair_gate": "PASS",
+  "budget": {
+    "dune_credits": {
+      "cap": "20",
+      "actual": "2",
+      "reserved": "14.433088236",
+      "remaining": "3.566911764",
+      "buckets": {
+        "LEGACY_STAGE1B": {
+          "cap": "10",
+          "risk": "10",
+          "known_execution": "1.683794121",
+          "final_actual": "0",
+          "bounded_not_final": "0",
+          "unknown_reserved": "10",
+          "remaining": "0"
+        },
+        "R1_NEW": {
+          "cap": "10",
+          "risk": "6.433088236",
+          "known_execution": "5.433088236",
+          "final_actual": "2",
+          "bounded_not_final": "4.433088236",
+          "unknown_reserved": "0",
+          "remaining": "3.566911764"
+        }
+      },
+      "remaining_for_new_jobs": "3.566911764"
+    },
+    "bigquery_bytes": {
+      "cap": "5368709120",
+      "actual": "0",
+      "reserved": "0",
+      "remaining": null,
+      "buckets": null,
+      "remaining_for_new_jobs": null
+    },
+    "rpc_operations": {
+      "cap": "500",
+      "actual": "5",
+      "reserved": "0",
+      "remaining": "495",
+      "buckets": null,
+      "remaining_for_new_jobs": null
+    },
+    "alchemy_cu": {
+      "cap": "50000",
+      "actual": "0",
+      "reserved": "0",
+      "remaining": null,
+      "buckets": null,
+      "remaining_for_new_jobs": null
+    },
+    "meta_addresses": {
+      "cap": "10",
+      "actual": "10",
+      "reserved": "0",
+      "remaining": "0",
+      "buckets": null,
+      "remaining_for_new_jobs": null
+    },
+    "meta_requests": {
+      "cap": "1",
+      "actual": "1",
+      "reserved": "0",
+      "remaining": "0",
+      "buckets": null,
+      "remaining_for_new_jobs": null
+    }
+  },
+  "label_manifest_path": "derived/frontier_labels/batch_01_optimized_v1/apply_manifest.json",
+  "label_manifest_sha256": "41c92d8aeac19eda5e53e7d3fb2d92bdbd72090c5fe70b8b76bc073f820ef887",
+  "controlled_lp": {
+    "model_status": "COMPLETED",
+    "scenario_count": 12,
+    "objective_comparisons": 32,
+    "all_passed": true,
+    "max_exact_endpoint_error_raw": "0"
+  },
+  "weth": {
+    "status": "NOT_CERTIFIED",
+    "scope": "canonical WETH deposit sub-operation only",
+    "legacy_checks_passed": 6,
+    "legacy_checks_total": 12,
+    "new_rpc_attempts": 1,
+    "new_rpc_http_status": 403,
+    "new_rpc_verified": false,
+    "synthetic_success_is_real_certification": false
+  },
+  "new_dune_jobs": [
+    {
+      "kind": "frontier_labels",
+      "state": "QUERY_STATE_FAILED",
+      "execution_cost_credits": "1",
+      "export_requests": 0,
+      "settlement_status": "FINAL_ACTUAL",
+      "total_upper_credits": null,
+      "known_export_cost_credits": "0"
+    },
+    {
+      "kind": "frontier_labels",
+      "state": "QUERY_STATE_FAILED",
+      "execution_cost_credits": "1",
+      "export_requests": 0,
+      "settlement_status": "FINAL_ACTUAL",
+      "total_upper_credits": null,
+      "known_export_cost_credits": "0"
+    },
+    {
+      "kind": "frontier_labels",
+      "state": "QUERY_STATE_COMPLETED",
+      "execution_cost_credits": "3.433088236",
+      "export_requests": 1,
+      "settlement_status": "BOUNDED_ACCOUNTING_NOT_FINAL",
+      "total_upper_credits": "4.433088236",
+      "known_export_cost_credits": null
+    }
+  ],
+  "full_sample_authorized": false,
+  "stage1c_authorized": false,
+  "final_denominator_frozen": false,
+  "graph_view": "derived/label_update_success_same_raw",
+  "created_at_utc": "2026-09-06T15:17:50.682743+00:00",
+  "real_lp_intervals": [
+    {
+      "probe": "atomic_simple_transfer",
+      "target": "OBSERVED_SERVICE_1",
+      "lower_raw": "0",
+      "upper_raw": "287395000000000000000",
+      "asset": "ETH",
+      "scope": "ASSUMPTION_CONDITIONAL",
+      "graph_sha256": "ac6977d3b755cf5bb49d46f929c588df98093569bce77d09ec2b6d9e764b15c6"
+    },
+    {
+      "probe": "harmony_high_branch",
+      "target": null,
+      "status": "NO_OBSERVED_TARGET",
+      "scope": "ASSUMPTION_CONDITIONAL",
+      "graph_sha256": "12e4cb9cbbd07d45f892c7c5d42b25f1ce91547dccc73bfb63105f367f312762"
+    }
+  ],
+  "platform_usage": {
+    "metasleuth_new_requests": 0,
+    "metasleuth_new_addresses": 0,
+    "dune_r1_execute_requests": 3,
+    "dune_r1_export_requests": 1,
+    "browser_r1_attempts": 0,
+    "rpc_r1_operations": 1,
+    "rpc_stage_cumulative_operations": 5,
+    "bigquery_r1_bytes": 0,
+    "alchemy_r1_cu": 0
+  },
+  "tests": {
+    "tests_run": 282,
+    "passed": 282,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "success": true
+  },
+  "pilots": [
+    {
+      "name": "atomic_simple_transfer",
+      "status": "PARTIAL",
+      "collector_status": "INCOMPLETE_PROVIDER_OR_DATA_GAP",
+      "live_query_interval_count": 4,
+      "live_exported_rows": 18,
+      "live_normalized_distinct_events": 15,
+      "candidate_event_count": 11,
+      "service_address_count": 1,
+      "unresolved_frontier_count": 1
+    },
+    {
+      "name": "harmony_high_branch",
+      "status": "PARTIAL",
+      "collector_status": "INCOMPLETE_PROVIDER_OR_DATA_GAP",
+      "live_query_interval_count": 1,
+      "live_exported_rows": 5,
+      "live_normalized_distinct_events": 5,
+      "candidate_event_count": 4,
+      "service_address_count": 0,
+      "unresolved_frontier_count": 3
+    }
+  ],
+  "reference": {
+    "changed_relations": 0,
+    "row_by_row_relation_count": 10430,
+    "denominator_finalized": false
+  },
+  "ordinary_sql_status": "PAUSED_USER_KEEPS_ACCOUNT_CAP5; ordinary cap1 authorization not expanded",
+  "r1_new_candidate_value_rows": 0
+}

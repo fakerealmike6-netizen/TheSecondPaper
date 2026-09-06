@@ -1,0 +1,13 @@
+{
+  "evidence_kind": "SYNTHETIC_ONLY",
+  "policy": {"query_pilots": [{"name": "synthetic_probe", "query_id": "synthetic-query", "start_block": 100, "end_block": 110, "start_time_utc": "1970-01-01T00:16:40Z", "end_time_utc": "1970-01-01T00:33:20Z", "max_acquisition_depth": 3}]},
+  "frontier": [
+    {"name": "synthetic_probe", "query_id": "synthetic-query", "address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "asset": "native:eip155:1", "arrival_event_id": "synthetic-arrival-a", "depth": 1, "start_block": 100, "end_block": 110, "start_time": 1000, "end_time": 2000, "reason": "INTERVAL_INCOMPLETE"},
+    {"name": "synthetic_probe", "query_id": "synthetic-query", "address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "asset": "native:eip155:1", "arrival_event_id": "synthetic-arrival-b", "depth": 1, "start_block": 101, "end_block": 110, "start_time": 1100, "end_time": 2000, "reason": "INTERVAL_INCOMPLETE"}
+  ],
+  "registry": [
+    {"address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "identity_class": "UNKNOWN", "actor": "", "lookup_status": "EMPTY_LABEL_RESULT"},
+    {"address": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "identity_class": "UNKNOWN", "actor": "", "lookup_status": "UNQUERIED"}
+  ],
+  "row": {"event_kind": "top", "tx_hash": "0x1111111111111111111111111111111111111111111111111111111111111111", "sender": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "recipient": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "amount_raw": "10", "block_number": 102, "tx_index": 0, "block_time": "1970-01-01 00:20:00", "log_index": null, "trace_address": null, "success": true, "contract_address": null, "gas_used": "21000", "gas_price": "1", "trace_type": null, "call_type": null}
+}

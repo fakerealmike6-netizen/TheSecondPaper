@@ -41,7 +41,7 @@ class DuneLiveTests(unittest.TestCase):
                  'raw_bytes':20,'parameters':params}
         if op=='results':
             offset=params['offset'];limit=params['limit'];count=min(limit,3-offset)
-            return {'state':'QUERY_STATE_COMPLETED','execution_id':'A'*26,'result':{'rows':[{'value':i} for i in range(offset,offset+count)]},
+            return {'state':'QUERY_STATE_COMPLETED','execution_id':'A'*26,'result':{'rows':[{'value':i} for i in range(offset,offset+count)],'metadata':{'row_count':count,'total_row_count':3}},
                     'next_offset':None if offset+count==3 else offset+count},receipt
         if op=='usage':
             return {'billing_periods':[{'start_date':'2026-09-01','credits_used':'31.762'}]},receipt
