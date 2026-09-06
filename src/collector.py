@@ -1,0 +1,271 @@
+"""Bounded event-state candidate acquisition; no reference graph or attribution.
+
+Amounts remain arbitrary-precision raw integers. Depth/window constrain requests,
+not later LP source age. Providers must state interval completeness explicitly.
+"""
+from __future__ import annotations
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
+import hashlib
+import heapq
+import json
+import time
+from pathlib import Path
+
+NATIVE = "native:eip155:1"
+
+def utc_seconds(value):
+    return int(value) if isinstance(value, (int, float)) else int(datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp())
+
+@dataclass(frozen=True)
+class Event:
+    event_id: str
+    tx_hash: str
+    sender: str
+    recipient: str
+    asset: str
+    amount_raw: int
+    block: int
+    tx_index: int | None
+    timestamp: int
+    kind: str = "top"
+    log_index: int | None = None
+    trace_address: str | None = None
+    execution_index: int | None = None
+    success: bool = True
+    provenance: str = ""
+    gas_raw: int | None = None
+
+    def __post_init__(self):
+        if not self.event_id or self.amount_raw < 0:
+            raise ValueError("exact event identity and nonnegative integer amount required")
+        if isinstance(self.amount_raw, bool) or not isinstance(self.amount_raw, int):
+            raise ValueError("amount_raw must be integer")
+        object.__setattr__(self, "sender", self.sender.lower())
+        object.__setattr__(self, "recipient", self.recipient.lower())
+        object.__setattr__(self, "tx_hash", self.tx_hash.lower())
+
+    def stable_key(self):
+        # Deterministic presentation only; never used to claim trace/log chronology.
+        return (self.block, self.tx_index if self.tx_index is not None else -1, self.timestamp, self.event_id)
+
+def strictly_after(event, arrival):
+    """True/False/None; None means the evidence does not establish order."""
+    if event.event_id == arrival.event_id:
+        return False
+    if event.block != arrival.block:
+        return event.block > arrival.block
+    if event.tx_hash != arrival.tx_hash:
+        if event.tx_index is None or arrival.tx_index is None:
+            return None
+        return event.tx_index > arrival.tx_index
+    if event.execution_index is not None and arrival.execution_index is not None:
+        return event.execution_index > arrival.execution_index
+    if arrival.kind == "top" and event.kind in ("internal", "erc20"):
+        return True
+    if event.kind == "top":
+        return False
+    if event.kind == arrival.kind == "erc20" and event.log_index is not None and arrival.log_index is not None:
+        return event.log_index > arrival.log_index
+    # Trace IDs alone cannot establish successful value execution vs receipt logs.
+    return None
+
+@dataclass(frozen=True)
+class Scope:
+    query_id: str
+    name: str
+    start_block: int
+    end_block: int
+    start_time: int
+    end_time: int
+    max_depth: int
+    local_window_seconds: int = 90 * 86400
+
+    @classmethod
+    def from_policy(cls, policy):
+        return cls(policy["query_id"], policy["name"], policy["start_block"], policy["end_block"], utc_seconds(policy["start_time_utc"]), utc_seconds(policy["end_time_utc"]), policy["max_acquisition_depth"])
+
+@dataclass(frozen=True)
+class State:
+    query_id: str
+    address: str
+    asset: str
+    arrival: Event
+    depth: int
+    local_end: int
+    protocol_context: str = "ordinary"
+    provenance: str = "observed_candidate_arrival"
+
+    def key(self):
+        return (self.query_id, self.address, self.asset, self.arrival.event_id, self.depth, self.local_end, self.protocol_context)
+
+@dataclass
+class FetchResult:
+    events: list[Event] = field(default_factory=list)
+    coverage: list[dict] = field(default_factory=list)
+    complete: bool = False
+    gaps: list[dict] = field(default_factory=list)
+    new_raw_bytes: int = 0
+    real_requests: int = 0
+    cache_hits: int = 0
+
+@dataclass
+class Limits:
+    max_events: int = 25000
+    max_expanded_addresses: int = 1000
+    max_online_seconds: int = 5400
+
+@dataclass
+class CollectionResult:
+    query_id: str
+    status: str
+    candidate_events: list[dict]
+    context_events: list[dict]
+    states: list[dict]
+    stops: list[dict]
+    unresolved_frontier: list[dict]
+    coverage: list[dict]
+    gaps: list[dict]
+    metrics: dict
+
+    def write(self, path):
+        data = asdict(self)
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+class Collector:
+    """label_resolver(address)-> {kind, actor?, status?, acquisition_scope?}.
+
+    kind is SERVICE, BRIDGE, MIXER, UNSUPPORTED_PROTOCOL, or UNKNOWN/ORDINARY.
+    A failed lookup is recorded as a gap and UNKNOWN still expands.
+    fetch_interval is injected, permitting serial externally budgeted transport.
+    """
+    def __init__(self, provider, label_resolver, limits=None, checkpoint_path=None):
+        self.provider = provider
+        self.label_resolver = label_resolver
+        self.limits = limits or Limits()
+        self.checkpoint_path = Path(checkpoint_path) if checkpoint_path else None
+
+    def run(self, scope, seed):
+        if not seed.success or seed.amount_raw <= 0 or not (scope.start_block <= seed.block <= scope.end_block) or not (scope.start_time <= seed.timestamp <= scope.end_time):
+            raise ValueError("exact positive successful seed must lie inside declared scope")
+        heap, seen, expanded, candidates, context = [], set(), set(), {seed.event_id: seed}, {}
+        processed, stops, pending, coverage, gaps, membership = [], [], [], [], [], []
+        online_seconds, provider_wall_seconds, requests, hits, raw_bytes = 0.0, 0.0, 0, 0, 0
+        prior_online_seconds = 0.0
+        if self.checkpoint_path and self.checkpoint_path.exists():
+            prior = json.loads(self.checkpoint_path.read_text(encoding="utf-8"))
+            if prior.get("query_id") != scope.query_id or prior.get("scope") != asdict(scope):
+                raise ValueError("checkpoint belongs to another query/scope; use new path")
+            prior_online_seconds = float(prior.get("cumulative_online_seconds", 0))
+        interrupted = None
+
+        def push(arrival, depth):
+            st = State(scope.query_id, arrival.recipient, arrival.asset, arrival, depth, min(scope.end_time, arrival.timestamp + scope.local_window_seconds))
+            if st.key() not in seen:
+                seen.add(st.key())
+                heapq.heappush(heap, ((depth,) + arrival.stable_key() + (st.key(),), st))
+
+        def checkpoint():
+            if self.checkpoint_path:
+                payload = {"query_id": scope.query_id, "scope": asdict(scope), "cumulative_online_seconds": prior_online_seconds + online_seconds, "pending": [asdict(x[1]) for x in heap] + pending, "processed": processed, "candidate_event_ids": sorted(candidates), "coverage": coverage, "resume_strategy": "deterministic restart with immutable page cache; partial pages retain cursors"}
+                self.checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+                temp = self.checkpoint_path.with_suffix(".tmp")
+                temp.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+                temp.replace(self.checkpoint_path)
+
+        push(seed, 0)
+        while heap:
+            _, state = heapq.heappop(heap)
+            identity = self.label_resolver(state.address) or {"kind": "UNKNOWN", "status": "UNKNOWN"}
+            if identity.get("status") in ("LOOKUP_FAILED", "BUDGET_BLOCKED", "UNQUERIED"):
+                gaps.append({"address": state.address, "reason": "LABEL_" + identity["status"], "continues_as_unknown": True})
+            base = {"state": asdict(state), "identity": identity}
+            processed.append(base)
+            if identity.get("kind") == "SERVICE":
+                stops.append({**base, "reason": "FIRST_IDENTIFIED_SERVICE", "entry_event_id": state.arrival.event_id})
+                checkpoint()
+                continue
+            if identity.get("kind") in ("BRIDGE", "MIXER", "UNSUPPORTED_PROTOCOL"):
+                stops.append({**base, "reason": "PROTOCOL_BOUNDARY", "entry_event_id": state.arrival.event_id})
+                checkpoint()
+                continue
+            if state.depth >= scope.max_depth:
+                stops.append({**base, "reason": "DECLARED_DEPTH_BOUNDARY"})
+                checkpoint()
+                continue
+            time_limit = prior_online_seconds + online_seconds >= self.limits.max_online_seconds and not getattr(self.provider, "replay_only", False)
+            if time_limit or (state.address not in expanded and len(expanded) >= self.limits.max_expanded_addresses) or len(candidates) >= self.limits.max_events:
+                interrupted = "INCOMPLETE_RESOURCE_LIMIT"
+                pending.append({**base, "reason": interrupted})
+                break
+            expanded.add(state.address)
+            started = time.monotonic()
+            try:
+                result = self.provider.fetch_interval(state.address, state.asset, state.arrival.block, scope.end_block, start_time=state.arrival.timestamp, end_time=state.local_end, global_end_time=scope.end_time)
+            except Exception as exc:
+                result = FetchResult(gaps=[{"reason": "PROVIDER_EXCEPTION", "exception_type": type(exc).__name__}])
+            elapsed = time.monotonic() - started
+            provider_wall_seconds += elapsed
+            # Warm cache replay is measured independently from online waiting.
+            if result.real_requests or (not result.cache_hits and not result.complete):
+                online_seconds += elapsed
+            requests += result.real_requests
+            hits += result.cache_hits
+            raw_bytes += result.new_raw_bytes
+            coverage.extend([{**row, "state_key": list(state.key())} for row in result.coverage])
+            gaps.extend([{**row, "address": state.address, "arrival_event_id": state.arrival.event_id} for row in result.gaps])
+            if not result.complete:
+                pending.append({**base, "reason": "INTERVAL_INCOMPLETE", "coverage": result.coverage})
+            for event in sorted(result.events, key=Event.stable_key):
+                # Keep all received facts; failed transfers and gas are context only.
+                reason = None
+                if not event.success:
+                    reason = "FAILED_VALUE_TRANSFER_GAS_CONTEXT"
+                elif event.amount_raw == 0:
+                    reason = "ZERO_VALUE_CONTEXT"
+                elif event.asset != state.asset:
+                    reason = "OTHER_ASSET_CONTEXT_NO_CERTIFIED_CONVERSION"
+                elif event.sender != state.address:
+                    reason = "EXTERNAL_INFLOW_CONTEXT_NO_RENEWAL"
+                elif event.recipient == state.address:
+                    reason = "SELF_TRANSFER_CONTEXT_NO_RENEWAL"
+                elif not (scope.start_block <= event.block <= scope.end_block and state.arrival.timestamp <= event.timestamp <= state.local_end):
+                    reason = "OUTSIDE_ARRIVAL_WINDOW_CONTEXT"
+                else:
+                    order = strictly_after(event, state.arrival)
+                    if order is None:
+                        reason = "ORDER_UNRESOLVED"
+                        gaps.append({"reason": reason, "event_id": event.event_id, "arrival_event_id": state.arrival.event_id})
+                    elif not order:
+                        reason = "NOT_STRICTLY_AFTER_ARRIVAL"
+                if reason:
+                    context[(event.event_id, state.arrival.event_id, reason)] = {**asdict(event), "context_only": True, "context_reason": reason, "arrival_event_id": state.arrival.event_id}
+                    continue
+                candidates[event.event_id] = event
+                membership.append({"event_id": event.event_id, "arrival_event_id": state.arrival.event_id, "depth": state.depth + 1})
+                push(event, state.depth + 1)
+            # The entire response is retained even if it takes the count over cap.
+            if len(candidates) > self.limits.max_events or (prior_online_seconds + online_seconds >= self.limits.max_online_seconds and not getattr(self.provider, "replay_only", False)):
+                interrupted = "INCOMPLETE_RESOURCE_LIMIT"
+                break
+            checkpoint()
+        pending.extend({"state": asdict(st), "reason": interrupted or "UNPROCESSED_FRONTIER"} for _, st in heap)
+        heap.clear()
+        if interrupted:
+            status = interrupted
+        elif any("BUDGET" in g.get("reason", "") for g in gaps):
+            status = "INCOMPLETE_BUDGET_LIMIT"
+        elif pending:
+            status = "INCOMPLETE_PROVIDER_OR_DATA_GAP"
+        elif any(g.get("reason") in ("ORDER_UNRESOLVED", "EVENT_IDENTITY_UNRESOLVED", "INTERNAL_STATUS_UNRESOLVED") for g in gaps):
+            status = "COMPLETED_WITH_RECORDED_DATA_GAPS"
+        else:
+            status = "COMPLETED_WITHIN_DECLARED_SCOPE"
+        checkpoint()
+        facts = [asdict(e) | {"context_only": False} for e in sorted(candidates.values(), key=Event.stable_key)]
+        stable = {"candidate_events": facts, "stops": stops, "membership": membership, "coverage": [{k: v for k, v in c.items() if k not in ("cache_hit", "raw_path")} for c in coverage]}
+        digest = hashlib.sha256(json.dumps(stable, sort_keys=True).encode()).hexdigest()
+        return CollectionResult(scope.query_id, status, facts, list(context.values()), processed, stops, pending, coverage, gaps, {"candidate_event_count": len(candidates), "candidate_transaction_count": len({e.tx_hash for e in candidates.values()}), "expanded_address_count": len(expanded), "candidate_address_count": len({e.recipient for e in candidates.values()}), "state_count": len(processed), "service_entry_state_count": sum(s["reason"] == "FIRST_IDENTIFIED_SERVICE" for s in stops), "service_address_count": len({s["state"]["address"] for s in stops if s["reason"] == "FIRST_IDENTIFIED_SERVICE"}), "real_requests": requests, "cache_hits": hits, "new_raw_bytes": raw_bytes, "online_collection_seconds": online_seconds, "cumulative_online_collection_seconds": prior_online_seconds + online_seconds, "provider_total_wall_seconds": provider_wall_seconds, "candidate_stop_coverage_sha256": digest, "candidate_membership": membership})

@@ -1,0 +1,62 @@
+[
+  {
+    "scenario_id": "01_single_path",
+    "title": "Certain path",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "02_normal_mixture",
+    "title": "Normal 100 plus seed 50 pays 120",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "03_split_merge",
+    "title": "Split and merge preserve a single source capacity",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "04_shared_targets",
+    "title": "Independent upper bounds are not simultaneous",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "05_repeated_target",
+    "title": "Multiple entries at one address require a joint objective",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "06_strict_time",
+    "title": "A later seed or normal inflow cannot explain earlier output",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "07_native_gas",
+    "title": "Successful and failed transaction gas have uncertain source shares",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "08_erc20_gas_separation",
+    "title": "Token source is not charged native ETH gas",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "09_weth_one_to_one",
+    "title": "Closed WETH deposit ports preserve1:1 source amount",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "10_fractional_swap_refund",
+    "title": "Fixed2/3 ratio with an explicit refundable input port",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "11_missing_balance_relaxation",
+    "title": "Missing initial balance removes bounds without new source",
+    "scope": "SYNTHETIC_CONTROLLED"
+  },
+  {
+    "scenario_id": "12_multioutput_coupling_negative",
+    "title": "Removing shared output coupling must change the joint feasible set",
+    "scope": "SYNTHETIC_CONTROLLED"
+  }
+]

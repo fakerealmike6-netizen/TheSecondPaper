@@ -1,0 +1,35 @@
+{
+  "variables": [
+    "t"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "-20"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "50"
+    }
+  ],
+  "objectives": {
+    "T_TOK": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    },
+    "ETH_gas": {
+      "a": [
+        "0"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "The token account has normal100+seed50 and pays120: t in [20,50]. The independent ETH account contains no seeded ETH, so source gas is0.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

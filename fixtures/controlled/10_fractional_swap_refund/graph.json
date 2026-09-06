@@ -1,0 +1,62 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "10_fractional_swap_refund",
+  "title": "Fixed2/3 ratio with an explicit refundable input port",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "1",
+    "A|TOK": "0",
+    "T|TOK": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "3"
+    },
+    {
+      "id": "swap",
+      "kind": "conversion",
+      "order": 2,
+      "from": "A",
+      "to": "A",
+      "asset": "ETH",
+      "output_asset": "TOK",
+      "gross_raw": "4",
+      "refund_raw": "1",
+      "output_raw": "2",
+      "certified_semantics": "SYNTHETIC_CONTROLLED",
+      "protocol": "CONTROLLED_FIXED_RATIO_ONLY"
+    },
+    {
+      "id": "enter",
+      "kind": "transfer",
+      "order": 3,
+      "from": "A",
+      "to": "T",
+      "asset": "TOK",
+      "amount_raw": "2"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "gross_source": [
+      "swap:input"
+    ],
+    "net_source": [
+      "swap:net"
+    ],
+    "refund_source": [
+      "swap:refund"
+    ],
+    "T_TOK": [
+      "enter"
+    ]
+  }
+}

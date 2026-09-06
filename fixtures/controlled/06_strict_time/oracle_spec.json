@@ -1,0 +1,24 @@
+{
+  "variables": [],
+  "inequalities": [],
+  "objectives": {
+    "earlier": {
+      "a": [],
+      "constant": "0"
+    },
+    "later": {
+      "a": [],
+      "constant": "10"
+    },
+    "future_out": {
+      "a": [],
+      "constant": "0"
+    },
+    "T": {
+      "a": [],
+      "constant": "10"
+    }
+  },
+  "derivation": "Before seed source=0. Before future normal inflow the sender drains the seeded10 completely, leaving no source for the later normal100 payment.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

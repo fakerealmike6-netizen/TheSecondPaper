@@ -1,0 +1,68 @@
+{
+  "variables": [
+    "g1",
+    "g2"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1",
+        "0"
+      ],
+      "b": "0"
+    },
+    {
+      "a": [
+        "1",
+        "0"
+      ],
+      "b": "2"
+    },
+    {
+      "a": [
+        "0",
+        "-1"
+      ],
+      "b": "0"
+    },
+    {
+      "a": [
+        "0",
+        "1"
+      ],
+      "b": "3"
+    }
+  ],
+  "objectives": {
+    "T": {
+      "a": [
+        "-1",
+        "-1"
+      ],
+      "constant": "10"
+    },
+    "success_gas": {
+      "a": [
+        "1",
+        "0"
+      ],
+      "constant": "0"
+    },
+    "failed_gas": {
+      "a": [
+        "0",
+        "1"
+      ],
+      "constant": "0"
+    },
+    "all_gas": {
+      "a": [
+        "1",
+        "1"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "0<=g1<=2, 0<=g2<=3. The sender drains its20 actual funds as gas5 and target15, so target source=10-g1-g2.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

@@ -1,0 +1,41 @@
+{
+  "variables": [
+    "x"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "-20"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "50"
+    }
+  ],
+  "objectives": {
+    "ETH_input": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    },
+    "WETH_output": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    },
+    "T_WETH": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "ETH actual residue30 forces input source x>=20; x<=seed50. The closed wrap has zero refund and one output at1:1, then the WETH account drains to target.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

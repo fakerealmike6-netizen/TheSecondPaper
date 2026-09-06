@@ -1,0 +1,82 @@
+{
+  "variables": [
+    "v",
+    "r"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1",
+        "0"
+      ],
+      "b": "-2"
+    },
+    {
+      "a": [
+        "1",
+        "0"
+      ],
+      "b": "3"
+    },
+    {
+      "a": [
+        "0",
+        "-1"
+      ],
+      "b": "0"
+    },
+    {
+      "a": [
+        "0",
+        "1"
+      ],
+      "b": "1"
+    },
+    {
+      "a": [
+        "1",
+        "1"
+      ],
+      "b": "3"
+    },
+    {
+      "a": [
+        "-1",
+        "-1"
+      ],
+      "b": "-3"
+    }
+  ],
+  "objectives": {
+    "gross_source": {
+      "a": [
+        "1",
+        "1"
+      ],
+      "constant": "0"
+    },
+    "net_source": {
+      "a": [
+        "1",
+        "0"
+      ],
+      "constant": "0"
+    },
+    "refund_source": {
+      "a": [
+        "0",
+        "1"
+      ],
+      "constant": "0"
+    },
+    "T_TOK": {
+      "a": [
+        "2/3",
+        "0"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "Seed3+normal1 pays its entire actual balance4 before the refund, so gross source is exactly3. Net source v leaves source3-v in actual ETH residue1, hence2<=v<=3. Refund r in[0,1] and v+r=3; token source=(2/3)v. Exact target interval[4/3,2], gross[3,3]. No integer grid. The pre-refund residue equality corrects an initially omitted physical ordering constraint; preserved in lp_oracle_correction.json.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

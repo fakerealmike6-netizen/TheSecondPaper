@@ -1,0 +1,38 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "01_single_path",
+  "title": "Certain path",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "0",
+    "T|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "10"
+    },
+    {
+      "id": "enter",
+      "kind": "transfer",
+      "order": 2,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "10"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "T": [
+      "enter"
+    ]
+  }
+}

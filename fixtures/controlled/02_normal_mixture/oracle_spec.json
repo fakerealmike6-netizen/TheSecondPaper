@@ -1,0 +1,29 @@
+{
+  "variables": [
+    "t"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "-20"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "50"
+    }
+  ],
+  "objectives": {
+    "T": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "Final actual balance is 30. Source conservation: residue=50-t in [0,30], hence t in [20,50].",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}
