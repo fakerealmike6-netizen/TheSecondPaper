@@ -1,9 +1,0 @@
-# Labels and finite reference delta
-
-The inherited nine addresses / 36 source opportunities were reused. R2 queried only 25 newly reached addresses, in batches of 9, 6 and 10. Across 100 new four-table opportunities, 93 returned no match and seven matched. Seven UNKNOWN identities became services: six HTX addresses and one OKX address. Cumulative R1+R2 distinct new external addresses are 34/40. Every new frontier label request was scoped to actual arrivals, including depth-boundary arrivals. No full-terminal recheck or new MetaSleuth call occurred.
-
-Final eligible frontier-label queue is empty. The attempted local labels004 freeze returned the explicit no-eligible-address condition before any SQL submission; it was not a failed provider query or silently dropped address. UNKNOWN no-match remains unknown and does not stop propagation.
-
-The new labels affect the frozen reference stopping view: B 2284→1624, C 2272→1612, unresolved 6473→7133. 660 former downstream certificates now violate first identified service termination. Only the 15 affected registered Harmony query slices / 6244 relation rows were recomputed; 4186 unaffected rows remain hash-bound with their metric projection. Replaying the affected slice with old labels yields zero baseline mismatch. This is a finite label delta and does not rerun Stage0/Stage1A or freeze the final paper denominator.
-
-MIN includes the finite reference input/output proof and new observations. The full 101877-row label registry remains local; the MIN uses 35 exact needed rows for 47 candidate/context/state addresses, with missing context-only registry rows explicitly retaining UNQUERIED semantics and full-source/apply-manifest hashes. The original full observations are referenced by hash, not copied. Public data consists of these aggregate findings only.

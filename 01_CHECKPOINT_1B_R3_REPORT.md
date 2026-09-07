@@ -1,0 +1,9 @@
+# Stage1B-R3 checkpoint
+
+The real evidence-to-alignment-to-ledger-to-constraints-to-LP chain is implemented and executed. Atomic has5/5 and Harmony22/22 nonterminal accounts with known initial balances and exact zero-residual closing reconciliation. All55 balance anchors are used:27 opening,27 closing,1 intermediate. Neither a missing-source classification nor a desired positive endpoint was used to choose the data.
+
+Atomic's six first-service entries have joint interval[359.495,359.495]ETH. Harmony's eight entries across seven services have joint interval[504.907298683760128997,1554.999042315467482]ETH. These are exact conditional model intervals, with independently checked rational witnesses, not claims of uniquely identified source money outside the frozen research scope. Removing balance information from each same enhanced graph restores a feasible all-zero downstream allocation.
+
+The closed R2 candidate graphs, labels, seeds and depth2/5 remain fixed. Three finite context SQL jobs exported140 rows (including root-trace duplicates and a repeated gap-row); normalization produces12 Atomic and57 Harmony unique native flows. The context campaign produced55 usable balances,28 empty-code observations, and the block identities needed to bind them. One22-operation interrupted read was explicitly retried once in batches of at most5; original risk was retained. No candidate recollection or MetaSleuth request occurred.
+
+WETH is a separate finite component. Historical runtime and verified-source evidence improved, but callTracer is unavailable on the account tier, so real conversion remains disabled. The ETH mainline is complete within the declared model; WETH, final invoice details and Linux testing remain recorded gaps. Stop: CHECKPOINT_1B_R3_REACHED; external acceptance PENDING_REVIEW.

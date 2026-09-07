@@ -186,9 +186,15 @@ def audit_bindings(policy, transaction, receipt, internal, trace, historical_cod
         source = records.get('source', {})
         req = source.get('request', {}).get('params', {})
         review = context.source_review
-        source_verified = (source.get('chain_id') == 1 and req.get('action') == 'getsourcecode'
-                           and str(req.get('address', '')).lower() == expected_contract
-                           and str(req.get('chainid')) == '1'
+        if source.get('source_type') == 'SOURCIFY_V2_VERIFIED_SOURCE':
+            from weth_source_adapter_r3 import source_request_matches
+            source_request_bound = (source_request_matches(source.get('request', {}), expected_contract)
+                                    and review.get('source_validation_method') == 'SOURCIFY_V2_VERIFIED_COMPILATION_PLUS_EXACT_LOCAL_BYTECODE_COMPARISON')
+        else:
+            source_request_bound = (req.get('action') == 'getsourcecode'
+                                    and str(req.get('address', '')).lower() == expected_contract
+                                    and str(req.get('chainid')) == '1')
+        source_verified = (source.get('chain_id') == 1 and source_request_bound
                            and review.get('chain_id') == 1
                            and str(review.get('contract', '')).lower() == expected_contract
                            and isinstance(payloads['historical_code'], str)
@@ -264,6 +270,11 @@ def load_evidence_context(bundle_path, acquisition_catalogue_path):
             hashlib.sha256(bundle_path.read_bytes()).hexdigest(),
             hashlib.sha256(catalogue_path.read_bytes()).hexdigest(), _TOKEN,
             payload_hash({'kind': 'REAL_CHAIN', 'records': records, 'source_review': review}))
+    if ({'source', 'historical_code'} <= set(records)
+            and records['source'].get('source_type') == 'SOURCIFY_V2_VERIFIED_SOURCE'):
+        from weth_source_adapter_r3 import validate_sourcify_records
+        review = validate_sourcify_records(records, dict(catalogue.get('source_review', {})), bundle['records']['source'])
+        return seal(review)
     if not {'source', 'historical_code', 'deployment_runtime'} <= set(records):
         # A valid trace receipt can improve call binding before source/code
         # arrives, while the real certification gate remains closed.

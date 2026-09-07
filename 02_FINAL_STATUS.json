@@ -1,318 +1,192 @@
 {
-  "amounts_by_address_asset": {
-    "atomic_simple_transfer": {
-      "0x579a7f3c9de8da595fcbf93342874260ebb23d3a|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 6,
-        "upper_eth": "359.495",
-        "upper_wei": "359495000000000000000"
-      }
+  "baseline_commit": "88773d0a74187dfc4bf74e962ac9e9d72819ad1f",
+  "baseline_run_id": "20260907T105844+0800_stage1b_r2",
+  "baseline_tree": "5e5321f7feff14a4893c8f57ea97dbaea517069d",
+  "budget": {
+    "alchemy_cu_cumulative": {
+      "actual": "0",
+      "cap": "50000",
+      "remaining": "46900",
+      "reserved": "3100"
     },
-    "harmony_high_branch": {
-      "0x09c964c75a27a1d296108e5afe7108f98993b2f5|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "268",
-        "upper_wei": "268000000000000000000"
-      },
-      "0x1fba259f529849a718f970fa0ce15bd70d17c2db|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "249.997530999558463",
-        "upper_wei": "249997530999558463000"
-      },
-      "0x5cad5e57551dc4e91e092a4fc5364860cb092473|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "251",
-        "upper_wei": "251000000000000000000"
-      },
-      "0x7fa9128f778d551236186ab1dfb5aace36af12d9|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "275",
-        "upper_wei": "275000000000000000000"
-      },
-      "0x9d753eeae3291e4d5d5f67d5308b2c378bade935|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "5",
-        "upper_wei": "5000000000000000000"
-      },
-      "0xd21c356b252212297f55187c4d3d001f1278c5ff|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 2,
-        "upper_eth": "550",
-        "upper_wei": "550000000000000000000"
-      },
-      "0xf69f340cf699be3e0169558230d51d45d01d0216|ETH": {
-        "lower_eth": "0",
-        "lower_wei": "0",
-        "unique_objective_events": 1,
-        "upper_eth": "225",
-        "upper_wei": "225000000000000000000"
-      }
+    "alchemy_method_bound_total_not_invoice": 3100,
+    "context_online_seconds": {
+      "atomic_simple_transfer": "32.688399",
+      "harmony_high_branch": "105.927641"
+    },
+    "cumulative_dune_export_upper_not_actual": "15.000000000",
+    "cumulative_dune_known_charge_lower_bound": "22.845351403",
+    "cumulative_dune_risk_upper": "47.167873093",
+    "cumulative_dune_unresolved_risk": "9.322521690",
+    "cumulative_raw_conservative_bytes": 10076683,
+    "cumulative_remaining": "52.832126907",
+    "inherited_dune_risk": "39.587758616",
+    "inherited_known_charge_lower_bound": "21.005321989",
+    "original_candidate_clocks_unchanged": {
+      "atomic_simple_transfer": "3586.162299",
+      "harmony_high_branch": "3640.705699"
+    },
+    "r3_execution_actual_reliable": "1.840029414",
+    "r3_execution_discrepancy_risk_retained": "0.740085063",
+    "r3_export_upper_not_actual": "5",
+    "r3_incremental_total_risk": "7.580114477",
+    "r3_rpc_operations": 155,
+    "rpc_rest_cumulative": {
+      "actual": "160",
+      "cap": "500",
+      "remaining": "340",
+      "reserved": "0"
     }
   },
-  "baseline_run_id": "20260906T212828+0800_stage1b_r1",
-  "budget": {
-    "account_wide_allowance_fields_excluded": true,
-    "authorization_id": "STAGE1B_R2_CAP20_CUMULATIVE100_V1",
-    "bounded_export_not_actual_credits": "10.000000000",
-    "cap_credits": "100",
-    "cumulative_risk_credits": "39.587758616",
-    "execution_cost_discrepancy_pending_credits": "0.266230748",
-    "halt_reason": null,
-    "known_actual_lower_bound_credits": "21.005321989",
-    "ledger_risk_released_by_terminal_reclassification": false,
-    "legacy_risk_credits": "16.433088236",
-    "metasleuth_new_requests_authorized": 0,
-    "observed_provisional_peak_execution_total_credits": "21.271552737",
-    "other_units": {
-      "alchemy_cu": {
-        "actual": "0",
-        "policy_cap": "50000",
-        "unsettled_reserved": "0"
-      },
-      "bigquery_bytes": {
-        "actual": "0",
-        "policy_cap": "5368709120",
-        "unsettled_reserved": "0"
-      },
-      "meta_addresses": {
-        "actual": "10",
-        "policy_cap": "10",
-        "unsettled_reserved": "0"
-      },
-      "meta_requests": {
-        "actual": "1",
-        "policy_cap": "1",
-        "unsettled_reserved": "0"
-      },
-      "rpc_operations": {
-        "actual": "5",
-        "policy_cap": "500",
-        "unsettled_reserved": "0"
-      }
-    },
-    "r2_risk_credits": "23.154670380",
-    "remaining_stage_policy_credits": "60.412241384",
-    "snapshot_sha256": "44354acc4422fdc0e456585a0923c0d097dc33060d00f6eb49e035bd12e826f5",
-    "source": "READ_ONLY_TRANSACTION_SNAPSHOT",
-    "unknown_or_pending_excluding_execution_discrepancy_credits": "8.316205879",
-    "unknown_or_pending_risk_credits": "8.582436627",
-    "warning_at_80": false,
-    "warning_requires_pause": false
-  },
-  "checkpoint": "CHECKPOINT_1B_R2_REACHED",
-  "continuation_gate": "PASS",
+  "checkpoint": "CHECKPOINT_1B_R3_REACHED",
   "external_acceptance_status": "PENDING_REVIEW",
-  "final_extracted_zip_tests": "See external FINAL_VALIDATION_RESULTS.json and hash-bound REVIEW_HANDOFF.md; no self-referential package claims",
-  "github_publication": {
-    "receipt": "PUBLICATION_RECEIPT.json",
-    "receipt_excluded_from_payload_manifest": true,
-    "repository": "https://github.com/fakerealmike6-netizen/TheSecondPaper",
-    "status": "RESOLVED_BY_EXTERNAL_PUBLICATION_RECEIPT",
-    "tag": "stage1b-r2-20260907T105844+0800_stage1b_r2"
-  },
-  "labels_and_reference": {
-    "affected_query_slices": 15,
-    "affected_relation_rows": 6244,
-    "cap": 40,
-    "final_paper_denominator_frozen": false,
-    "identity_changes": 7,
-    "inherited_addresses_reused": 9,
-    "inherited_source_opportunities_reused": 36,
-    "new_distinct_addresses": 25,
-    "new_jobs": 3,
-    "new_matched_source_opportunities": 7,
-    "new_metasleuth_requests": 0,
-    "new_source_opportunities": 100,
-    "new_unmatched_source_opportunities": 93,
-    "r1_plus_r2_distinct_addresses": 34,
-    "reference_after": {
-      "B": 1624,
-      "C": 1612,
-      "unresolved": 7133
-    },
-    "reference_before": {
-      "B": 2284,
-      "C": 2272,
-      "unresolved": 6473
-    },
-    "reference_removed_certificates": 660,
-    "unchanged_reference_rows_hash_bound": 4186
-  },
+  "final_zip_validation": "Resolved by external FINAL_VALIDATION_RESULTS.json bound to final archive hashes; no circular self-claim",
+  "main_context_chain_status": "COMPLETED_BOTH_FIXED_QUERIES",
+  "metasleuth_new_requests": 0,
   "network_worker": "STOPPED",
-  "new_jobs": {
-    "actual_pages": 9,
-    "all_kinds_downloaded_rows": 150,
-    "by_kind": {
-      "candidate": 5,
-      "context": 1,
-      "frontier_labels": 3
-    },
-    "complete_exports": 9,
-    "execution_states": {
-      "QUERY_STATE_COMPLETED": 9
-    },
-    "total": 9
-  },
-  "new_network_submissions_allowed": false,
-  "online_seconds_cumulative_upper": {
-    "atomic_simple_transfer": "3586.162299",
-    "harmony_high_branch": "3640.705699"
-  },
-  "overall_scientific_completeness": "PARTIAL_WITH_DECLARED_EVIDENCE_GAPS",
+  "new_chain_requests_allowed": false,
+  "new_label_addresses": 0,
+  "next_stage_started": false,
+  "overall_status": "COMPLETED_WITH_RECORDED_GAPS",
   "probes": [
     {
-      "balance_unknown_pairs": 6,
-      "candidate_events": 12,
-      "collector_status": "COMPLETED_WITHIN_DECLARED_SCOPE",
-      "coverage_by_event_kind": {
-        "erc20": {
-          "complete_intervals": 5,
-          "observed_rows": 4,
-          "queried_intervals": 5,
-          "success_zero_row_intervals": 3
+      "all_service_joint": {
+        "BEST_AVAILABLE_CONTEXT": {
+          "lower_raw": "359495000000000000000",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "359495000000000000000"
         },
-        "internal": {
-          "complete_intervals": 5,
-          "observed_rows": 0,
-          "queried_intervals": 5,
-          "success_zero_row_intervals": 5
+        "MATCHED_INFORMATION_RELAXED": {
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "359495000000000000000"
         },
-        "top": {
-          "complete_intervals": 5,
-          "observed_rows": 17,
-          "queried_intervals": 5,
-          "success_zero_row_intervals": 0
+        "R2_BASELINE": {
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "359495000000000000000"
         }
       },
-      "declared_scope": {
-        "end_block": 17427582,
-        "end_time_utc": "2023-06-07T09:23:11Z",
-        "max_acquisition_depth": 2,
-        "start_block": 17395962,
-        "start_time_utc": "2023-06-02T22:20:11Z"
+      "all_zero_downstream": {
+        "BEST_AVAILABLE_CONTEXT": false,
+        "MATCHED_INFORMATION_RELAXED": true
       },
-      "gas_candidate_transactions_observed": 12,
-      "gas_source_attribution_known": false,
-      "inherited_acquisition_intervals": 4,
-      "lp_status": "CONDITIONAL_FIXED_GRAPH_INTERVALS",
+      "candidate_events_unchanged": true,
+      "candidate_status": "CANDIDATE_SEARCH_COMPLETE_WITHIN_DECLARED_INDEXED_WINDOW",
+      "counts": {
+        "account_ledger_rows": 17,
+        "actual_fees_raw": "5482101864876000",
+        "aligned_closing_and_intermediate_model_anchors": 5,
+        "anchors": 10,
+        "code_observations": 5,
+        "conflicts": 0,
+        "empty_code": 5,
+        "fees": 11,
+        "gaps": 0,
+        "known_initial": 5,
+        "normalization_exclusions": 12,
+        "physical_flows": 12,
+        "roles": {
+          "CANDIDATE": 11,
+          "SEED": 1
+        },
+        "transactions": 12,
+        "zero_residual_accounts": 5
+      },
+      "frontiers": 0,
+      "labels_changed": false,
       "name": "atomic_simple_transfer",
-      "new_acquisition_intervals": 1,
-      "new_candidate_event_ids": 1,
-      "new_observed_physical_event_ids": 1,
-      "normalized_unique_observed_events_total": 16,
-      "provider_candidate_window_status": "COMPLETED_WITHIN_DECLARED_SCOPE",
-      "query_id": "qry:05cfd5ec8c97a12a3ea2d41c409be644967541c4e0c58075462bf6abc67fa070",
-      "raw_export_rows_inherited_reused": 18,
-      "raw_export_rows_r2_downloaded": 3,
-      "seed_event_id": "eip155:1:tx:0x61346a6b350c073428b7fdc84dd0f378bbaaa561f9238dad7b5ca7a4273abfb9:top",
-      "unresolved_frontiers": 0
+      "native_context_status": "FULL_CONTEXT_WITHIN_DECLARED_MODEL_SCOPE",
+      "scope": "Frozen two R2 candidates; first-service-stop, single source, per-arrival90day and acquisition depth2/5 preserved; context windows finite."
     },
     {
-      "balance_unknown_pairs": 29,
-      "candidate_events": 50,
-      "collector_status": "COMPLETED_WITHIN_DECLARED_SCOPE",
-      "coverage_by_event_kind": {
-        "erc20": {
-          "complete_intervals": 27,
-          "observed_rows": 0,
-          "queried_intervals": 27,
-          "success_zero_row_intervals": 27
+      "all_service_joint": {
+        "BEST_AVAILABLE_CONTEXT": {
+          "lower_raw": "504907298683760128997",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1554999042315467482000"
         },
-        "internal": {
-          "complete_intervals": 27,
-          "observed_rows": 0,
-          "queried_intervals": 27,
-          "success_zero_row_intervals": 27
+        "MATCHED_INFORMATION_RELAXED": {
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1554999042315467482000"
         },
-        "top": {
-          "complete_intervals": 27,
-          "observed_rows": 122,
-          "queried_intervals": 27,
-          "success_zero_row_intervals": 0
+        "R2_BASELINE": {
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1554999042315467482000"
         }
       },
-      "declared_scope": {
-        "end_block": 16403140,
-        "end_time_utc": "2023-01-14T06:06:11Z",
-        "max_acquisition_depth": 5,
-        "start_block": 16402635,
-        "start_time_utc": "2023-01-14T04:24:35Z"
+      "all_zero_downstream": {
+        "BEST_AVAILABLE_CONTEXT": false,
+        "MATCHED_INFORMATION_RELAXED": true
       },
-      "gas_candidate_transactions_observed": 50,
-      "gas_source_attribution_known": false,
-      "inherited_acquisition_intervals": 1,
-      "lp_status": "CONDITIONAL_FIXED_GRAPH_INTERVALS",
+      "candidate_events_unchanged": true,
+      "candidate_status": "CANDIDATE_SEARCH_COMPLETE_WITHIN_DECLARED_INDEXED_WINDOW",
+      "counts": {
+        "account_ledger_rows": 99,
+        "actual_fees_raw": "23476573773828000",
+        "aligned_closing_and_intermediate_model_anchors": 23,
+        "anchors": 45,
+        "code_observations": 23,
+        "conflicts": 0,
+        "empty_code": 23,
+        "fees": 50,
+        "gaps": 0,
+        "known_initial": 22,
+        "normalization_exclusions": 57,
+        "physical_flows": 57,
+        "roles": {
+          "CANDIDATE": 49,
+          "MODELED_INTERNAL": 1,
+          "SEED": 1,
+          "UNKNOWN_EXTERNAL_INCOMING": 6
+        },
+        "transactions": 57,
+        "zero_residual_accounts": 22
+      },
+      "frontiers": 0,
+      "labels_changed": false,
       "name": "harmony_high_branch",
-      "new_acquisition_intervals": 26,
-      "new_candidate_event_ids": 46,
-      "new_observed_physical_event_ids": 52,
-      "normalized_unique_observed_events_total": 57,
-      "provider_candidate_window_status": "COMPLETED_WITHIN_DECLARED_SCOPE",
-      "query_id": "qry:aae1bd3d05643eb3940a43b49966dc1f23152ef440ea91e487ab30d66db73e26",
-      "raw_export_rows_inherited_reused": 5,
-      "raw_export_rows_r2_downloaded": 117,
-      "seed_event_id": "eip155:1:tx:0x17d0d000d507ba5660d6bef0d8aedbd6a6c8a1ac77deb272431d31807f58e30b:top",
-      "unresolved_frontiers": 0
+      "native_context_status": "FULL_CONTEXT_WITHIN_DECLARED_MODEL_SCOPE",
+      "scope": "Frozen two R2 candidates; first-service-stop, single source, per-arrival90day and acquisition depth2/5 preserved; context windows finite."
     }
   ],
-  "prohibited_next_stage_started": false,
-  "raw_resource_summary": {
-    "baseline_logical_download_bytes": 34945,
-    "baseline_physical_upper_bytes": 67718,
-    "cap_bytes": 536870912,
-    "cumulative_conservative_raw_occupancy_bytes": 175485,
-    "cumulative_logical_download_bytes_observed": 142712,
-    "deduplication_unit": "request_id and verified file identity; never body SHA alone",
-    "inherited_copy_file_bytes_not_new_download": 38797,
-    "old_legacy_unrecorded_read_uncertainty_preserved": true,
-    "r2_downloaded_body_bytes_by_request": 107767,
-    "r2_new_physical_raw_bytes": 107767,
-    "r2_unique_request_count": 45,
-    "within_raw_policy": true
+  "publication": {
+    "fixed_identity": "Resolved by PUBLICATION_RECEIPT.json and external REVIEW_HANDOFF.md",
+    "remote_status": "SEE_EXTERNAL_RECEIPT",
+    "repository": "https://github.com/fakerealmike6-netizen/TheSecondPaper",
+    "tag": "stage1b-r3-20260907T151753+0800_stage1b_r3"
   },
-  "remaining_blockers": [
-    "No reliable initial balance anchors for 6 Atomic and 29 Harmony address-asset pairs.",
-    "Observed transaction gas is context; source-share and complete failed/gas history are not modeled.",
-    "Indexed event ordering has tx_index, but candidate block hashes are absent; no independent chain-finality guarantee.",
-    "Real WETH historical runtime/source and log-to-frame certification remain insufficient.",
-    "Legacy unresolved fee risk and unfinalized export billing remain carried; no exact full final invoice.",
-    "Linux execution not obtained; external scientific acceptance remains pending."
+  "remaining_items": [
+    "WETH call-frame/log binding unavailable on current Free tier; real conversion remains disabled.",
+    "Final export invoices and inherited uncertain charges remain unresolved; conservative risk carried.",
+    "Linux execution not obtained; Windows validation is the local tested platform.",
+    "External scientific acceptance remains PENDING_REVIEW; fixed declared model scope is not a full-chain unique-source assertion."
   ],
-  "repairs": {
-    "R2A": "PASS_SHARED_NECESSARY_ORDER_GUARD",
-    "R2B": "PASS_WINDOWS_LINUX_NOT_EXECUTED",
-    "R2C": "FROZEN_PAYLOAD_DAG_REQUIRES_FINAL_EXTERNAL_RECEIPTS"
-  },
-  "run_id": "20260907T105844+0800_stage1b_r2",
-  "schema_version": "stage1b-r2-final-status-v1",
+  "run_id": "20260907T151753+0800_stage1b_r3",
+  "schema_version": "stage1b-r3-final-status-v1",
   "test_platforms": {
     "Linux": {
-      "reason": "WSL unavailable; Docker/Podman absent; no virtualization installed",
+      "reason": "wsl --list --quiet reports WSL not installed; docker/podman executables absent. No VM installed. External R2 Linux review is historical external evidence only.",
       "status": "NOT_EXECUTED"
     },
     "Windows": {
+      "numpy": "2.4.2",
       "platform": "Windows-11-10.0.26200-SP0",
       "python": "3.14.3",
+      "scipy": "1.17.1",
       "status": "EXECUTED"
     }
   },
   "weth": {
-    "conversion_enabled": false,
-    "new_indexed_trace_rows": 5,
-    "real_requirements_satisfied": 6,
-    "requirements": 12,
-    "status": "NOT_CERTIFIED"
+    "actual_calltracer_access": "FREE_TIER_DENIED_NO_UPGRADE",
+    "historical_runtime_obtained": true,
+    "real_component_certified": false,
+    "real_conversion_enabled": false,
+    "separate_component": true,
+    "source_report": "derived/weth_context_r3/WETH_R3_REPORT.json",
+    "status": "OBSERVED_LOCAL_DEPOSIT_PATTERN_WITH_GAPS",
+    "verified_source_lookup_obtained": true
   }
 }
