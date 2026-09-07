@@ -5,10 +5,12 @@ import json
 from pathlib import Path
 
 from context_ledger_r3 import file_identity, read_json, write_json
+from context_queries_r3 import load_verified_block_headers, verify_frozen_scope
 
 
 def freeze(work):
     work = Path(work).resolve()
+    block_headers = load_verified_block_headers(work)
 
     def entry(path):
         path = Path(path).resolve()
@@ -32,6 +34,9 @@ def freeze(work):
         frozen = read_json(frozen_path)
         if frozen.get("query_id") not in jobs_by_query or not frozen.get("r3_context_scope"):
             continue
+        # A complete exported SQL page is reusable only when both its partition
+        # date predicate and numeric account window cover the actual ledger.
+        verify_frozen_scope(frozen_path, work, block_headers=block_headers)
         jobs_by_query[frozen["query_id"]].append({"freeze": entry(frozen_path), "job": entry(job_path)})
         target = next(q for q in enhanced["queries"] if q["query_id"] == frozen["query_id"])
         for window in frozen["account_windows"]:

@@ -13,11 +13,13 @@ from budget_r2 import RevisionLedger,AUTH,migrate_revision
 from network import NoRedirect
 from page_attempts import AttemptStore,RequestBlocked
 from page_contract import exact_count,validate_page,initial_progress,PageContractError
+from legacy_guard_r4 import reject_legacy_workspace
 
 TERMINAL={'QUERY_STATE_COMPLETED','QUERY_STATE_FAILED','QUERY_STATE_CANCELLED','QUERY_STATE_EXPIRED'}
 MAX_RAW_BYTES=16*1024*1024
 class RevisionLive(Live):
     def __init__(self,work):
+        reject_legacy_workspace(work, 'dune_r2.RevisionLive')
         self.w=Path(work).resolve();self.db=RevisionLedger(self.w/'private/shared_budget_r2.sqlite')
         self.confirm=read(self.w/'private/dune_user_confirmation.json')
         if self.confirm.get('status')!='USER_CONFIRMED' or str(self.confirm.get('execution_cap_credits'))!='20' or self.confirm.get('authorization_id')!=AUTH:raise RuntimeError('R2 USER_CONFIRMED cap20 required')

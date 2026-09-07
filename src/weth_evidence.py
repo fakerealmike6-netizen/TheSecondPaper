@@ -152,7 +152,16 @@ def audit_bindings(policy, transaction, receipt, internal, trace, historical_cod
         valid = record.get('payload_sha256') == payload_hash(payload) and record.get('chain_id') == 1
         if record.get('payload_sha256') != payload_hash(payload):
             conflicts.append('binding.' + role + ':payload_sha256')
-        if role in methods:
+        if role in {'trace', 'internal'} and record.get('source_type') == 'DUNE_ARCHIVED_SQL_COMPLETE_TRANSACTION_TRACE':
+            # This is an archived Dune SQL request chain, not an invented RPC
+            # or explorer request. It can only be sealed by the finite adapter.
+            valid &= (is_verified_context(context)
+                      and req.get('method') == 'DUNE_ARCHIVED_SQL_EXECUTION'
+                      and req.get('tx_hash') == expected_tx
+                      and req.get('block_number') == expected_block
+                      and bool(req.get('execution_id')) and bool(req.get('sql_sha256'))
+                      and record.get('archive_binding', {}).get('page_contract', {}).get('complete') is True)
+        elif role in methods:
             params = req.get('params', [])
             valid &= req.get('method') == methods[role] and isinstance(params, list) and len(params) >= 1
             if valid and role != 'historical_code':
@@ -202,12 +211,69 @@ def audit_bindings(policy, transaction, receipt, internal, trace, historical_cod
                            and review.get('runtime_code_sha256') == hashlib.sha256(bytes.fromhex(payloads['historical_code'][2:])).hexdigest())
         if not source_verified:
             conflicts.append('verified_source:chain_contract_runtime_binding')
+    equivalent = None
+    if is_verified_context(context) and source_verified and bound.get('trace') and bound.get('receipt'):
+        proof = context.source_review.get('equivalent_deposit_binding', {})
+        if proof.get('proof_valid') is True:
+            expected = {'transaction': payload_hash(tx), 'receipt': payload_hash(rc),
+                        'trace': payload_hash(unwrapped(trace)), 'internal': payload_hash(internal)}
+            if (proof.get('bound_payloads') == expected and proof.get('tx_hash') == expected_tx
+                    and proof.get('block_number') == expected_block
+                    and proof.get('contract') == expected_contract
+                    and proof.get('actual_call_tree_path') == policy.get('input_trace_address')
+                    and proof.get('log_index') == policy.get('deposit_log_index')
+                    and proof.get('caller') == policy.get('credited_address', '').lower()
+                    and proof.get('amount_raw') == str(policy.get('amount_raw'))):
+                equivalent = proof
+            else:
+                conflicts.append('equivalent_binding:payload_or_fixed_scope')
     real_ready = is_verified_context(context) and source_verified and all(bound.values()) and not conflicts
     if not real_ready:
         gaps.append('REAL_ACQUISITION_AND_VERIFIED_SOURCE_PROVENANCE_UNAVAILABLE')
-    return {'evidence_kind': kind, 'conflicts': sorted(set(conflicts)), 'gaps': sorted(set(gaps)),
+    result = {'evidence_kind': kind, 'conflicts': sorted(set(conflicts)), 'gaps': sorted(set(gaps)),
             'request_bound': bound, 'trace_bound': trace_bound,
             'source_verified': source_verified, 'real_provenance_ready': real_ready}
+    if equivalent is not None:
+        result['equivalent_deposit_binding'] = equivalent
+    return result
+
+
+def extend_dune_evidence_context(context, manifest_path, policy):
+    """Validate genuine archived Dune sources before extending a trusted root."""
+    import copy
+    from weth_trace_adapter_r4 import validate_dune_bundle, native_rows, prove_unique_emitter, SOURCE_TYPE
+    if not is_verified_context(context) or context.kind != 'REAL_CHAIN':
+        raise ValueError('Validated real acquisition root required')
+    required = {'transaction', 'receipt', 'source', 'historical_code'}
+    if not required <= set(context.records):
+        raise ValueError('Existing request-bound transaction/receipt/source/runtime required')
+    bundle = validate_dune_bundle(manifest_path, policy)
+    records, review = copy.deepcopy(context.records), copy.deepcopy(context.source_review)
+    archive = {k: v for k, v in bundle.items() if k not in {'rows', 'tree'}}
+    request = {'method': 'DUNE_ARCHIVED_SQL_EXECUTION', 'execution_id': bundle['execution_id'],
+        'sql_sha256': bundle['sql_sha256'], 'tx_hash': policy['tx_hash'].lower(),
+        'block_number': policy['block_number']}
+    for role, payload in [('trace', bundle['tree']), ('internal', native_rows(bundle['rows']))]:
+        records[role] = {'role': role, 'source_type': SOURCE_TYPE, 'evidence_kind': 'REAL_CHAIN',
+            'status': 'SUCCESS_VALIDATED', 'origin_url': 'https://api.dune.com', 'chain_id': 1,
+            'request': request, 'payload_sha256': payload_hash(payload), 'payload': payload,
+            'archive_binding': archive}
+    # A failed unique-emitter proof leaves the trace/native-input bindings
+    # usable and the twelfth scientific predicate explicitly unavailable.
+    try:
+        proof = prove_unique_emitter(policy, bundle['rows'], records['transaction']['payload'],
+                                     records['receipt']['payload'], review)
+        proof['bound_payloads'] = {role: payload_hash(records[role]['payload'])
+                                  for role in ('transaction', 'receipt', 'trace', 'internal')}
+        review['equivalent_deposit_binding'] = proof
+        review.pop('equivalent_binding_gap', None)
+    except (ValueError, KeyError, TypeError) as exc:
+        review.pop('equivalent_deposit_binding', None)
+        review['equivalent_binding_gap'] = str(exc)
+    return VerifiedEvidenceContext('REAL_CHAIN', records, review,
+        payload_hash({'original_manifest': context.manifest_sha256, 'dune_manifest': bundle['manifest_sha256']}),
+        context.catalogue_sha256, _TOKEN,
+        payload_hash({'kind': 'REAL_CHAIN', 'records': records, 'source_review': review}))
 
 
 def load_evidence_context(bundle_path, acquisition_catalogue_path):

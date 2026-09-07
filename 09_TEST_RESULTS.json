@@ -1,53 +1,23 @@
 {
-  "external_acceptance_status": "PENDING_REVIEW",
-  "final_archive_execution": "See external FINAL_VALIDATION_RESULTS.json; binds final ZIP hashes and actual final test counts",
-  "main_real_pipeline": {
-    "anchors_used": 55,
-    "exact_models": [
-      "BEST_AVAILABLE_CONTEXT",
-      "MATCHED_INFORMATION_RELAXED"
-    ],
-    "known_initial_accounts": 27,
-    "queries": 2,
-    "same_graph_comparisons": "PASS",
-    "source_reconstruction": true,
-    "witnesses_independently_checked": true,
-    "zero_residual_accounts": 27
-  },
-  "network_guard_and_credential_tests_retained": true,
-  "original_r2_baseline": {
-    "controlled_objectives": 32,
-    "controlled_scenarios": 12,
-    "isolated": true,
-    "status": "PASS",
-    "tests": 348
-  },
-  "platforms": {
-    "Linux": {
-      "reason": "wsl --list --quiet reports WSL not installed; docker/podman executables absent. No VM installed. External R2 Linux review is historical external evidence only.",
-      "status": "NOT_EXECUTED"
-    },
-    "Windows": {
-      "numpy": "2.4.2",
-      "platform": "Windows-11-10.0.26200-SP0",
-      "python": "3.14.3",
-      "scipy": "1.17.1",
-      "status": "EXECUTED"
-    }
-  },
-  "prepackage_source_snapshot": {
-    "receipt_sha256": "092a1156074aa482a0694a8ac405da83e60d2505a53cafecb1a1cfe78415642c",
-    "scope": "Earlier V1 public ZIP; JSON runtime tuple vs array comparison correction is revalidated in final ZIP",
-    "status": "PASS",
-    "tests": 468
-  },
-  "preserved_initial_failures": [
-    "MIN prepublication ledger objects compared runtime tuples against artifact arrays; JSON representation normalized without dropping fields, original failure preserved",
-    "One sqlite test cleanup handle issue fixed; original result retained",
-    "One external-pool analytic expectation corrected, because normal money may be returned while source stays in pool",
-    "One UTF-8 test receipt read corrected",
-    "Synthetic sentinel variable renamed to pass existing public scanner without removing test or guard",
-    "Interrupted RPC response saved and explicitly recovered once; not disguised as original success"
-  ],
-  "schema_version": "stage1b-r3-test-summary-v1"
+  "baseline_original_actual_replay": "PASS",
+  "baseline_original_tests": 469,
+  "controlled_comparisons": 32,
+  "controlled_scenarios": 12,
+  "errors": 0,
+  "failed": 0,
+  "failures": [],
+  "final_zip_validation": "See external FINAL_VALIDATION_RESULTS.json after final ZIP extraction",
+  "fixtures": "synthetic only; private original project tests excluded",
+  "independent_evidence_assertions": 1130,
+  "independent_intervals": 48,
+  "independent_witnesses": 100,
+  "linux": "NOT_RUN",
+  "network_attempts": [],
+  "passed": 660,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.3",
+  "skipped": 0,
+  "success": true,
+  "test_log": "Full original log retained privately; each bundle regenerates its own complete log",
+  "tests_run": 660
 }

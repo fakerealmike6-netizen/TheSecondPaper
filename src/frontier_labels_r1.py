@@ -395,6 +395,7 @@ def apply(work, root, batch, jobdir):
     oldobs=rows(old_observations);oldreg=rows(old/'address_registry.csv.gz')
     index={r['address']:r for r in oldreg};group=defaultdict(list)
     for o in oldobs:group[o['address']].append(o)
+    prior_groups={address:list(items) for address,items in group.items()}
     # Evidence manifest binds every complete page to the exact saved raw SHA.
     evidencepath=batchdir/'applied_page_evidence.json'
     dump(evidencepath,dict(execution_id=execution,job=jobdir.relative_to(root).as_posix(),pages=evidence))
@@ -405,7 +406,7 @@ def apply(work, root, batch, jobdir):
     changes=[]
     for address in parsed:
         before=index.get(address,{'chain_id':'1','address':address,'identity_class':'UNKNOWN','actor':''})
-        after=resolve_address(group[address],before)
+        after=resolve_address(group[address],before,baseline_observations=prior_groups.get(address, []))
         if any(truth(o.get('record_conflict')) for o in group[address]):
             after['preserved_conflict']=True
             if after['identity_class']=='UNKNOWN':after['conflict_status']='RAW_SOURCE_INTERNAL_CONFLICT_ROLE_UNRESOLVED'
@@ -420,9 +421,15 @@ def apply(work, root, batch, jobdir):
             new_observations=len([o for o in added if o['address']==address]),lookup_status=after['lookup_status'],
             resolution_rule=after['resolution_rule'],preserved_conflict=after['preserved_conflict'],
             adopted_observation_ids=after['adopted_observation_ids'],all_observation_ids=after['observation_ids'],
+            adopted_sources=after['adopted_sources'],adopted_source_versions=after['adopted_source_versions'],
+            provenance_status=after['provenance_status'],provenance_issues=after['provenance_issues'],
+            unadopted_observation_ids=after['unadopted_observation_ids'],
             old_registry_row_present=address in {r['address'] for r in oldreg}))
     out.mkdir(parents=True)
     obscols=list(oldobs[0]);regcols=list(oldreg[0])+['lookup_status','last_frontier_label_execution_id','label_snapshot_version']
+    for row in index.values():
+        for key in row:
+            if key not in regcols:regcols.append(key)
     write_csv(out/'label_observations.csv.gz',oldobs+added,obscols)
     write_csv(out/'address_registry.csv.gz',[index[k] for k in sorted(index)],regcols)
     dump(out/'label_policy.json',dict(read(old/'label_policy.json'),frontier_extension_version=VERSION,

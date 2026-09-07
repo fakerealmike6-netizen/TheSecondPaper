@@ -1,0 +1,17 @@
+# R4 repair closure
+
+All nine code defects are FIXED_AND_TESTED. Historical evidence completeness is separately partial; external acceptance is PENDING_REVIEW.
+
+|ID|Actual repair|Historical effect|
+|---|---|---|
+|F01|Exact value facts and conflicting aliases fail closed. Receipt-only gas/status supplements have a distinct non-value role; genuine zero remains valid.|Original cancelled 100-in/100-out counterexample is no longer FULL with false positive attribution. All 69 actual positive flows remain.|
+|F02|Identity/status/value/root agreement is checked before legitimate failed nested frames are excluded; failed top transaction gas remains accounted.|Original successful-top/failed-root contradiction now blocks complete modeling; failed nested positive control remains legal. Real input has zero contradictions.|
+|F03|Freeze and replay bind proven block-time boundaries, UTC partition predicates and exact SQL scope. Missing boundaries are explicit gaps.|All three original jobs, 28 windows and 43 wire-bound block headers pass both domains. No old SQL modified and no gap reacquisition needed.|
+|F04|Top/internal/ERC20 parsing uses exact integers and API-specific explicit statuses. Semantic gaps propagate through the full fetch to incomplete results.|OFFLINE_CONTRACT_VERIFIED for this unused live adapter; original real probe input and amounts unaffected.|
+|F05|Known transaction/chain/block/index facts are compared before filling absent fields. Full receipt membership and distinct logIndex multiplicity are retained.|Old known-index-overwrite expectation is preserved as historical bad behavior and changed to desired rejection; missing-index and multiple identical-value Transfer controls pass.|
+|F06|Retained attribution uses actual matching old observations; unrelated new observations remain unadopted. Missing old support is explicit HISTORICAL_EVIDENCE_GAP.|382 existing files / 644146 materialized row appearances checked. 528 pointer corrections and 582 unresolved support rows; zero actor/role/service-stop changes. Neither pilot overlaps affected addresses.|
+|F07|Provider errors/schema/transport failures create explicit batch and frozen-address outcomes, CLI fails, prior successful output stays intact; valid empty success remains distinct.|Five real saved label batches were successful with frozen request lists. 210 old outcome rows show no failed-response-as-success corruption. Fifty explicit success outcomes regenerated; chain-list capability response excluded by its saved endpoint.|
+|F08|Successful results, including empty lists, have separate durable keys. Failed receipts remain immutable; recovery uses stable logical selectors and the remaining original attempt chain.|314 existing artifacts indexed with original bytes retained. No real account-page error cache found; unproven historical attempt totals remain unresolved and do not receive fresh attempts.|
+|F09|Protected boolean passed/check_status/name override no business detail. Required missing/skipped/invalid/nonzero commands fail the receipt and process. Legacy schemas have explicit parsers.|Real validator subprocess mismatch, nonzero child, missing output and malformed JSON all exit nonzero; expected uncertified business state can replay successfully. Original false-PASS output and first dependency regression retained.|
+
+The JSON matrix pins every current source/test file and lists callers and executable regressions. E01 and WETH have separate statuses. No module was disabled to obtain closure.

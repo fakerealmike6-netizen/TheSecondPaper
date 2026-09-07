@@ -125,7 +125,12 @@ class ValidatorR3(Validator):
         after = tree_hashes(self.tree)
         self.check('frozen_tree_unchanged', self.before == after, files=len(self.before),
                    changed=sorted(path for path in set(self.before) | set(after) if self.before.get(path) != after.get(path)))
-        failures = [row for row in self.commands if row['status'] == 'FAIL' or row['status'] == 'SKIP' and row.get('required')]
+        required = ['r3_manifest_and_payload_binding', 'unit_tests', 'unit_test_receipt', 'controlled_lp', 'controlled_oracle_receipt', 'frozen_tree_unchanged']
+        if self.kind == 'min':
+            required += ['r3_evidence_to_ledger_and_lp', 'r3_real_context_reproduction_receipt']
+            if self.r3_config.get('weth'):
+                required += ['r3_weth_actual_input_replay_receipt']
+        failures = self.validation_failures(required)
         receipt = {'schema_version': 'stage1b-r3-portable-validation-v1',
                    'created_at_utc': datetime.now(timezone.utc).isoformat(),
                    'platform': platform.platform(), 'python': platform.python_version(),

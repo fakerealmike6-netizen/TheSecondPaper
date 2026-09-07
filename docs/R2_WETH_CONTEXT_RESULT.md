@@ -1,6 +1,6 @@
 # R2 WETH 新增真实调用上下文
 
-根执行器实际完成 Dune execution `01M1WYNSVE8QPQ72MMTT487TW6`：5 个 traces 行、1 个完整结果页。离线分析逐项复核 SQL、冻结输入、submit/status/results 原始响应 SHA-256 与字节数、保存页与原始 JSON 等价、execution/schema/总行数/终页关系；已有 `page_contract` 验证 5/5 行完整。原 transaction、receipt、internal 的摘录与原始归档哈希及内容也重新核对通过。
+根执行器实际完成 Dune execution `ARCHIVED_FIXED_EXECUTION`：5 个 traces 行、1 个完整结果页。离线分析逐项复核 SQL、冻结输入、submit/status/results 原始响应 SHA-256 与字节数、保存页与原始 JSON 等价、execution/schema/总行数/终页关系；已有 `page_contract` 验证 5/5 行完整。原 transaction、receipt、internal 的摘录与原始归档哈希及内容也重新核对通过。
 
 真实 WETH 调用路径是 **`[0,0,0,0]`**。旧 `trace:1` 是历史 internal 响应的第 1 行序号，不能当作链上 `[1]` 路径。两者的实际 sender、recipient、150 ETH 与 call Gas 6874 一致，新增路径独立记录，原事件 ID 和历史数据保持不变。
 

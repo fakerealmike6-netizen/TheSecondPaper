@@ -10,6 +10,7 @@ from datetime import datetime,timezone
 from contextlib import closing
 from budget import Ledger,valid
 from budget_r1 import consistent_backup
+from legacy_guard_r4 import reject_legacy_workspace
 
 AUTH='STAGE1B_R2_CAP20_CUMULATIVE100_V1'
 CAP=Decimal('100')
@@ -166,6 +167,7 @@ def migrate_revision(work,baseline,confirmation):
     Immutable source attempts keep original absolute receipt paths. Portability
     packagers must separately map those files; original identities stay intact.
     """
+    reject_legacy_workspace(work, 'budget_r2.migrate_revision')
     work=Path(work).resolve();baseline=Path(baseline).resolve();private=work/'private';private.mkdir(parents=True,exist_ok=True)
     state=json.loads((baseline/'RUN_STATE.json').read_text(encoding='utf-8'))
     if state.get('checkpoint')!='CHECKPOINT_1B_R1_REACHED' or state.get('new_network_submissions_allowed') is not False:raise RuntimeError('Baseline worker stop checkpoint not established')

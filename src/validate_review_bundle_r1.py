@@ -347,10 +347,20 @@ class Validator:
                         TMP=str(temp),TEMP=str(temp),TMPDIR=str(temp))
 
     def path(self,key):return input_path(self.tree,self.config[key])
-    def check(self,name,passed,**detail):
-        self.commands.append({'name':name,'status':'PASS' if passed else 'FAIL',**detail})
-        return passed
-    def skipped(self,name,reason,required=False):self.commands.append({'name':name,'status':'SKIP','reason':reason,'required':required})
+    def check(self,name,passed,/,**detail):
+        from validation_result_r4 import check_row
+        row=check_row(name,passed,**detail)
+        self.commands.append(row)
+        return row['passed']
+    def skipped(self,name,reason,required=False):
+        from validation_result_r4 import skip_row
+        self.commands.append(skip_row(name,reason,required))
+    def validation_failures(self,required_names=()):
+        from validation_result_r4 import failures
+        names={row.get('name') for row in self.commands if isinstance(row,dict)}
+        for name in required_names:
+            if name not in names:self.check('required_check_not_run:'+name,False,missing_check=name)
+        return failures(self.commands)
     def command(self,name,script,args):
         source=input_path(self.mirror,script)
         try:
@@ -484,7 +494,7 @@ class Validator:
         after=tree_hashes(self.tree)
         self.check('frozen_tree_unchanged',self.before==after,files=len(self.before),
                    changed=[p for p in set(self.before)|set(after) if self.before.get(p)!=after.get(p)])
-        failed=[c for c in self.commands if c['status']=='FAIL' or (c['status']=='SKIP' and c.get('required'))]
+        failed=self.validation_failures(('unit_tests','unit_test_receipt','controlled_lp','controlled_oracle_receipt','frozen_tree_unchanged'))
         receipt={'schema_version':'stage1b-r1-portable-validation-1','created_at_utc':datetime.now(timezone.utc).isoformat(),
                  'status':'PASS' if not failed else 'FAIL','tree_kind':self.kind,'network_disabled':True,
                  'socket_dns_and_python_children_blocked':True,'credentials_removed_from_child_environment':True,

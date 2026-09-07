@@ -129,6 +129,7 @@ def apply(work,root,freeze_path,jobdir):
         if digest(p)!=source['sha256']:raise ValueError('Base observation source changed')
         for row in rows(p):
             if row['address'] in parsed:groups[row['address']].append(row)
+    prior_groups={address:list(items) for address,items in groups.items()}
     dest.mkdir(parents=True);evidence_path=dest/'applied_page_evidence.json';dump(evidence_path,{'execution_id':job['execution_id'],'job_path':jobdir.relative_to(root).as_posix(),'pages':pages})
     acquired=job['status_response'].get('execution_ended_at') or job['status_receipt'].get('utc')
     if not acquired:raise ValueError('Acquisition timestamp absent')
@@ -136,10 +137,12 @@ def apply(work,root,freeze_path,jobdir):
     for row in added:groups[row['address']].append(row)
     version=work.name+'_'+batch;changes=[]
     for address in sorted(parsed):
-        before=index.get(address,{'chain_id':'1','address':address,'identity_class':'UNKNOWN','actor':''});after=resolve_address(groups[address],before)
+        before=index.get(address,{'chain_id':'1','address':address,'identity_class':'UNKNOWN','actor':''});after=resolve_address(groups[address],before,baseline_observations=prior_groups.get(address, []))
         if any(truth(o.get('record_conflict')) for o in groups[address]):after['preserved_conflict']=True
         after.update(acquisition_scope=rules['acquisition_scope'],lookup_status='COMPLETED_FOUR_TABLE_OPPORTUNITY',last_frontier_label_execution_id=job['execution_id'],label_snapshot_version=version,distinct_label_facts=len({o['semantic_label_key'] for o in groups[address]}),actor_keys=sorted({o.get('actor_key') for o in groups[address] if o.get('actor_key')}))
         index[address]=after;changes.append({'address':address,'old_identity_class':before.get('identity_class'),'new_identity_class':after['identity_class'],'old_actor':before.get('actor') or '','new_actor':after.get('actor') or '','identity_or_actor_changed':(before.get('identity_class'),before.get('actor') or '')!=(after['identity_class'],after.get('actor') or ''),'lookup_status':after['lookup_status'],'resolution_rule':after['resolution_rule'],'preserved_conflict':after['preserved_conflict'],'new_observations':sum(o['address']==address for o in added)})
+        changes[-1].update({key:after[key] for key in ('adopted_observation_ids','adopted_sources',
+            'adopted_source_versions','provenance_status','provenance_issues','unadopted_observation_ids')})
     snapshot=work/'derived/label_snapshots'/version
     if snapshot.exists():raise ValueError('Snapshot exists; no overwrite')
     snapshot.mkdir(parents=True);columns=list(oldreg[0])

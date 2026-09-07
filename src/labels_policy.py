@@ -3,7 +3,7 @@ import re
 from collections import defaultdict
 from reference_core import arr, truth, actor_key, canonical_actor
 
-VERSION = 'stage1b-dune-preferred-1.0'
+VERSION = 'stage1b-r4-dune-preferred-provenance-2.0'
 KNOWN_ROLES = {'SERVICE', 'BRIDGE_BOUNDARY', 'MIXER_BOUNDARY', 'DEX_OR_PROTOCOL'}
 FOCUS_CONFLICT = '0xf5e10380213880111522dd0efd3dbb45b9f62bcc'
 
@@ -21,8 +21,29 @@ def explicit_claim(o):
         return False
     return o.get('role') in KNOWN_ROLES
 
-def resolve_address(observations, baseline=None):
+def resolve_address(observations, baseline=None, *, baseline_observations=None):
+    """Adopt identity and its supporting observations together.
+
+    A caller with a frozen prior observation group passes it explicitly. Legacy
+    callers can only recover prior support through IDs saved in the baseline;
+    a baseline ID by itself is never evidence of that observation's contents.
+    """
+    observations = list(observations)
     baseline = dict(baseline or {})
+    if baseline_observations is None:
+        old_ids = set(arr(baseline.get('adopted_observation_ids'))) | set(arr(baseline.get('observation_ids')))
+        prior = [o for o in observations if o.get('observation_id') in old_ids]
+    else:
+        prior = list(baseline_observations)
+    all_observations = {}
+    for o in prior + observations:
+        oid = o['observation_id']
+        if oid in all_observations:
+            old = all_observations[oid]
+            if any(old.get(k) != o.get(k) for k in ('address', 'actor', 'role', 'platform', 'source_version', 'semantic_kind')):
+                raise ValueError('Conflicting contents for one label observation ID')
+        all_observations[oid] = o
+    observations = list(all_observations.values())
     claims = [o for o in observations if explicit_claim(o)]
     dune = [o for o in claims if o.get('platform') == 'Dune']
     picked = dune or claims
@@ -43,17 +64,35 @@ def resolve_address(observations, baseline=None):
     else:
         role, actor = baseline.get('identity_class', 'UNKNOWN'), baseline.get('actor') or None
         rule = 'EXISTING_ROLE_RETAINED_NO_NEW_EXPLICIT_OWNERSHIP'
-    if not dune and not raw_internal_conflict and baseline and not any(o.get('collection_scope')=='REFERENCE_TARGETED' for o in observations):
+    retained = not dune and not raw_internal_conflict and baseline and not any(o.get('collection_scope')=='REFERENCE_TARGETED' for o in observations)
+    if retained:
         role, actor = baseline.get('identity_class','UNKNOWN'), baseline.get('actor') or None
         rule = 'EXISTING_OTHER_SOURCE_RESOLUTION_RETAINED'
     address = observations[0]['address'] if observations else baseline.get('address')
     if address in ('0x'+'0'*40, '0x'+'0'*36+'dead'):
         role = 'NON_SERVICE_SENTINEL'; actor = baseline.get('actor'); rule = 'NON_SERVICE_SENTINEL'
+    adopted = picked if not conflict else []
+    provenance_status = 'SUPPORTED' if adopted else 'NO_ADOPTED_ATTRIBUTION'
+    provenance_issues = []
+    if retained and role in KNOWN_ROLES and actor:
+        wanted = key({'actor': actor})
+        adopted = [o for o in prior if explicit_claim(o) and key(o) == wanted and o.get('role') == role
+                   and str(o.get('address', '')).lower() == str(address).lower()]
+        provenance_status = 'SUPPORTED_BY_EXISTING_OBSERVATIONS' if adopted else 'PROVENANCE_UNRESOLVED'
+        if not adopted:
+            provenance_issues = ['HISTORICAL_EVIDENCE_GAP']
+    elif retained or rule == 'NON_SERVICE_SENTINEL':
+        adopted = []
+        provenance_status = 'NO_ADOPTED_ATTRIBUTION'
+    adopted = list({o['observation_id']: o for o in adopted}.values())
+    adopted_ids = [o['observation_id'] for o in adopted]
     out = dict(baseline, address=address, chain_id='1', actor=actor, identity_class=role,
         actor_candidates=all_raw_actors, resolution_rule=rule, label_policy_version=VERSION,
-        adopted_observation_ids=[o['observation_id'] for o in picked] if not conflict else [],
-        adopted_sources=sorted({o['platform'] for o in picked}) if not conflict else [],
-        adopted_source_versions=sorted({o.get('source_version','') for o in picked}) if not conflict else [],
+        adopted_observation_ids=adopted_ids,
+        adopted_sources=sorted({o['platform'] for o in adopted}),
+        adopted_source_versions=sorted({o.get('source_version','') for o in adopted}),
+        provenance_status=provenance_status, provenance_issues=provenance_issues,
+        unadopted_observation_ids=[o['observation_id'] for o in observations if o['observation_id'] not in adopted_ids],
         preserved_conflict=conflict or len({key(o) for o in claims}) > 1 or baseline.get('identity_class')=='CONFLICTED_IDENTITY',
         conflict_status='DUNE_INTERNAL_CONFLICT' if raw_internal_conflict or (dune and conflict) else ('RAW_CROSS_SOURCE_CONFLICT_RETAINED' if len({key(o) for o in claims})>1 else baseline.get('conflict_status','NO_EXPLICIT_CONFLICT')),
         service_status='NAMED_SERVICE_IDENTITY_USABLE' if role=='SERVICE' else 'NOT_CONFIRMED_AS_REQUESTABLE_SERVICE',

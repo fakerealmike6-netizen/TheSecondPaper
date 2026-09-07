@@ -6,10 +6,12 @@ from decimal import Decimal,ROUND_CEILING
 from dune_live import Live,read,dump
 from budget_r1 import RevisionLedger,AUTH
 from page_attempts import AttemptStore
+from legacy_guard_r4 import reject_legacy_workspace
 from dune_cap_exception import CAP5_AUTH,CONFIRMED,RESTORED,TERMINAL,read_control,ordinary_sql_allowed,verify_submitted_binding,binding
 
 class RevisionLive(Live):
     def __init__(self,work):
+        reject_legacy_workspace(work, 'dune_r1.RevisionLive')
         self.w=Path(work).resolve();self.db=RevisionLedger(self.w/'private/shared_budget_r1.sqlite')
         self.confirm=read(self.w/'private/dune_user_confirmation.json')
         assert self.confirm['status']=='USER_CONFIRMED' and self.confirm['execution_cap_credits']=='1'

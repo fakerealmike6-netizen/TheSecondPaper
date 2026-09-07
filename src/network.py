@@ -2,14 +2,17 @@
 import os,json,hashlib,datetime,urllib.request,urllib.parse,urllib.error,time,uuid
 from pathlib import Path
 from budget import Ledger
+from legacy_guard_r4 import reject_legacy_workspace
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self,*args,**kwargs): return None
 
 class Network:
     def __init__(self, work):
+        reject_legacy_workspace(work, 'network.Network')
         self.work=Path(work); self.ledger=Ledger(self.work/'private/shared_budget.sqlite'); self.last=0
     def call(self,provider,operation,params=None,payload=None,amounts=None,metadata=False):
+        reject_legacy_workspace(self.work, 'network.Network.call')
         params=params or {}; payload=payload or {}; job=provider+'_'+operation+'_'+uuid.uuid4().hex
         if provider=='etherscan':
             if any(x in params for x in ('apikey','api_key')): raise ValueError('Pass no credentials in params')
@@ -48,6 +51,7 @@ class Network:
         return body,evidence
 
 def preflight(work):
+    reject_legacy_workspace(work, 'network.preflight')
     net=Network(work); p=Path(work)/'private/provider_preflight.json'
     if p.exists(): return json.loads(p.read_text())
     out={'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'credential_presence':{k:bool(os.environ.get(k)) for k in ('DUNE_API_KEY','ETHERSCAN_API_KEY','METASLEUTH_API_KEY','ALCHEMY_API_KEY')},'dune_sql_enabled':False,'bigquery_enabled':False,'alchemy_enabled':False}

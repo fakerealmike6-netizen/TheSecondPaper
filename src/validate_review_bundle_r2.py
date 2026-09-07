@@ -108,7 +108,10 @@ class ValidatorR2(Validator):
         after = tree_hashes(self.tree)
         self.check('frozen_tree_unchanged', self.before == after, files=len(self.before),
                    changed=sorted(path for path in set(self.before) | set(after) if self.before.get(path) != after.get(path)))
-        failures = [row for row in self.commands if row['status'] == 'FAIL' or (row['status'] == 'SKIP' and row.get('required'))]
+        required = ['r2_manifest_and_payload_binding', 'unit_tests', 'unit_test_receipt', 'controlled_lp', 'controlled_oracle_receipt', 'frozen_tree_unchanged']
+        if self.kind == 'min':
+            required += ['r2_same_input_graphs', 'r2_same_input_graph_receipt', 'r2_same_input_independent_proof', 'r2_independent_graph_receipt', 'r2_latest_saved_replay', 'r2_latest_collection_and_lp_receipt']
+        failures = self.validation_failures(required)
         receipt = {'schema_version': 'stage1b-r2-portable-validation-v1',
                    'created_at_utc': datetime.now(timezone.utc).isoformat(),
                    'platform': platform.platform(), 'python': platform.python_version(),

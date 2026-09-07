@@ -24,6 +24,7 @@ from budget_r1 import consistent_backup
 from dune_r2 import RevisionLive, TERMINAL
 from network import NoRedirect
 from page_attempts import AttemptStore, atomic_json
+from legacy_guard_r4 import reject_legacy_workspace
 
 R3_AUTH = 'STAGE1B_R3_CONTEXT_FIRST_V1'
 PROBES = ('atomic_simple_transfer', 'harmony_high_branch')
@@ -74,6 +75,7 @@ def readonly_snapshot(path):
 
 
 def migrate(work, baseline):
+    reject_legacy_workspace(work, 'context_access_r3.migrate')
     work, baseline = Path(work).resolve(), Path(baseline).resolve()
     if work == baseline or work.parent != baseline.parent:
         raise ValueError('A distinct sibling revision workspace is required')
@@ -154,6 +156,7 @@ def migrate(work, baseline):
 
 
 def require_gate(work):
+    reject_legacy_workspace(work, 'context_access_r3.require_gate/session')
     work = Path(work)
     gate = read(work / 'CONTINUATION_GATE_R3.json')
     if gate.get('status') != 'PASS' or gate.get('run_id') != work.name:
@@ -221,6 +224,7 @@ def session(work, probe, label):
 
 class ContextDune(RevisionLive):
     def __init__(self, work):
+        reject_legacy_workspace(work, 'context_access_r3.ContextDune')
         self.w = Path(work).resolve()
         if not db_path(self.w).exists():
             raise RuntimeError('R3 migration required before access')
@@ -260,11 +264,13 @@ class ContextDune(RevisionLive):
 
 
 def dune_usage(work, label='startup_usage'):
+    reject_legacy_workspace(work, 'context_access_r3.dune_usage')
     with session(work, 'SHARED', label):
         return ContextDune(work).usage()
 
 
 def execute_dune(work, probe, freeze, label, resume=False):
+    reject_legacy_workspace(work, 'context_access_r3.execute_dune')
     work, freeze = Path(work).resolve(), Path(freeze).resolve()
     if not freeze.is_relative_to(work):
         raise ValueError('Freeze must be inside R3 workspace')
@@ -363,6 +369,7 @@ def rpc_result_status(request, response):
 
 class RpcAccess:
     def __init__(self, work, transport=None):
+        reject_legacy_workspace(work, 'context_access_r3.RpcAccess')
         self.w = Path(work).resolve()
         if not db_path(self.w).exists():
             raise RuntimeError('R3 migration required')
@@ -544,10 +551,27 @@ if __name__ == '__main__':
     parser.add_argument('--retry-of', type=Path, help='JSON list of explicitly selected failed RPC identities')
     parser.add_argument('--retry-reason', help='One documented reason for a split timeout retry')
     args = parser.parse_args()
+    # R3 APIs retain their historical behavior; the active R4 CLI cannot fall
+    # back to the superseded permanent-error cache/no-retry transport.
+    r4_cli = (args.work / 'configs/STAGE1B_R4_POLICY.json').exists()
+    if r4_cli:
+        from context_access_r4 import migrate, RpcAccess, db_path, readonly_snapshot
+        from dune_r4 import execute_dune, dune_usage
+        ledger_snapshot = lambda work: readonly_snapshot(db_path(work))
     if args.action == 'migrate': result = migrate(args.work, args.baseline)
     elif args.action == 'snapshot': result = ledger_snapshot(args.work)
     elif args.action == 'usage': result = dune_usage(args.work, args.label)
     elif args.action == 'dune': result = execute_dune(args.work, args.probe, args.freeze, args.label, args.resume)
+    elif r4_cli:
+        if args.retry_of or args.retry_reason:
+            raise ValueError('R4 recovers the exact persisted read identity; R3 one-off retry selectors cannot grant attempts')
+        result = RpcAccess(args.work).call_batch(read(args.plans), args.probe, args.label, args.capability)
     else: result = RpcAccess(args.work).call_batch(read(args.plans), args.probe, args.label, args.capability,
                     read(args.retry_of) if args.retry_of else None, args.retry_reason)
     print(json.dumps(result, indent=2, default=str))
+    if r4_cli:
+        complete = (args.action in ('migrate', 'snapshot')
+                    or args.action == 'usage' and result.get('http_status') == 200
+                    or args.action == 'dune' and result.get('status') == 'COMPLETED_EXPORTED'
+                    or args.action == 'rpc' and result.get('status') == 'COMPLETE')
+        raise SystemExit(0 if complete else 1)

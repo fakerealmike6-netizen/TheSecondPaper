@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime,timezone
 from decimal import Decimal
 from page_attempts import atomic_json
+from legacy_guard_r4 import reject_legacy_workspace
 
 def now():return datetime.now(timezone.utc).isoformat()
 def read(p):return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -22,6 +23,7 @@ def clock_usage(work,probe):
     return used
 
 def execute(work,probe,freeze,label,kind='candidate',performance='medium'):
+    reject_legacy_workspace(work, 'pilot_actions_r2.execute')
     from dune_r2 import RevisionLive
     work=Path(work).resolve();freeze=Path(freeze).resolve()
     if not freeze.is_relative_to(work):raise ValueError('Frozen work must be inside revision')

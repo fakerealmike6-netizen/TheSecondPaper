@@ -71,6 +71,13 @@ def verify_component(policy, tx, receipt, internal_response, *, call_trace=None,
                                      and log.get('data', '').lower() == deposit.get('data', '').lower()]
                 unique_locator = len(same_receipt_logs) == 1
             checks["deposit_bound_to_call_frame"] = unique_locator and binding['trace_bound']
+            equivalent = binding.get('equivalent_deposit_binding')
+            if equivalent:
+                # This sealed proof validates the complete execution-context
+                # tree and receipt. It never inserts synthetic frame.logs.
+                checks["deposit_bound_to_call_frame"] = bool(
+                    list(frame_path) == equivalent['actual_call_tree_path']
+                    and checks['exact_deposit_log'] and binding['trace_bound'])
             checks["no_weth_child_value_or_refund"] = not any(number(frame.get("value", "0x0")) > 0 for path, frame in frames(matched_frame) if path)
         else:
             checks["supported_deposit_entrypoint"] = False

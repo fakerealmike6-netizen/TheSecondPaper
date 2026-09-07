@@ -197,6 +197,12 @@ class EtherscanTests(unittest.TestCase):
         logs = [{"address": X, "topics": topics, "data": "0x" + format(1, "064x"), "logIndex": hex(i)} for i in (7, 8)]
         receipt = {"transactionHash": row["hash"], "transactionIndex": "0x4", "blockNumber": "0x2", "status": "0x1", "logs": logs}
         enricher = ReceiptEnricher(lambda tx: (receipt, {"real_requests": 1}))
+        # R4/F05: preserve the original known-0/receipt-4 counterexample,
+        # but reject it. The positive control only fills an absent locator.
+        rejected, conflicts, _ = enricher("tokentx", [row, row])
+        self.assertEqual([], rejected)
+        self.assertEqual("transactionIndex", conflicts[0]["field"])
+        row = {key: value for key, value in row.items() if key != "transactionIndex"}
         enriched, gaps, counts = enricher("tokentx", [row, row])
         events, norm_gaps = normalize_rows("tokentx", enriched)
         self.assertEqual([], gaps + norm_gaps)

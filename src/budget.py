@@ -2,6 +2,7 @@
 import sqlite3, json, datetime
 from contextlib import contextmanager
 from decimal import Decimal, InvalidOperation
+from legacy_guard_r4 import reject_legacy_ledger_path
 
 CAPS = {'dune_credits': '10', 'bigquery_bytes': '5368709120', 'rpc_operations': '500',
         'alchemy_cu': '50000', 'meta_addresses': '10', 'meta_requests': '10'}
@@ -19,6 +20,7 @@ def valid(value, unit):
 
 class Ledger:
     def __init__(self, path):
+        reject_legacy_ledger_path(path)
         self.path = str(path)
         with self.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS limits(unit TEXT PRIMARY KEY, cap TEXT, available TEXT, evidence TEXT)')

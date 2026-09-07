@@ -17,6 +17,7 @@ import urllib.error
 import urllib.request
 
 from budget_r1 import AUTH, RevisionLedger, now
+from legacy_guard_r4 import reject_legacy_workspace, reject_unscoped_legacy_transport
 
 ENDPOINT = 'https://ethereum-rpc.publicnode.com'
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
@@ -50,8 +51,9 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def http_transport(requests, max_bytes):
+def http_transport(requests, max_bytes, *, work=None):
     """One HTTP attempt; read at most the maximum plus an overflow sentinel."""
+    reject_unscoped_legacy_transport('rpc_context_r1.http_transport', work=work, module_file=__file__)
     request = urllib.request.Request(ENDPOINT, data=encoded(requests), method='POST',
                                      headers={'Content-Type': 'application/json'})
     opener = urllib.request.build_opener(NoRedirect())
@@ -123,6 +125,7 @@ def response_status(request, response):
 
 class RpcContextClient:
     def __init__(self, work, *, transport=None, max_response_bytes=MAX_RESPONSE_BYTES):
+        reject_legacy_workspace(work, 'rpc_context_r1.RpcContextClient')
         self.work = Path(work).resolve()
         ledger_path = self.work / 'private/shared_budget_r1.sqlite'
         if not ledger_path.is_file():
@@ -138,7 +141,7 @@ class RpcContextClient:
         if type(max_response_bytes) is not int or not 0 < max_response_bytes <= MAX_RESPONSE_BYTES:
             raise ValueError('Response bound must be between 1 byte and 8 MiB')
         self.max_bytes = int(max_response_bytes)
-        self.transport = http_transport if transport is None else transport
+        self.transport = (lambda requests, bound: http_transport(requests, bound, work=self.work)) if transport is None else transport
         self.evidence_kind = 'REAL_CHAIN' if transport is None else 'SYNTHETIC_TRANSPORT'
         with self.ledger.connection() as db:
             db.execute('CREATE TABLE IF NOT EXISTS rpc_context_intents(identity TEXT PRIMARY KEY,job TEXT UNIQUE,request_json TEXT,review_sha256 TEXT,review_cumulative_bytes INTEGER,status TEXT,raw_bytes INTEGER,utc TEXT,receipt_path TEXT)')
@@ -148,6 +151,7 @@ class RpcContextClient:
 
     def call_batch(self, plans, resource_review, *, batch=True):
         """One finite plan, max four explicit members. Never enumerate neighbors."""
+        reject_legacy_workspace(self.work, 'rpc_context_r1.RpcContextClient.call_batch')
         if not isinstance(plans, list) or not 1 <= len(plans) <= 4:
             raise ValueError('A finite plan of 1 to 4 requests is required')
         plans = [validate_plan(p['method'], p['params']) for p in plans]

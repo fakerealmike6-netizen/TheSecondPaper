@@ -1,192 +1,76 @@
 {
-  "baseline_commit": "88773d0a74187dfc4bf74e962ac9e9d72819ad1f",
-  "baseline_run_id": "20260907T105844+0800_stage1b_r2",
-  "baseline_tree": "5e5321f7feff14a4893c8f57ea97dbaea517069d",
-  "budget": {
-    "alchemy_cu_cumulative": {
-      "actual": "0",
-      "cap": "50000",
-      "remaining": "46900",
-      "reserved": "3100"
+  "alchemy_cu_upper_bound": "3100",
+  "checkpoint_target": "CHECKPOINT_1B_R4_REACHED",
+  "delivery_status": "PAYLOAD_REGRESSION_PASSED_FINAL_ZIP_AND_PUBLICATION_RESULTS_ARE_EXTERNAL",
+  "dune_cumulative": {
+    "cumulative_risk": "47.167873093",
+    "export_upper_not_actual": "15.000000000",
+    "known_actual_lower_bound": "22.845351403",
+    "remaining": "52.832126907",
+    "unknown_or_pending_risk": "9.322521690"
+  },
+  "external_acceptance_status": "PENDING_REVIEW",
+  "historical_provenance_gaps": 582,
+  "linux": "NOT_RUN_NO_INSTALLED_ENVIRONMENT",
+  "metasleuth_new_requests": 0,
+  "new_provider_cost": 0,
+  "new_provider_requests": 0,
+  "next_stage_authorized": false,
+  "real_inputs": {
+    "Atomic": {
+      "accounts": 5,
+      "anchors": 10,
+      "completeness": "FULL",
+      "modeled_fees": 11,
+      "value_events": 12
     },
-    "alchemy_method_bound_total_not_invoice": 3100,
-    "context_online_seconds": {
-      "atomic_simple_transfer": "32.688399",
-      "harmony_high_branch": "105.927641"
-    },
-    "cumulative_dune_export_upper_not_actual": "15.000000000",
-    "cumulative_dune_known_charge_lower_bound": "22.845351403",
-    "cumulative_dune_risk_upper": "47.167873093",
-    "cumulative_dune_unresolved_risk": "9.322521690",
-    "cumulative_raw_conservative_bytes": 10076683,
-    "cumulative_remaining": "52.832126907",
-    "inherited_dune_risk": "39.587758616",
-    "inherited_known_charge_lower_bound": "21.005321989",
-    "original_candidate_clocks_unchanged": {
-      "atomic_simple_transfer": "3586.162299",
-      "harmony_high_branch": "3640.705699"
-    },
-    "r3_execution_actual_reliable": "1.840029414",
-    "r3_execution_discrepancy_risk_retained": "0.740085063",
-    "r3_export_upper_not_actual": "5",
-    "r3_incremental_total_risk": "7.580114477",
-    "r3_rpc_operations": 155,
-    "rpc_rest_cumulative": {
-      "actual": "160",
-      "cap": "500",
-      "remaining": "340",
-      "reserved": "0"
+    "Harmony": {
+      "accounts": 22,
+      "anchors": 45,
+      "completeness": "FULL",
+      "modeled_fees": 50,
+      "value_events": 57
     }
   },
-  "checkpoint": "CHECKPOINT_1B_R3_REACHED",
-  "external_acceptance_status": "PENDING_REVIEW",
-  "final_zip_validation": "Resolved by external FINAL_VALIDATION_RESULTS.json bound to final archive hashes; no circular self-claim",
-  "main_context_chain_status": "COMPLETED_BOTH_FIXED_QUERIES",
-  "metasleuth_new_requests": 0,
-  "network_worker": "STOPPED",
-  "new_chain_requests_allowed": false,
-  "new_label_addresses": 0,
-  "next_stage_started": false,
-  "overall_status": "COMPLETED_WITH_RECORDED_GAPS",
-  "probes": [
+  "repair_status": "NINE_FIXED_AND_TESTED",
+  "rpc_cumulative_operations": "160",
+  "same_input_amounts": [
     {
-      "all_service_joint": {
+      "joint": {
         "BEST_AVAILABLE_CONTEXT": {
           "lower_raw": "359495000000000000000",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
           "upper_raw": "359495000000000000000"
         },
         "MATCHED_INFORMATION_RELAXED": {
           "lower_raw": "0",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
-          "upper_raw": "359495000000000000000"
-        },
-        "R2_BASELINE": {
-          "lower_raw": "0",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
           "upper_raw": "359495000000000000000"
         }
       },
-      "all_zero_downstream": {
-        "BEST_AVAILABLE_CONTEXT": false,
-        "MATCHED_INFORMATION_RELAXED": true
-      },
-      "candidate_events_unchanged": true,
-      "candidate_status": "CANDIDATE_SEARCH_COMPLETE_WITHIN_DECLARED_INDEXED_WINDOW",
-      "counts": {
-        "account_ledger_rows": 17,
-        "actual_fees_raw": "5482101864876000",
-        "aligned_closing_and_intermediate_model_anchors": 5,
-        "anchors": 10,
-        "code_observations": 5,
-        "conflicts": 0,
-        "empty_code": 5,
-        "fees": 11,
-        "gaps": 0,
-        "known_initial": 5,
-        "normalization_exclusions": 12,
-        "physical_flows": 12,
-        "roles": {
-          "CANDIDATE": 11,
-          "SEED": 1
-        },
-        "transactions": 12,
-        "zero_residual_accounts": 5
-      },
-      "frontiers": 0,
-      "labels_changed": false,
-      "name": "atomic_simple_transfer",
-      "native_context_status": "FULL_CONTEXT_WITHIN_DECLARED_MODEL_SCOPE",
-      "scope": "Frozen two R2 candidates; first-service-stop, single source, per-arrival90day and acquisition depth2/5 preserved; context windows finite."
+      "probe": "atomic_simple_transfer",
+      "same_input_amounts_equal": true
     },
     {
-      "all_service_joint": {
+      "joint": {
         "BEST_AVAILABLE_CONTEXT": {
           "lower_raw": "504907298683760128997",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
           "upper_raw": "1554999042315467482000"
         },
         "MATCHED_INFORMATION_RELAXED": {
           "lower_raw": "0",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
-          "upper_raw": "1554999042315467482000"
-        },
-        "R2_BASELINE": {
-          "lower_raw": "0",
-          "status": "OPTIMAL_EXACT_CERTIFIED",
           "upper_raw": "1554999042315467482000"
         }
       },
-      "all_zero_downstream": {
-        "BEST_AVAILABLE_CONTEXT": false,
-        "MATCHED_INFORMATION_RELAXED": true
-      },
-      "candidate_events_unchanged": true,
-      "candidate_status": "CANDIDATE_SEARCH_COMPLETE_WITHIN_DECLARED_INDEXED_WINDOW",
-      "counts": {
-        "account_ledger_rows": 99,
-        "actual_fees_raw": "23476573773828000",
-        "aligned_closing_and_intermediate_model_anchors": 23,
-        "anchors": 45,
-        "code_observations": 23,
-        "conflicts": 0,
-        "empty_code": 23,
-        "fees": 50,
-        "gaps": 0,
-        "known_initial": 22,
-        "normalization_exclusions": 57,
-        "physical_flows": 57,
-        "roles": {
-          "CANDIDATE": 49,
-          "MODELED_INTERNAL": 1,
-          "SEED": 1,
-          "UNKNOWN_EXTERNAL_INCOMING": 6
-        },
-        "transactions": 57,
-        "zero_residual_accounts": 22
-      },
-      "frontiers": 0,
-      "labels_changed": false,
-      "name": "harmony_high_branch",
-      "native_context_status": "FULL_CONTEXT_WITHIN_DECLARED_MODEL_SCOPE",
-      "scope": "Frozen two R2 candidates; first-service-stop, single source, per-arrival90day and acquisition depth2/5 preserved; context windows finite."
+      "probe": "harmony_high_branch",
+      "same_input_amounts_equal": true
     }
   ],
-  "publication": {
-    "fixed_identity": "Resolved by PUBLICATION_RECEIPT.json and external REVIEW_HANDOFF.md",
-    "remote_status": "SEE_EXTERNAL_RECEIPT",
-    "repository": "https://github.com/fakerealmike6-netizen/TheSecondPaper",
-    "tag": "stage1b-r3-20260907T151753+0800_stage1b_r3"
-  },
-  "remaining_items": [
-    "WETH call-frame/log binding unavailable on current Free tier; real conversion remains disabled.",
-    "Final export invoices and inherited uncertain charges remain unresolved; conservative risk carried.",
-    "Linux execution not obtained; Windows validation is the local tested platform.",
-    "External scientific acceptance remains PENDING_REVIEW; fixed declared model scope is not a full-chain unique-source assertion."
-  ],
-  "run_id": "20260907T151753+0800_stage1b_r3",
-  "schema_version": "stage1b-r3-final-status-v1",
-  "test_platforms": {
-    "Linux": {
-      "reason": "wsl --list --quiet reports WSL not installed; docker/podman executables absent. No VM installed. External R2 Linux review is historical external evidence only.",
-      "status": "NOT_EXECUTED"
-    },
-    "Windows": {
-      "numpy": "2.4.2",
-      "platform": "Windows-11-10.0.26200-SP0",
-      "python": "3.14.3",
-      "scipy": "1.17.1",
-      "status": "EXECUTED"
-    }
-  },
+  "stage": "Stage1B-R4",
   "weth": {
-    "actual_calltracer_access": "FREE_TIER_DENIED_NO_UPGRADE",
-    "historical_runtime_obtained": true,
-    "real_component_certified": false,
-    "real_conversion_enabled": false,
-    "separate_component": true,
-    "source_report": "derived/weth_context_r3/WETH_R3_REPORT.json",
-    "status": "OBSERVED_LOCAL_DEPOSIT_PATTERN_WITH_GAPS",
-    "verified_source_lookup_obtained": true
+    "basis": "Preserved complete archived Dune tree, request-bound whole receipt, unique EVM storage/log-emitter context and verified historical source/runtime",
+    "checks_passed": 12,
+    "checks_total": 12,
+    "new_requests": 0,
+    "real_component_certified": true,
+    "status": "CERTIFIED_LOCAL_WETH_DEPOSIT"
   }
 }

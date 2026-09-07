@@ -179,7 +179,7 @@ class RpcContextR1Tests(unittest.TestCase):
                 return Response(b'a' * 100)
         self_request = {}
         with patch('rpc_context_r1.urllib.request.build_opener', return_value=Opener()):
-            status, raw = http_transport({'jsonrpc': '2.0'}, 16)
+            status, raw = http_transport({'jsonrpc': '2.0'}, 16, work=self.work)
         self.assertEqual(len(raw), 17)
         self.assertEqual(self_request['timeout'], 30)
         self.assertEqual(self_request['url'], 'https://ethereum-rpc.publicnode.com')

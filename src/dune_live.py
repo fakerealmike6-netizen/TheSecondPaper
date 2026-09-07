@@ -7,11 +7,13 @@ from budget import Ledger
 from network import NoRedirect
 from page_attempts import AttemptStore, atomic_json, RequestBlocked
 from page_contract import validate_page, initial_progress, exact_count, PageContractError
+from legacy_guard_r4 import reject_legacy_workspace
 
 def dump(p,v):atomic_json(p,v)
 def read(p):return json.loads(p.read_text(encoding='utf-8'))
 class Live:
     def __init__(self,work):
+        reject_legacy_workspace(work, 'dune_live.Live')
         self.w=Path(work);self.db=Ledger(self.w/'private/shared_budget.sqlite')
         self.confirm=read(self.w/'private/dune_user_confirmation.json')
         assert self.confirm['status']=='USER_CONFIRMED' and self.confirm['execution_cap_credits']=='1'

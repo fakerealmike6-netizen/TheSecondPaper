@@ -10,6 +10,8 @@ import hashlib
 import json
 from collections import defaultdict
 from pathlib import Path
+from exact_fields_r4 import (ExactFieldError, exact_uint, field_uint,
+                             field_status, field_text, status_bool)
 
 
 class EvidenceConflict(ValueError):
@@ -19,9 +21,7 @@ class EvidenceConflict(ValueError):
 def integer(value, *, allow_none=False):
     if value is None and allow_none:
         return None
-    if isinstance(value, bool) or isinstance(value, float):
-        raise ValueError("Amounts and positions must be exact integers")
-    return int(value, 16) if isinstance(value, str) and value.startswith("0x") else int(value)
+    return exact_uint(value)
 
 
 def first(row, *keys, default=None):
@@ -29,13 +29,9 @@ def first(row, *keys, default=None):
 
 
 def truth(value):
-    if value in (True, 1, "1", "0x1", "true", "True"):
-        return True
-    if value in (False, 0, "0", "0x0", "false", "False"):
-        return False
     if value is None:
         return None
-    raise ValueError("Unrecognized success value")
+    return status_bool(value)
 
 
 def trace_path(value):
@@ -120,7 +116,7 @@ def normalize_rows(rows):
     A failed ancestor rolls back successful-looking descendants. Delegatecalls
     carry a call-context value but do not move that amount again.
     """
-    transactions, trace_rows, other, conflicts, excluded = {}, [], [], [], []
+    transactions, trace_rows, receipt_rows, other, conflicts, excluded = {}, [], [], [], [], []
 
     def merge(table, key, item, physical_fields):
         if key in table:
@@ -141,30 +137,41 @@ def normalize_rows(rows):
         if kind in ("block", "withdrawal", "protocol_credit", "fee_recipient", "coverage"):
             other.append(raw)
             continue
-        tx_hash = str(first(raw, "tx_hash", "hash", "transactionHash", default="")).lower()
-        if not tx_hash:
-            raise ValueError("Transaction fact missing tx hash")
-        block = integer(first(raw, "block_number", "block", "blockNumber"))
-        tx_index = integer(first(raw, "tx_index", "index", "transactionIndex"), allow_none=True)
-        sender = str(first(raw, "from_address", "sender", "from", default="")).lower()
-        recipient = first(raw, "to_address", "recipient", "to")
-        recipient = str(recipient).lower() if recipient else None
-        amount = integer(first(raw, "value_raw", "amount_raw", "value", default=0))
-        status = truth(first(raw, "success", "tx_success", "status"))
+        tx_hash = field_text(raw, ("tx_hash", "hash", "transactionHash"), required=True, lower=True)
+        is_receipt = kind == "receipt"
+        is_top = kind in ("transaction", "top", "tx", "receipt")
+        block = field_uint(raw, ("block_number", "block", "blockNumber"), required=not is_receipt)
+        tx_index = field_uint(raw, ("tx_index", "index", "transactionIndex"), required=False)
+        sender = field_text(raw, ("from_address", "sender", "from"), required=is_top and not is_receipt, lower=True)
+        recipient = field_text(raw, ("to_address", "recipient", "to"), lower=True)
+        # Receipt is explicitly non-value supplemental evidence. A real value
+        # record must never gain a made-up zero when its amount is absent/null.
+        amount = field_uint(raw, ("value_raw", "amount_raw", "value"), required=not is_receipt, strict_null=not is_receipt)
+        status = field_status(raw, ("success", "status", "tx_success") if is_top else ("success", "status"))
+        whole_tx_status = field_status(raw, ("tx_success",)) if not is_top else status
         evidence = _evidence_ids(raw, f"saved_row:{index}")
-        common = {"tx_hash": tx_hash, "block_number": block, "block_hash": first(raw, "block_hash", "blockHash"), "tx_index": tx_index, "sender": sender, "recipient": recipient, "amount_raw": str(amount), "success": status, "evidence_ids": evidence}
+        common = {"tx_hash": tx_hash, "block_number": block, "block_hash": field_text(raw, ("block_hash", "blockHash"), lower=True), "tx_index": tx_index, "sender": sender, "recipient": recipient, "amount_raw": str(amount) if amount is not None else None, "success": status, "evidence_ids": evidence}
         path = trace_path(first(raw, "trace_address", "traceAddress"))
         if kind in ("transaction", "top", "tx", "receipt"):
-            gas_used = integer(first(raw, "gas_used", "gasUsed"), allow_none=True)
-            gas_price = integer(first(raw, "effective_gas_price", "effectiveGasPrice", "gas_price", "gasPrice"), allow_none=True)
-            fee = integer(first(raw, "gas_raw", "fee_raw"), allow_none=True)
+            gas_used = field_uint(raw, ("gas_used", "gasUsed"), required=False)
+            gas_price = field_uint(raw, ("effective_gas_price", "effectiveGasPrice", "gas_price", "gasPrice"), required=False)
+            try:
+                fee = field_uint(raw, ("gas_raw", "fee_raw"), required=False)
+            except ExactFieldError as error:
+                if error.reason_code != "CONFLICT":
+                    raise
+                conflicts.append({"physical_id": "fee:" + tx_hash, "reason": "FEE_ALIAS_CONFLICT", "fields": error.field, "row": raw})
+                fee = None  # No inconsistent alias is adopted; conflict blocks LP.
             calculated = gas_used * gas_price if gas_used is not None and gas_price is not None else None
             if fee is not None and calculated is not None and fee != calculated:
                 conflicts.append({"physical_id": "fee:" + tx_hash, "reason": "gas arithmetic mismatch", "row": raw})
             common.update({"gas_used": gas_used, "effective_gas_price": gas_price, "fee_raw": str(calculated if calculated is not None else fee) if calculated is not None or fee is not None else None, "input_data": first(raw, "input_data", "input")})
-            merge(transactions, tx_hash, common, ("block_number", "block_hash", "tx_index", "sender", "recipient", "amount_raw", "success", "fee_raw"))
+            if is_receipt:
+                receipt_rows.append(common)
+            else:
+                merge(transactions, tx_hash, common, ("block_number", "block_hash", "tx_index", "sender", "recipient", "amount_raw", "success", "fee_raw"))
         elif kind in ("trace", "internal", "call", "create", "suicide", "selfdestruct"):
-            common.update({"trace_address": path, "trace_type": str(first(raw, "trace_type", "type", default=kind)).lower(), "call_type": str(first(raw, "call_type", "callType", default="call")).lower(), "error": raw.get("error"), "subtraces": integer(first(raw, "subtraces", "sub_traces"), allow_none=True), "ancestor_success_verified": raw.get("ancestor_success_verified", False)})
+            common.update({"trace_address": path, "trace_type": str(first(raw, "trace_type", "type", default=kind)).lower(), "call_type": str(first(raw, "call_type", "callType", default="call")).lower(), "error": raw.get("error"), "subtraces": field_uint(raw, ("subtraces", "sub_traces"), required=False), "ancestor_success_verified": raw.get("ancestor_success_verified") is True, "whole_tx_status": whole_tx_status})
             if common["trace_type"] in ("create", "create2"):
                 common["recipient"] = first(raw, "created_address", "address", default=recipient)
             elif common["trace_type"] in ("suicide", "selfdestruct"):
@@ -173,6 +180,12 @@ def normalize_rows(rows):
             trace_rows.append(common)
         else:
             excluded.append({"reason": "NON_NATIVE_OR_UNSUPPORTED_RECORD", "row": raw})
+    for receipt in receipt_rows:
+        tx_hash = receipt["tx_hash"]
+        if tx_hash in transactions:
+            merge(transactions, tx_hash, receipt, ("block_number", "block_hash", "tx_index", "sender", "recipient", "amount_raw", "success", "fee_raw", "gas_used", "effective_gas_price"))
+        else:
+            excluded.append({"reason": "RECEIPT_ONLY_NON_VALUE_EVIDENCE", "row": receipt})
     traces = {}
     for row in trace_rows:
         if row["trace_address"] is None:
@@ -189,8 +202,28 @@ def normalize_rows(rows):
         root = traces.get(tx_hash + ":")
         if tx["recipient"] is None and root and root["trace_type"] in ("create", "create2"):
             tx["recipient"] = root["recipient"]
+    quarantined_transactions = set()
+    for tx_hash, tx in transactions.items():
+        root = traces.get(tx_hash + ":")
+        if root is None:
+            continue
+        # The root describes the same physical operation. Compare before any
+        # failed-frame filtering, which only applies after facts are consistent.
+        mismatches = [field for field in ("block_number", "block_hash", "tx_index", "sender", "recipient", "amount_raw", "success") if tx.get(field) is not None and root.get(field) is not None and tx[field] != root[field]]
+        if root.get("whole_tx_status") is not None and tx["success"] is not None and root["whole_tx_status"] != tx["success"]:
+            mismatches.append("whole_tx_status")
+        if root.get("error") and (tx["success"] is True or root["success"] is True):
+            mismatches.append("root_error_vs_success")
+        if mismatches:
+            conflicts.append({"physical_id": tx_hash + ":top", "reason": "ROOT_TRACE_TOP_CONFLICT", "fields": sorted(set(mismatches)), "left": tx, "right": root})
+            quarantined_transactions.add(tx_hash)
+        elif root["success"] is None:
+            excluded.append({"reason": "ROOT_SUCCESS_EVIDENCE_MISSING", "row": root})
     flows = {}
     for tx_hash, tx in transactions.items():
+        if tx_hash in quarantined_transactions:
+            excluded.append({"reason": "CONFLICTING_TRANSACTION_VALUE_QUARANTINED", "tx_hash": tx_hash, "fee_retained": tx["fee_raw"] is not None})
+            continue
         if tx["success"] is True and integer(tx["amount_raw"]) > 0:
             event = dict(tx, event_id=f"eip155:1:tx:{tx_hash}:top", flow_kind="top", trace_address=[])
             flows[event["event_id"]] = event
@@ -198,6 +231,9 @@ def normalize_rows(rows):
             excluded.append({"reason": "FAILED_OR_UNKNOWN_TOP_VALUE", "tx_hash": tx_hash, "success": tx["success"], "fee_retained": tx["fee_raw"] is not None})
     for row in traces.values():
         tx_hash, path = row["tx_hash"], row["trace_address"]
+        if tx_hash in quarantined_transactions:
+            excluded.append({"reason": "CONFLICTING_TRANSACTION_TRACE_QUARANTINED", "row": row})
+            continue
         if row["call_type"] in ("delegatecall", "callcode", "staticcall"):
             excluded.append({"reason": "CALL_CONTEXT_VALUE_NOT_PHYSICAL_TRANSFER", "row": row})
             continue
@@ -207,6 +243,9 @@ def normalize_rows(rows):
             continue
         ancestors = [traces.get(tx_hash + ":" + ",".join(map(str, path[:length]))) for length in range(len(path))]
         failed = any(parent and (parent["success"] is False or parent["error"]) for parent in ancestors)
+        if row["success"] is None and not row["error"] and not failed:
+            excluded.append({"reason": "TRACE_SUCCESS_EVIDENCE_MISSING", "row": row})
+            continue
         if row["success"] is not True or row["error"] or failed:
             excluded.append({"reason": "FAILED_FRAME_OR_ANCESTOR_ROLLBACK", "row": row})
             continue
@@ -233,7 +272,7 @@ def normalize_rows(rows):
             block = integer(first(row, "block_number", "block"))
             withdrawal_index = integer(row["withdrawal_index"])
             event_id = f"eip155:1:withdrawal:{withdrawal_index}"
-            item = {"event_id": event_id, "tx_hash": f"protocol:eip155:1:block:{block}:withdrawals", "block_number": block, "block_hash": row.get("block_hash"), "tx_index": 2147483647, "sender": None, "recipient": first(row, "to_address", "address").lower(), "amount_raw": str(integer(first(row, "value_raw", "amount_raw"))), "success": True, "evidence_ids": _evidence_ids(row, event_id), "flow_kind": "internal", "trace_address": [withdrawal_index], "protocol_role": "BLOCK_END_WITHDRAWAL"}
+            item = {"event_id": event_id, "tx_hash": f"protocol:eip155:1:block:{block}:withdrawals", "block_number": block, "block_hash": row.get("block_hash"), "tx_index": 2147483647, "sender": None, "recipient": field_text(row, ("to_address", "address"), required=True, lower=True), "amount_raw": str(field_uint(row, ("value_raw", "amount_raw"), strict_null=True)), "success": True, "evidence_ids": _evidence_ids(row, event_id), "flow_kind": "internal", "trace_address": [withdrawal_index], "protocol_role": "BLOCK_END_WITHDRAWAL"}
             merge(flows, event_id, item, ("block_number", "recipient", "amount_raw"))
     return {"transactions": list(transactions.values()), "flows": list(flows.values()), "other_rows": other, "excluded": excluded, "conflicts": conflicts}
 
@@ -242,7 +281,7 @@ def coverage_complete(coverage, address, first_block, last_block, required_types
     """Check each required type's contiguous union; net residual proves no coverage."""
     detail = {}
     for data_type in required_types:
-        intervals = sorted((integer(r["start_block"]), integer(r["end_block"])) for r in coverage if r.get("address", "").lower() == address.lower() and r.get("data_type") == data_type and r.get("status") == "COMPLETE" and r.get("pagination_complete") is True and r.get("evidence_ids"))
+        intervals = sorted((integer(r["start_block"]), integer(r["end_block"])) for r in coverage if r.get("address", "").lower() == address.lower() and r.get("data_type") == data_type and r.get("status") == "COMPLETE" and r.get("pagination_complete") is True and r.get("evidence_ids") and (not r.get("provider_frozen_scope") or (r.get("date_domain_verified") is True and r.get("block_domain_verified") is True)))
         cursor = first_block
         for start, end in intervals:
             if start > cursor:
@@ -283,7 +322,7 @@ def assemble_model(graph, target_query, normalized, anchors, coverage, *, name=N
             provenance.append({"fact_id": f"native_protocol:{kind}:{first(row, 'block_number', 'block')}:{key}", "fact_type": "NATIVE_PROTOCOL_CHANGE", "used": False, "reason": "Additional exact native-credit accounting required; affected account remains partial", "evidence_ids": _evidence_ids(row, "native_protocol_row")})
     for exclusion in normalized["excluded"]:
         reason = exclusion["reason"]
-        if reason in ("TRACE_PATH_MISSING_NO_HASH_ORDER", "ANCESTOR_SUCCESS_EVIDENCE_MISSING") or (reason == "FAILED_OR_UNKNOWN_TOP_VALUE" and exclusion.get("success") is None):
+        if reason in ("TRACE_PATH_MISSING_NO_HASH_ORDER", "ANCESTOR_SUCCESS_EVIDENCE_MISSING", "ROOT_SUCCESS_EVIDENCE_MISSING", "TRACE_SUCCESS_EVIDENCE_MISSING") or (reason == "FAILED_OR_UNKNOWN_TOP_VALUE" and exclusion.get("success") is None):
             row = exclusion.get("row", {})
             relevant_accounts = {account(row.get(k)) for k in ("sender", "recipient")} & modeled
             for key in relevant_accounts or {None}:
@@ -390,7 +429,7 @@ def assemble_model(graph, target_query, normalized, anchors, coverage, *, name=N
     transactions.sort(key=lambda tx: (tx["block_number"], tx["tx_index"]))
     for tx in transactions:
         tx["flows"].sort(key=lambda flow: (0 if flow["flow_kind"] == "top" else 1, tuple(flow["trace_address"])))
-    if sum(flow["role"] == "SEED" for tx in transactions for flow in tx["flows"]) != 1:
+    if sum(flow["role"] == "SEED" for tx in transactions for flow in tx["flows"]) != 1 and not conflicts:
         raise ValueError("Frozen seed must appear exactly once in the reconstructed ledger")
     model_anchors = []
     for key, window in windows.items():
@@ -572,6 +611,7 @@ def replay_manifest(manifest_path, bundle_root, name, output):
     for context_job in selected.get("context_jobs", []):
         from dune_batch_r1 import verified_raw
         from page_contract import initial_progress, validate_page
+        from context_queries_r3 import verify_frozen_scope
         frozen, frozen_identity = verified(context_job["freeze"])
         job, job_identity = verified(context_job["job"])
         job_folder = (root / context_job["job"]["path"]).parent
@@ -579,6 +619,8 @@ def replay_manifest(manifest_path, bundle_root, name, output):
         sql_identity = file_identity(sql_path)
         if not job_folder.is_relative_to(root) or job.get("kind") != "context" or job.get("sql_sha256") != frozen["sql_sha256"] or sql_identity["sha256"] != frozen["sql_sha256"] or job.get("scope_freeze_sha256") != context_job["freeze"]["sha256"]:
             raise EvidenceConflict("Context job not bound to frozen SQL and scope")
+        verified_headers = {number: {"block_number": number, "block_hash": envelope["response"]["result"]["hash"], "timestamp": integer(envelope["response"]["result"]["timestamp"]), "evidence_ids": evidence} for number, (envelope, evidence) in block_envelopes.items()}
+        domain_validation = verify_frozen_scope(root/context_job["freeze"]["path"], root, block_headers=verified_headers, sql_path=sql_path)
         submit, status = verified_raw(job["submit_receipt"], root), verified_raw(job["status_receipt"], root)
         execution = job["execution_id"]
         if submit != job["submit_response"] or status != job["status_response"] or submit.get("execution_id") != execution or status.get("execution_id") != execution or status.get("state") != "QUERY_STATE_COMPLETED":
@@ -606,7 +648,7 @@ def replay_manifest(manifest_path, bundle_root, name, output):
             expected = next((r for r in target_query["rows"] if r["address"] == window["address"]), None)
             if expected is None or window["ledger_start_block"] < expected["ledger_start_block"] or window["ledger_end_block"] > expected["ledger_end_block"]:
                 raise EvidenceConflict("Frozen context coverage is not the declared account window")
-            coverage.extend({"address": window["address"], "data_type": kind, "start_block": window["ledger_start_block"], "end_block": window["ledger_end_block"], "pagination_complete": True, "status": "COMPLETE", "evidence_ids": evidence, "execution_id": execution} for kind in window["required_coverage"])
+            coverage.extend({"address": window["address"], "data_type": kind, "start_block": window["ledger_start_block"], "end_block": window["ledger_end_block"], "pagination_complete": True, "status": "COMPLETE", "evidence_ids": evidence, "execution_id": execution, "provider_frozen_scope": True, "date_domain_verified": domain_validation["date_domain_verified"], "block_domain_verified": domain_validation["block_domain_verified"]} for kind in window["required_coverage"])
     normalized = normalize_rows(rows)
     for fact in normalized["transactions"] + normalized["flows"]:
         header = block_envelopes.get(fact["block_number"])
