@@ -1,0 +1,7 @@
+# R4-F05-R1 repair closure
+
+The original unmodified synthetic fixture requests TOKEN_A amount 17 without a log index. A complete receipt supplies that ERC20 at log7 and an unrelated NFT_B ERC721 Transfer at log8. Fixed R4 rejects this normal input with receipt.Transfer.encoding and fetch complete=false. The revision returns exactly the required 17/log7 event, no gaps, and complete=true. Reversing the log array has the same result.
+
+Receipt and every log retain shared transaction/block/hash/index checks, valid emitter identity, global logIndex uniqueness and removed-state validation. Required contracts are determined from the index rows before ERC20-specific parsing. Only unrelated contract logs bypass ERC20 shape parsing; malformed required ERC20 is not silently skipped. Required amount/address padding/format/association errors and quantity discrepancies remain incomplete. Equal values at different positions remain distinct. No NFT tracker or same-contract mixed-standard feature was added.
+
+28 new receipt tests cover pure/mixed/zero/multiple-unrelated positive cases, permutations, required corruption, unrelated-log identity/position/removed contradictions, multiplicity and the full EtherscanProvider.fetch_interval path. The caller already propagates gaps correctly and needs no source change. See REPAIR_CLOSURE.json for hashes and private evidence paths. Original observation scripts/results/fixture remain unchanged; the parameterized runner is a separate file with a diff.

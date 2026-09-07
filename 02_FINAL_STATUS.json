@@ -1,7 +1,12 @@
 {
-  "alchemy_cu_upper_bound": "3100",
-  "checkpoint_target": "CHECKPOINT_1B_R4_REACHED",
-  "delivery_status": "PAYLOAD_REGRESSION_PASSED_FINAL_ZIP_AND_PUBLICATION_RESULTS_ARE_EXTERNAL",
+  "schema_version": "stage1b-r4-r1-status-v1",
+  "stage": "Stage1B-R4-R1",
+  "checkpoint_target": "CHECKPOINT_1B_R4_R1_REACHED",
+  "delivery_status": "PAYLOAD_CHECKED_FINAL_ARCHIVE_AND_PUBLICATION_RECEIPTS_ARE_EXTERNAL",
+  "repair_status": "FIXED_AND_TESTED",
+  "new_provider_requests": 0,
+  "new_usage_requests": 0,
+  "new_research_fees": 0,
   "dune_cumulative": {
     "cumulative_risk": "47.167873093",
     "export_upper_not_actual": "15.000000000",
@@ -9,13 +14,8 @@
     "remaining": "52.832126907",
     "unknown_or_pending_risk": "9.322521690"
   },
-  "external_acceptance_status": "PENDING_REVIEW",
-  "historical_provenance_gaps": 582,
-  "linux": "NOT_RUN_NO_INSTALLED_ENVIRONMENT",
-  "metasleuth_new_requests": 0,
-  "new_provider_cost": 0,
-  "new_provider_requests": 0,
-  "next_stage_authorized": false,
+  "rpc_cumulative_operations": "160",
+  "alchemy_cu_upper_bound": "3100",
   "real_inputs": {
     "Atomic": {
       "accounts": 5,
@@ -32,8 +32,6 @@
       "value_events": 57
     }
   },
-  "repair_status": "NINE_FIXED_AND_TESTED",
-  "rpc_cumulative_operations": "160",
   "same_input_amounts": [
     {
       "joint": {
@@ -64,13 +62,25 @@
       "same_input_amounts_equal": true
     }
   ],
-  "stage": "Stage1B-R4",
+  "same_input_replay_passed": true,
   "weth": {
-    "basis": "Preserved complete archived Dune tree, request-bound whole receipt, unique EVM storage/log-emitter context and verified historical source/runtime",
+    "certification": "CERTIFIED_LOCAL_WETH_DEPOSIT",
     "checks_passed": 12,
     "checks_total": 12,
-    "new_requests": 0,
-    "real_component_certified": true,
-    "status": "CERTIFIED_LOCAL_WETH_DEPOSIT"
-  }
+    "predicate_implementation_unchanged": true,
+    "materials": {
+      "status": "PASS",
+      "material_status": "VERIFIED_ORIGINAL_SHARED_BODY",
+      "original_body_available": true,
+      "original_body_sha256": "c22430d52fd472458dc477c28a862986b0e2b54d2d4971770f78287033d006e7",
+      "original_body_bytes": 25319,
+      "members_verified": 5,
+      "successful_members": 4,
+      "error_members": 1
+    }
+  },
+  "historical_provenance_gaps": 582,
+  "linux": "NOT_RUN_THIS_REVISION",
+  "external_acceptance_status": "PENDING_REVIEW",
+  "next_stage_started": false
 }

@@ -1,7 +1,0 @@
-# Fixed WETH component
-
-Actual result: CERTIFIED_LOCAL_WETH_DEPOSIT, 12/12 unchanged predicates, external acceptance PENDING_REVIEW. This is one isolated canonical WETH 150 ETH deposit, with a 1:1 native-input/WETH-credit source relation. It certifies no surrounding protocol, bridge or cross-chain behavior and introduces no new funds.
-
-The original complete Dune transaction trace query and execute/status/result receipts bind all five frames. The full request-bound receipt contains three logs, exactly one emitted by canonical WETH. CALL and DELEGATECALL execution/storage contexts show exactly one canonical-WETH emitter context: the fixed successful leaf. Its caller, entrypoint, value, transaction, block and log identity all agree. Verified historical source/runtime independently proves deposit semantics. The complete context proof supplies the same unique log-to-frame predicate; it does not populate frame.logs.
-
-Tests reject missing frames, filtered queries, unsupported types, reverts, wrong roots/callers/transactions/logs, duplicate Deposit events, a second WETH context, and absent source semantics. The old R3 result remains 11/12. The old explorer request-envelope gap remains explicitly historical; current native evidence comes from the independently bound archived Dune CALL row. The known Free-tier trace-RPC rejection remains and was not retried. New provider requests/cost: zero. Detailed proof: docs/R4_WETH_UNIQUE_EMITTER_BINDING.md.

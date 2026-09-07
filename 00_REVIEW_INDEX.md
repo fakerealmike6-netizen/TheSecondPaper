@@ -1,13 +1,15 @@
-# R4 review index
+# Stage1B-R4-R1 review index
 
-1. `03_REPAIR_CLOSURE_MATRIX.json` / `.md`: F01–F09 code, regressions, callers and historical scope.
-2. `04_RETRY_POLICY_AND_FAULT_TESTS.md`: E01 durable recovery and retained risk.
-3. `05_SAME_INPUT_REPLAY_AND_AMOUNT_DIFF.md`: original R3, current evidence-to-model and nested relaxation.
-4. `06_HISTORICAL_LABEL_AND_CACHE_IMPACT.md`: F03/F06/F07/F08 historical corrections versus unresolved support.
-5. `07_WETH_REMAINING_GAPS_OR_CERTIFICATION.md`: actual fixed-component proof and limits.
-6. `08_BUDGET_AND_REQUEST_LEDGER.md`, `09_TEST_RESULTS.json`: cumulative accounting and actual tests.
-7. `src/validate_review_bundle_r4.py`: no-network/no-credential reproduction entry point.
+Active checkpoint: CHECKPOINT_1B_R4_R1_REACHED. External acceptance: PENDING_REVIEW.
 
-MIN additionally includes exact saved response closures, anchors, account ledgers, fees, constraint mappings, endpoint witnesses, original counterexamples/results and code diffs. It excludes the full label library. The original inner review ZIP containers are not published.
+This is the narrow R4-F05-R1 mixed-receipt correction on the fixed R4 parent. No research-provider or usage request is authorized or performed in this revision.
 
-External `PUBLICATION_RECEIPT.json`, `FINAL_VALIDATION_RESULTS.json` and `REVIEW_HANDOFF.md` bind final public identity, both ZIPs and their actual extracted validation. External acceptance remains PENDING_REVIEW.
+- 03_RECEIPT_REGRESSION_CLOSURE.md and REPAIR_CLOSURE.json: same-fixture old failure/new success, strict controls and source identities.
+- 04_SAME_INPUT_AND_WETH_MATERIALS.md: unchanged ETH results and existing WETH shared-body supplement.
+- 05_TEST_RESULTS.json: actual baseline/current tests, same-input replay and failure controls.
+- src/validate_review_bundle_r4_r1.py: guarded extracted-bundle reproduction.
+- configs/VALIDATION_R4_R1.md: commands and scope.
+
+MIN contains saved chain evidence, per-row ledger/anchor/fee/constraint/witness inputs, the exact supplied review evidence, original observations, the parameterized observation script and diffs. Historical R4 root reports are preserved under baseline/r4_reports; they describe their original artifact and are not current status. The full historical label library is excluded.
+
+External PUBLICATION_RECEIPT.json, FINAL_VALIDATION_RESULTS.json and REVIEW_HANDOFF.md bind the fixed public version and both final ZIPs without an internal hash cycle. The private handoff ZIP is for external acceptance only.

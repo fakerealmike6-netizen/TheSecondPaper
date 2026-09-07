@@ -113,6 +113,7 @@ class ReceiptEnricher:
                     gaps.append({"reason":"TOKEN_RECEIPT_NOT_SUCCESSFUL", "tx_hash":tx})
                     continue
                 expected = Counter(_transfer_key(row) for row in txrows)
+                required_contracts = {key[0] for key in expected}
                 by_key, observed, seen_indices = defaultdict(list), Counter(), set()
                 logs = receipt.get("logs")
                 if not isinstance(logs, list): raise ExactFieldError("INVALID", "receipt.logs")
@@ -122,17 +123,28 @@ class ReceiptEnricher:
                     log_index = _number(log, ("logIndex","log_index"), True)
                     if log_index in seen_indices: raise ExactFieldError("CONFLICT", "DUPLICATE_RECEIPT_LOG_INDEX")
                     seen_indices.add(log_index)
+                    # Identity, emitter, global position and removal apply to
+                    # every log, including logs outside this ERC20 request.
+                    contract = field_text(log,("address",),required=True,lower=True)
+                    if not re.fullmatch(r"0x[0-9a-f]{40}",contract): raise ExactFieldError("INVALID", "receipt.Transfer.address")
                     topics = log.get("topics", [])
                     if not isinstance(topics,list): raise ExactFieldError("INVALID", "receipt.log.topics")
+                    if "removed" in log:
+                        removed = log["removed"]
+                        if type(removed) is not bool and not (isinstance(removed,str) and removed.lower() in ("true","false")):
+                            raise ExactFieldError("INVALID", "receipt.log.removed")
+                        if removed is True or isinstance(removed,str) and removed.lower() == "true":
+                            raise ExactFieldError("CONFLICT", "receipt.log.removed")
+                    # Contract relevance precedes ERC20 shape. Another emitter
+                    # may use the Transfer signature with a different standard;
+                    # it neither supplies nor invalidates this contract's rows.
+                    if contract not in required_contracts:
+                        continue
                     if not topics or not isinstance(topics[0],str) or topics[0].lower() != TRANSFER_TOPIC:
                         continue
-                    if log.get("removed") is True or str(log.get("removed", "false")).lower() == "true":
-                        raise ExactFieldError("CONFLICT", "receipt.log.removed")
                     if len(topics) != 3 or any(not isinstance(t,str) or not re.fullmatch(r"0x[0-9a-fA-F]{64}",t) for t in topics) or not isinstance(log.get("data"),str) or not re.fullmatch(r"0x[0-9a-fA-F]{64}",log["data"]):
                         raise ExactFieldError("INVALID", "receipt.Transfer.encoding")
                     if any(int(t[2:26],16) for t in topics[1:]): raise ExactFieldError("INVALID", "receipt.Transfer.addressPadding")
-                    contract = field_text(log,("address",),required=True,lower=True)
-                    if not re.fullmatch(r"0x[0-9a-f]{40}",contract): raise ExactFieldError("INVALID", "receipt.Transfer.address")
                     key = (contract, "0x"+topics[1][-40:].lower(), "0x"+topics[2][-40:].lower(), exact_uint(log["data"]))
                     if key in expected:
                         observed[key] += 1

@@ -1,16 +1,15 @@
-# Stage1B-R4 review source
+# Stage1B-R4-R1 review index
 
-Nine repairs, durable bounded read recovery, and same-input context validation.
-External acceptance: PENDING_REVIEW. Stop at CHECKPOINT_1B_R4_REACHED.
+Active checkpoint: CHECKPOINT_1B_R4_R1_REACHED. External acceptance: PENDING_REVIEW.
 
-The fixed parent is R3 commit 83507f2660462508233121e1069478a05298a866; main is not the baseline. Publication is append-only.
+This is the narrow R4-F05-R1 mixed-receipt correction on the fixed R4 parent. No research-provider or usage request is authorized or performed in this revision.
 
-After extracting the public bundle, run:
-```
-python -B src/validate_review_bundle_r4.py --tree . --kind public --output ../r4_public_validation
-```
-For the private MIN use `--kind min`. Output must be a new directory outside the frozen input. The validator removes credentials, blocks network access, guards Python children and restricts writes to that output. Python plus requirements.txt dependencies must already be installed.
+- 03_RECEIPT_REGRESSION_CLOSURE.md and REPAIR_CLOSURE.json: same-fixture old failure/new success, strict controls and source identities.
+- 04_SAME_INPUT_AND_WETH_MATERIALS.md: unchanged ETH results and existing WETH shared-body supplement.
+- 05_TEST_RESULTS.json: actual baseline/current tests, same-input replay and failure controls.
+- src/validate_review_bundle_r4_r1.py: guarded extracted-bundle reproduction.
+- configs/VALIDATION_R4_R1.md: commands and scope.
 
-Windows Python 3.14.3 was actually tested. Linux was not available and is not claimed tested. The public bundle contains code, synthetic tests and sanitized summaries; real response evidence and account accounting are private. Both source copies are explicitly hash mapped by PUBLIC_LOCAL_EQUIVALENCE.json.
+MIN contains saved chain evidence, per-row ledger/anchor/fee/constraint/witness inputs, the exact supplied review evidence, original observations, the parameterized observation script and diffs. Historical R4 root reports are preserved under baseline/r4_reports; they describe their original artifact and are not current status. The full historical label library is excluded.
 
-Begin with 00_REVIEW_INDEX.md and 03_REPAIR_CLOSURE_MATRIX.json. Final commit, downloaded public asset hash and extracted-ZIP validation are in the external publication/validation receipts, avoiding hash cycles.
+External PUBLICATION_RECEIPT.json, FINAL_VALIDATION_RESULTS.json and REVIEW_HANDOFF.md bind the fixed public version and both final ZIPs without an internal hash cycle. The private handoff ZIP is for external acceptance only.

@@ -1,9 +1,0 @@
-# Historical impact and remaining support
-
-F03: all 3 old context SQL jobs / 28 account windows / 43 saved block headers pass the fixed block-and-date scope checks. Original SQL and raw files remain unchanged; no missing interval needed recollection.
-
-F06: 382 existing files (182 unique byte versions) yielded 644146 materialized row appearances, including 583142 retained-branch appearances. Deduplication identified 97058 retained result versions / 97027 addresses. There are 528 provenance corrections: 519 conflicted-identity records remove unsupported adopted sources; 9 retained boundary records recover matching old support. Another 582 retain an explicit HISTORICAL_EVIDENCE_GAP. Actor, role and first-service-stop changes are all zero. Neither of the two probe graphs/targets intersects the affected addresses. Full scan and correction index remain local; MIN includes finite summaries, affected IDs and pilot intersections, not the entire label library.
-
-F07: five saved successful label batches bind the original frozen ten-address lists. None of 210 old outcome rows promotes a provider failure to success. Fifty explicit saved success outcomes were regenerated. One chain-list capability response was excluded using its recorded endpoint. An earlier overbroad draft remains local but its counts are not the final result. New MetaSleuth requests: 0.
-
-F08: 314 existing artifacts were classified without changing bytes: 310 earlier successful source artifacts, 2 synthetic cache fixtures and 2 original Stage1B zero-byte URLError preflights. No real account-page transient error cache was present. Complete recorded attempt histories can migrate; unknown historical counts remain unresolved instead of receiving a new allowance. R4 also imports and revalidates all 155 R3 RPC attempts and the three successful R3 Dune pages, with original financial risk retained.
