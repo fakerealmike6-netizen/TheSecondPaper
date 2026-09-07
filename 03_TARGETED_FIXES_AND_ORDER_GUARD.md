@@ -1,0 +1,9 @@
+# Three directed corrections
+
+R2A: src/event_order.py now supplies the necessary-order check to both cache_probe.fixed_graph and dune_observed_replay.live_fixed_graph. A same-block shared-balance dependency without observed tx_index remains ORDER_UNRESOLVED_MODEL_NOT_SOLVABLE. Changing a synthetic transaction hash cannot create an exact interval. The two observed-order controls yield upper bounds 100 and 10; independent events do not trigger an unnecessary global rejection. All four original saved graphs, 85 event entries and their graph/LP semantics remain unchanged under the repaired code.
+
+R2B: legitimate Python subprocess and posix_spawn dispatch preserve the guard while removing both inherited and explicitly supplied provider credentials before child/grandchild execution. Nested bootstrap recovery handles a masked sitecustomize. Network/DNS, command and write protections remain active; no test was deleted. The original 20 validator tests and four new directed cases passed on Windows. Native Linux posix_spawn execution is NOT_EXECUTED; Windows synthetic dispatch coverage is not described as Linux testing.
+
+R2C: payload equivalence excludes itself, manifests, publication receipts, final archives, sidecars and the external handoff. Freeze reviewed payloads and equivalence, write manifests, create/validate the public ZIP and fixed Git tree, publish and verify the remote asset, insert the late publication receipt only into MIN, then create/validate MIN and external sidecars/handoff. Generated objects are never represented by stale payload hashes. Original historical packages and tags remain unchanged.
+
+The prior four defects received the 29-case original external regression only; this revision did not open a broad new research audit. Source identity/diffs and the original failed invocation records are retained privately. CONTINUATION_GATE is an internal correctness gate, not scientific acceptance.

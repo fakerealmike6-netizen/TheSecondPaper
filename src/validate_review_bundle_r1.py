@@ -53,16 +53,71 @@ def read(path):return json.loads(Path(path).read_text(encoding='utf-8'))
 def write(path,value):
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
-OFFLINE_SITE = r'''import os,socket,sys,subprocess,shlex
+OFFLINE_SITE = r'''import os,socket,sys,subprocess,shlex,inspect,hashlib
 from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import url2pathname
+secret_parts=('API_KEY','TOKEN','CREDENTIAL','PASSWORD','SECRET','AUTHORIZATION','ACCESS_KEY','PRIVATE_KEY')
 for key in list(os.environ):
-    if any(x in key.upper() for x in ('API_KEY','TOKEN','CREDENTIAL','PASSWORD','SECRET','AUTHORIZATION','ACCESS_KEY','PRIVATE_KEY')):os.environ.pop(key,None)
+    if any(x in key.upper() for x in secret_parts):os.environ.pop(key,None)
 def deny(*a,**k):raise RuntimeError('OFFLINE_VALIDATION_NETWORK_FORBIDDEN')
 socket.create_connection=deny;socket.socket.connect=deny;socket.socket.connect_ex=deny;socket.getaddrinfo=deny;socket.gethostbyname=deny;socket.gethostbyname_ex=deny
 output=Path(os.environ['REVIEW_VALIDATION_OUTPUT']).resolve()
 tree=Path(os.environ['REVIEW_VALIDATION_TREE']).resolve()
+runtime=Path(__file__).resolve()
+runtime_hash=hashlib.sha256(runtime.read_bytes()).hexdigest()
+inherited={key:os.environ[key] for key in ('REVIEW_VALIDATION_OUTPUT','REVIEW_VALIDATION_TREE','PYTHONPATH','TMP','TEMP','TMPDIR')}
+def child_environment(value):
+    # Sanitize immediately before every dispatch, including credentials injected
+    # after startup by a synthetic test. Never mutate the caller's environment.
+    env={k:v for k,v in (os.environ if value is None else value).items() if not any(x in k.upper() for x in secret_parts)}
+    for key,val in inherited.items():env.setdefault(key,val)
+    child_output=Path(env['REVIEW_VALIDATION_OUTPUT']).resolve()
+    if not child_output.is_relative_to(output):raise PermissionError('Child output widens offline write boundary')
+    bootstrap=Path(env['PYTHONPATH']).resolve()/'sitecustomize.py'
+    if not bootstrap.is_relative_to(output) or hashlib.sha256(bootstrap.read_bytes()).hexdigest()!=runtime_hash:
+        raise PermissionError('Child must inherit the verified offline bootstrap')
+    for key in ('TMP','TEMP','TMPDIR'):
+        if not Path(env[key]).resolve().is_relative_to(child_output):raise PermissionError('Child temporary directory escapes its output')
+    env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',PYTHONIOENCODING='utf-8')
+    return env
+def python_dispatch(executable,command,env):
+    if isinstance(command,str):raise PermissionError('Offline Python dispatch requires an argument list')
+    if not command:raise PermissionError('Empty Python command')
+    executable=executable or command[0]
+    if Path(executable).resolve()!=Path(sys.executable).resolve():raise PermissionError('Only inherited offline Python subprocesses allowed')
+    # These startup flags suppress PYTHONPATH/sitecustomize. Their combined
+    # forms must be rejected too; arguments after -c/-m/script are ordinary data.
+    options=iter(command[1:])
+    for arg in options:
+        arg=os.fsdecode(arg)
+        if arg in ('-c','-m','--','-') or not arg.startswith('-'):break
+        if arg in ('-W','-X'):
+            next(options,None);continue
+        if arg.startswith(('-W','-X')):continue
+        if any(flag in arg[1:] for flag in ('S','I','E')):raise PermissionError('Python startup cannot suppress the offline guard')
+    checked=child_environment(env)
+    if env is not None and checked!=dict(env):raise PermissionError('Unsanitized Python environment at audit boundary')
+
+# Popen and direct posix_spawn use the same executable/argv/environment policy.
+# Retain Python's platform-selected implementation instead of disabling spawn.
+original_popen_init=subprocess.Popen.__init__
+popen_signature=inspect.signature(original_popen_init)
+def guarded_popen_init(self,*args,**kwargs):
+    bound=popen_signature.bind(self,*args,**kwargs)
+    if bound.arguments.get('shell',False):raise PermissionError('External shell dispatch is not permitted by offline validation')
+    bound.arguments['env']=child_environment(bound.arguments.get('env'))
+    python_dispatch(bound.arguments.get('executable'),bound.arguments['args'],bound.arguments['env'])
+    return original_popen_init(*bound.args,**bound.kwargs)
+guarded_popen_init.__signature__=popen_signature
+subprocess.Popen.__init__=guarded_popen_init
+def guarded_spawn(original):
+    def dispatch(path,argv,env,**kwargs):
+        env=child_environment(env);python_dispatch(path,argv,env)
+        return original(path,argv,env,**kwargs)
+    return dispatch
+for spawn_name in ('posix_spawn','posix_spawnp'):
+    if hasattr(os,spawn_name):setattr(os,spawn_name,guarded_spawn(getattr(os,spawn_name)))
 def write_target(value):
     if isinstance(value,int):return
     value=os.fsdecode(value)
@@ -83,13 +138,31 @@ def audit(name,args):
         write_target(args[0]);write_target(args[1])
     elif name in ('socket.connect','socket.getaddrinfo','socket.gethostbyname','socket.gethostbyaddr'):deny()
     elif name=='subprocess.Popen':
-        executable=args[0]
-        if executable is None:
-            command=args[1];executable=shlex.split(command,posix=False)[0].strip('"') if isinstance(command,str) else command[0]
-        if Path(executable).resolve()!=Path(sys.executable).resolve():raise PermissionError('Only inherited offline Python subprocesses allowed')
-    elif name in ('os.system','os.posix_spawn','os.posix_spawnp'):raise PermissionError('External shell dispatch is not permitted by offline validation')
+        executable,command,cwd,env=args
+        # Windows emits its already-quoted command line at this audit event;
+        # guarded_popen_init checked the original argument list beforehand.
+        if isinstance(command,str):
+            if Path(executable or shlex.split(command,posix=False)[0].strip('"')).resolve()!=Path(sys.executable).resolve():raise PermissionError('Only inherited offline Python subprocesses allowed')
+            if child_environment(env)!=dict(env):raise PermissionError('Unsanitized Python environment at audit boundary')
+        else:python_dispatch(executable,command,env)
+    elif name in ('os.posix_spawn','os.posix_spawnp'):python_dispatch(args[0],args[1],args[2])
+    elif name=='os.system':raise PermissionError('External shell dispatch is not permitted by offline validation')
 sys.addaudithook(audit)
 '''
+
+# Load the exact bundled guard even if a host startup hook masks sitecustomize.
+# Register its canonical module name so nested probes can verify inheritance.
+GUARDED_LAUNCH = """import importlib.util,runpy,sys
+from pathlib import Path
+guard,script,*arguments=sys.argv[1:]
+prior=sys.modules.get('sitecustomize')
+if not prior or Path(getattr(prior,'__file__','')).resolve()!=Path(guard).resolve():
+    spec=importlib.util.spec_from_file_location('sitecustomize',guard)
+    module=importlib.util.module_from_spec(spec);sys.modules['sitecustomize']=module
+    spec.loader.exec_module(module)
+sys.path.insert(0,str(Path(script).parent))
+sys.argv=[script,*arguments];runpy.run_path(script,run_name='__main__')
+"""
 
 DEFAULTS={
  'reference':{'data':'private/reference_replay','identity':'baseline_derived/reference_identity_stage1b_slice.csv.gz','expected':'baseline_derived/reference_summary_by_scenario.json'},
@@ -281,8 +354,8 @@ class Validator:
     def command(self,name,script,args):
         source=input_path(self.mirror,script)
         try:
-            result=subprocess.run([sys.executable,'-B',str(source),*map(str,args)],cwd=self.mirror,
-                                  env=self.env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=600)
+            result=subprocess.run([sys.executable,'-B','-c',GUARDED_LAUNCH,str(self.bootstrap/'sitecustomize.py'),str(source),*map(str,args)],cwd=self.mirror,
+                                  env=clean_environment(self.env),capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=600)
             stdout,stderr,code=result.stdout or '',result.stderr or '',result.returncode
         except subprocess.TimeoutExpired as exc:
             stdout=str(exc.stdout or '');stderr=str(exc.stderr or '')+'\nVALIDATION_COMMAND_TIMEOUT';code=None

@@ -1,5 +1,0 @@
-# Remaining items
-
-External acceptance remains PENDING_REVIEW. The final nine-address cohort has 36 successful empty source opportunities and zero current failed lookups; the two earlier failed views remain historical evidence. No further retry of this label batch is authorized. Atomic has one and Harmony three exact pending acquisition intervals. The user chose to keep account cap5; ordinary SQL cap1 authorization was not expanded, so new ordinary submissions are paused under ACCOUNT_CAP5_OUTSIDE_ORDINARY_CAP1_AUTH. UNKNOWN labels do not cause that pause, and no further restoration request is pending.
-
-Missing WETH historical execution/source evidence prevents real certification. Initial balance, gas and uncollected flow gaps limit amounts to conditional observed graphs. Public tests cannot reproduce private real-data results without documented source subsets. Local MIN replay verifies only its included evidence, not all Ethereum history or paper performance. No Stage1C, full-sample collection, formal experiments or daily scheduling follows this checkpoint.

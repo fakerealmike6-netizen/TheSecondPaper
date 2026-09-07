@@ -10,6 +10,7 @@ from dataclasses import asdict
 from collector import Collector,Event,FetchResult,Scope,utc_seconds
 from collector_inputs import load_exact_seed
 from physical_facts import PhysicalFactRegistry, CONFLICT_STATUS
+from event_order import order_observed_transfers, ORDER_UNRESOLVED
 
 def rows(path):
     opener=gzip.open if path.suffix=='.gz' else open
@@ -66,19 +67,21 @@ def fixed_graph(result,seed):
         return {'scenario_id':result.query_id,'scope':CONFLICT_STATUS,'events':[],'target_accounts':[],
                 'objective_groups':{},'initial_balances':{},'fact_validation':{'status':'CONFLICT'},
                 'fact_conflicts':conflicts,'assumptions':['Contradictory physical facts are quarantined; no amount model is permitted.']},scope
-    events=[e for e in snapshot['events'] if e['event_id'] in {r['event_id'].lower() for r in result.candidate_events}]; bytx=defaultdict(list)
-    for e in events: bytx[e['tx_hash']].append(e)
-    ambiguous=[tx for tx,ee in bytx.items() if len(ee)>1 and not all(e['kind']=='erc20' for e in ee) and not (len(ee)==2 and any(e['kind']=='top' for e in ee))]
+    events=[e for e in snapshot['events'] if e['event_id'] in {r['event_id'].lower() for r in result.candidate_events}]
+    ordered, order_audit=order_observed_transfers(events)
+    by_id={e['event_id']:e for e in events}
+    ambiguous=sorted({by_id[a]['tx_hash'] for a,b in order_audit['unresolved_order_pairs'] if by_id[a]['tx_hash']==by_id[b]['tx_hash']})
     targets=sorted({s['state']['address'] for s in result.stops if s['reason']=='FIRST_IDENTIFIED_SERVICE'})
     actual=[];groups=defaultdict(list); balances={}
-    for i,e in enumerate(sorted(events,key=lambda e:(e['block'],e['tx_index'] if e['tx_index'] is not None else -1,0 if e['kind']=='top' else 1,e.get('log_index') or 0,e['event_id']))):
+    for i,e in enumerate(ordered):
         asset='ETH' if e['asset']=='native:eip155:1' else e['asset']
         kind='seed' if e['event_id']==seed.event_id else 'transfer'
         actual.append({'id':e['event_id'],'order':i,'kind':kind,'asset':asset,'amount_raw':str(e['amount_raw']),'from':e['sender'],'to':e['recipient']})
         balances[e['recipient']+'|'+asset]=None
         if kind!='seed': balances[e['sender']+'|'+asset]=None
         if e['recipient'] in targets: groups[e['recipient']+'|'+asset].append(e['event_id'])
-    scope={'status':'ASSUMPTION_CONDITIONAL' if not ambiguous else 'ORDER_UNRESOLVED_MODEL_NOT_SOLVABLE','ambiguous_transactions':ambiguous,'online_complete':False,'missing_balance_anchors':True,'gas_context_complete':False,'unobserved_flows_zero_is_not_claimed':True,'real_world_conservative_guarantee':False}
+    scope={'status':ORDER_UNRESOLVED if order_audit['status']==ORDER_UNRESOLVED else 'ASSUMPTION_CONDITIONAL','ambiguous_transactions':ambiguous,'online_complete':False,'missing_balance_anchors':True,'gas_context_complete':False,'unobserved_flows_zero_is_not_claimed':True,'real_world_conservative_guarantee':False,'order_validation':order_audit}
+    if order_audit['unresolved_order_pairs']:scope['unresolved_order_pairs']=order_audit['unresolved_order_pairs']
     graph={'scenario_id':result.query_id,'scope':scope['status'],'initial_balances':balances,'target_accounts':targets,'events':actual,'objective_groups':dict(groups),'assumptions':['Only actual-frontier-reachable inherited observed candidate edges are modeled; cache acquisition was reference-targeted and interval-incomplete.','All actual initial balance bounds unknown; no missing balance is set to zero.','Unobserved source-bearing routes, gas, and unsupported conversions are not represented. Endpoints apply only to this fixed graph, not all possible real chain flows.','No acquisition depth or 90-day source-age constraint is added to the fixed-graph LP.']}
     graph['fact_validation']={'status':'CONSISTENT_OBSERVED_FACTS','physical_event_count':len(events)}
     graph['physical_fact_manifest']=events

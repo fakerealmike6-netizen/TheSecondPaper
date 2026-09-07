@@ -1,10 +1,79 @@
 {
-  "tests_run": 282,
-  "passed": 282,
-  "failed": 0,
-  "errors": 0,
-  "skipped": 0,
-  "success": true,
-  "network_attempts": [],
-  "fixtures": "synthetic only; private original project tests excluded"
+  "budget_migration_focused": {
+    "passed": 21,
+    "tests": 21
+  },
+  "controlled_lp": {
+    "failures": 0,
+    "oracle_comparisons": 32,
+    "scenarios": 12
+  },
+  "directed_order": {
+    "passed": 7,
+    "tests": 7
+  },
+  "directed_validator": {
+    "passed": 24,
+    "tests": 24
+  },
+  "external_acceptance_status": "PENDING_REVIEW",
+  "gate_synthetic": {
+    "errors": 0,
+    "failed": 0,
+    "failures": [],
+    "fixtures": "synthetic only; private original project tests excluded",
+    "network_attempts": [],
+    "passed": 322,
+    "skipped": 0,
+    "success": true,
+    "test_log": "gate_unit_tests.txt",
+    "tests_run": 322
+  },
+  "old_independent_same_asset": {
+    "endpoint_witnesses": 46,
+    "intervals": 23,
+    "status": "PASS"
+  },
+  "platforms": {
+    "Linux": {
+      "reason": "WSL unavailable; Docker/Podman absent; no virtualization installed",
+      "status": "NOT_EXECUTED"
+    },
+    "Windows": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.14.3",
+      "status": "EXECUTED"
+    }
+  },
+  "prior_four_repairs_external_regressions": {
+    "failures": 0,
+    "passed": 29
+  },
+  "retained_original_valid_tests": 282,
+  "same_input_fixed_code": {
+    "event_entries": 85,
+    "graphs": 4,
+    "semantic_changes": 0
+  },
+  "staging_min_offline_validation": {
+    "controlled_scenarios": 12,
+    "finite_reference_queries_each_label_version": 15,
+    "finite_reference_rows_old_plus_new": 12488,
+    "new_endpoint_witnesses": 32,
+    "new_independent_intervals": 16,
+    "old_endpoint_witnesses": 46,
+    "old_independent_intervals": 23,
+    "oracle_comparisons": 32,
+    "original_same_input_graphs": 4,
+    "source_snapshot_note": "Before final metrics/fee-reporting corrections; final ZIP test count is recorded separately.",
+    "status": "PASS",
+    "synthetic_tests": 341
+  },
+  "status": "PREPUBLICATION_TESTS_COMPLETE_FINAL_ZIP_RECEIPTS_EXTERNAL",
+  "test_execution_history": [
+    "Initial direct targeted unittest invocation lacked src on sys.path: two import errors; log retained. Corrected isolated invocation passed39/39. No tests removed.",
+    "The final no-eligible-label freeze is an expected local queue guard; no provider request was made.",
+    "Public intentionally omits private real replay. That omission is not counted as a passed test or a failed synthetic skip.",
+    "Final public/MIN ZIP tests are counted separately in external FINAL_VALIDATION_RESULTS.json; no additive independence claim."
+  ]
 }

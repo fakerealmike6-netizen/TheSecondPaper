@@ -1,13 +1,7 @@
-# TheSecondPaper: Stage1B-R1
+# TheSecondPaper — Stage1B-R2
 
-Bounded Ethereum event collection, four verified implementation repairs, versioned ownership policy and a time-expanded LP research prototype. External acceptance **PENDING_REVIEW**; see [review index](00_REVIEW_INDEX.md) and explicit real-probe gaps.
+Directed order/validator/publication repairs and two bounded Ethereum acquisition probes. Read 00_REVIEW_INDEX.md for results and reproduction. External research acceptance remains PENDING_REVIEW.
 
-Tested with Python 3.14.3, NumPy 2.4.2 and SciPy 1.17.1. Install requirements in an isolated environment, then run without credentials or network:
+Use Python 3.14.3 with NumPy 2.4.2 and SciPy 1.17.1 (the tested environment). Install dependencies through your normal approved environment, then run the extracted public validator with an output directory outside the source tree. Its children remove provider credentials and disable network access. The public bundle contains synthetic tests and original code; finite real data is available only in the private MIN review bundle.
 
-```text
-python -B src/run_tests.py --output validation/tests.json
-python -B src/lp_run.py --fixtures fixtures/controlled --output validation/controlled_lp
-python -B src/validate_review_bundle_r1.py --tree . --kind public --output ../fresh_validation
-```
-
-The public archive intentionally includes synthetic fixtures only. The local MIN additionally replays the required real input subsets, reference deltas and WETH evidence; neither establishes complete-chain coverage. Source/test/fixture equivalence is in manifests/PUBLIC_SOURCE_MAPPING.json.
+Historical budget rules in old public configurations are context only. STAGE1B_R2_PUBLIC_POLICY.json declares the effective R2 cumulative policy. No provider execution is part of offline validation.

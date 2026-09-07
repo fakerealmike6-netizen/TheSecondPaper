@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse, csv, gzip, hashlib, json, re
 from dataclasses import asdict, replace
 from pathlib import Path
-from collector import Collector, FetchResult, NATIVE, Scope, strictly_after
+from collector import Collector, FetchResult, NATIVE, Scope
 from collector_inputs import load_exact_seed
 from provider_dune import build_interval_sql, normalize_rows, timestamp, integer
 from cache_probe import fixed_graph
@@ -184,19 +184,10 @@ class SavedDuneProvider:
 
 
 def live_fixed_graph(result, seed):
+    # The cache builder owns the shared evidence-order guard; every live
+    # caller passes through it before receiving a model-solvable graph.
     graph, scope = fixed_graph(result, seed)
     if graph['scope']==CONFLICT_STATUS:return graph,scope
-    by_id = {e['event_id']: e for e in result.candidate_events}
-    from collector import Event
-    ordered = [Event(**{k: v for k, v in by_id[e['id']].items() if k != 'context_only'}) for e in graph['events']]
-    unresolved = []
-    for index, event in enumerate(ordered):
-        for previous in ordered[:index]:
-            if event.block == previous.block and strictly_after(event, previous) is not True:
-                unresolved.append([previous.event_id, event.event_id])
-    if unresolved:
-        scope['status'] = 'ORDER_UNRESOLVED_MODEL_NOT_SOLVABLE'
-        scope['unresolved_order_pairs'] = unresolved
     graph['scope'] = scope['status']
     graph['assumptions'] = [
         'Candidate transfers derive solely from completed and hash-verified live Dune query results plus the exact inherited seed.',

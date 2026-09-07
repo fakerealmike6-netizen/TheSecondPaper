@@ -83,6 +83,94 @@ assert child.returncode==0,child.stderr
             base=Path(tmp);tree=self.minimal_tree(base)
             with self.assertRaisesRegex(ValueError,'Unsupported'):Validator(tree,base/'out','public',{'commands':['arbitrary']})
 
+    def test_r2_nested_explicit_environment_strips_all_provider_credentials(self):
+        with self.temp() as tmp:
+            base=Path(tmp);tree=self.minimal_tree(base)
+            probe=r'''import json,os,subprocess,sys
+names=('DUNE_API_KEY','ETHERSCAN_API_KEY','METASLEUTH_API_KEY','ALCHEMY_API_KEY','GH_TOKEN','GOOGLE_APPLICATION_CREDENTIALS','AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY','TEST_PASSWORD','TEST_AUTHORIZATION','TEST_PRIVATE_KEY')
+child_env={'SAFE_SENTINEL':'preserved',**{name:'SYNTHETIC_NOT_REAL' for name in names}}
+code="import json,os,socket,subprocess,sys; assert not any(x in k.upper() for k in os.environ for x in ('API_KEY','TOKEN','CREDENTIAL','PASSWORD','SECRET','AUTHORIZATION','ACCESS_KEY','PRIVATE_KEY')); assert os.environ['SAFE_SENTINEL']=='preserved'; assert socket.getaddrinfo.__module__=='sitecustomize'; os.environ['DUNE_API_KEY']='SYNTHETIC_REINSERTED'; r=subprocess.run([sys.executable,'-c',\"import os,socket; assert 'DUNE_API_KEY' not in os.environ; assert socket.getaddrinfo.__module__=='sitecustomize'\"],capture_output=True); assert r.returncode==0,r.stderr"
+# Exercise inherited and explicit environments, and the normal fast-path request.
+for close_fds in (True,False):
+    child=subprocess.run([sys.executable,'-c',code],env=child_env,close_fds=close_fds,capture_output=True)
+    assert child.returncode==0,child.stderr
+assert all(child_env[name]=='SYNTHETIC_NOT_REAL' for name in names)
+'''
+            (tree/'src/probe.py').write_text(probe,encoding='utf-8')
+            validator=Validator(tree,base/'out','public')
+            self.assertTrue(validator.command('nested_env','src/probe.py',[]),(validator.out/'01_nested_env_stderr.txt').read_text(encoding='utf-8'))
+
+    def test_r2_posix_spawn_uses_same_python_and_environment_policy(self):
+        with self.temp() as tmp:
+            base=Path(tmp);tree=self.minimal_tree(base)
+            probe=r'''import os,sys,sitecustomize
+from pathlib import Path
+env=sitecustomize.child_environment(None)
+argv=[sys.executable,'-c','pass']
+# The actual audit callback and wrapped dispatch are exercised on every host;
+# only POSIX can execute the OS spawn itself.
+sitecustomize.audit('os.posix_spawn',(sys.executable,argv,env))
+called=[]
+wrapped=sitecustomize.guarded_spawn(lambda path,args,env,**kwargs:called.append(env))
+wrapped(sys.executable,argv,dict(env,DUNE_API_KEY='SYNTHETIC_NOT_REAL'))
+assert len(called)==1 and 'DUNE_API_KEY' not in called[0]
+for path,args,values in [('forbidden_shell',argv,env),(sys.executable,[sys.executable,'-S','-c','pass'],env),(sys.executable,argv,dict(env,DUNE_API_KEY='SYNTHETIC_NOT_REAL'))]:
+    try:sitecustomize.audit('os.posix_spawn',(path,args,values));raise AssertionError('spawn policy missing')
+    except PermissionError:pass
+if hasattr(os,'posix_spawn'):
+    result=Path(os.environ['REVIEW_VALIDATION_OUTPUT'])/'actual_posix_spawn.txt'
+    code="import os,socket; from pathlib import Path; assert 'DUNE_API_KEY' not in os.environ; assert socket.getaddrinfo.__module__=='sitecustomize'; Path("+repr(str(result))+").write_text('guarded')"
+    pid=os.posix_spawn(sys.executable,[sys.executable,'-c',code],dict(env,DUNE_API_KEY='SYNTHETIC_NOT_REAL'))
+    _,status=os.waitpid(pid,0)
+    assert os.waitstatus_to_exitcode(status)==0 and result.read_text()=='guarded'
+'''
+            (tree/'src/probe.py').write_text(probe,encoding='utf-8')
+            validator=Validator(tree,base/'out','public')
+            self.assertTrue(validator.command('spawn_policy','src/probe.py',[]),(validator.out/'01_spawn_policy_stderr.txt').read_text(encoding='utf-8'))
+
+    def test_r2_nested_network_write_shell_and_bootstrap_bypass_stay_blocked(self):
+        with self.temp() as tmp:
+            base=Path(tmp);tree=self.minimal_tree(base);protected=tree/'protected.txt';protected.write_text('frozen')
+            probe=r'''import os,subprocess,sys
+code=r"""import os,socket,subprocess,sys
+from pathlib import Path
+for operation in (lambda:socket.getaddrinfo('127.0.0.1',9),lambda:socket.socket().connect(('127.0.0.1',9))):
+    try:operation();raise AssertionError('network allowed')
+    except RuntimeError:pass
+try:Path(sys.argv[1]).write_text('changed');raise AssertionError('write allowed')
+except PermissionError:pass
+for command,kwargs in [([sys.executable,'-S','-c','pass'],{}),([sys.executable,'-IE','-c','pass'],{}),([sys.executable,'-X','utf8','-S','-c','pass'],{}),([sys.executable,'-c','pass'],{'shell':True}),(['forbidden_shell'],{})]:
+    try:subprocess.run(command,**kwargs);raise AssertionError('unsafe command allowed')
+    except PermissionError:pass
+try:os.system('forbidden_shell');raise AssertionError('shell allowed')
+except PermissionError:pass
+"""
+child=subprocess.run([sys.executable,'-c',code,sys.argv[1]],capture_output=True)
+assert child.returncode==0,child.stderr
+'''
+            (tree/'src/probe.py').write_text(probe,encoding='utf-8')
+            validator=Validator(tree,base/'out','public')
+            self.assertTrue(validator.command('nested_guards','src/probe.py',[protected]),(validator.out/'01_nested_guards_stderr.txt').read_text(encoding='utf-8'))
+            self.assertEqual(protected.read_text(),'frozen')
+
+    def test_r2_explicit_bootstrap_recovers_masked_sitecustomize_module(self):
+        with self.temp() as tmp:
+            base=Path(tmp);tree=self.minimal_tree(base)
+            shutil.copyfile(BASE/'src/validate_review_bundle_r1.py',tree/'src/validate_review_bundle_r1.py')
+            (tree/'src/inner.py').write_text("import os,socket; assert 'DUNE_API_KEY' not in os.environ; assert socket.getaddrinfo.__module__=='sitecustomize'",encoding='utf-8')
+            probe=r'''import os,sys,types
+from pathlib import Path
+from validate_review_bundle_r1 import GUARDED_LAUNCH
+guard=Path(os.environ['PYTHONPATH'])/'sitecustomize.py'
+sys.modules['sitecustomize']=types.ModuleType('sitecustomize')
+os.environ['DUNE_API_KEY']='SYNTHETIC_NOT_REAL'
+sys.argv=['wrapper',str(guard),str(Path(__file__).with_name('inner.py'))]
+exec(GUARDED_LAUNCH,{'__name__':'__main__'})
+'''
+            (tree/'src/probe.py').write_text(probe,encoding='utf-8')
+            validator=Validator(tree,base/'out','public')
+            self.assertTrue(validator.command('masked_startup','src/probe.py',[]),(validator.out/'01_masked_startup_stderr.txt').read_text(encoding='utf-8'))
+
     def test_manifest_output_names_cannot_overwrite_an_earlier_replay(self):
         with self.temp() as tmp:
             base=Path(tmp);tree=self.minimal_tree(base)
