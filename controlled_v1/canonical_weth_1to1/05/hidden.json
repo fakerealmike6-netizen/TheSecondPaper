@@ -1,0 +1,27 @@
+{
+  "complete_initial_actual_balances_raw": {
+    "A|ETH": "5",
+    "A|WETH": "0",
+    "T|WETH": "0",
+    "U|WETH": "0"
+  },
+  "construction": "Exact chronological feasible source/normal decomposition; deterministic bounded random integer shares; no LP or Oracle called.",
+  "event_source_amounts_raw": {
+    "seed": "4",
+    "weth_split:input": "3",
+    "weth_split:output0": "3",
+    "weth_split:output1": "0",
+    "wrap:input": "4",
+    "wrap:net": "3",
+    "wrap:output": "3",
+    "wrap:refund": "1"
+  },
+  "sample_id": "controlled-v1/canonical_weth_1to1/05",
+  "scope": "EVALUATION_ONLY_NOT_METHOD_INPUT",
+  "terminal_source_balances_raw": {
+    "A|ETH": "1",
+    "A|WETH": "0",
+    "T|WETH": "3",
+    "U|WETH": "0"
+  }
+}

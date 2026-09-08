@@ -1,0 +1,159 @@
+{
+  "address_metrics": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "BOUNDED_REACHABILITY": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "FULL_INTERVAL": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "HAIRCUT": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "POISON": {
+      "false_positive_count": 0,
+      "no_positive_control": true,
+      "oracle_positive_count": 0,
+      "recall": null,
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    }
+  },
+  "comparisons": [
+    {
+      "category": "addresses",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "0",
+      "objective": "T|ETH",
+      "positive_lower": false,
+      "width_over_seed": "0",
+      "width_raw": "0"
+    },
+    {
+      "category": "events",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "0",
+      "objective": "pre_seed_service",
+      "positive_lower": false,
+      "width_over_seed": "0",
+      "width_raw": "0"
+    },
+    {
+      "category": "joint_by_asset",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "0",
+      "objective": "ETH",
+      "positive_lower": false,
+      "width_over_seed": "0",
+      "width_raw": "0"
+    }
+  ],
+  "errors": [],
+  "haircut_full_assignment_audit": {
+    "bad_bounds": [],
+    "bad_equalities": [],
+    "exact_feasible": true
+  },
+  "haircut_point_errors": [
+    {
+      "absolute_point_error_to_one_hidden_assignment_raw": "0",
+      "address_asset": "T|ETH",
+      "hidden_raw": "0",
+      "normalized_absolute_error": "0",
+      "point_raw": "0"
+    }
+  ],
+  "hidden_exact_feasibility": {
+    "bad_bounds": [],
+    "bad_equalities": [],
+    "exact_feasible": true
+  },
+  "oracle": {
+    "addresses": {
+      "T|ETH": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "0"
+      }
+    },
+    "continuous_extrema_exact": true,
+    "events": {
+      "no_service_path": {
+        "lower_raw": "7",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "pre_seed_service": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "0"
+      },
+      "seed": {
+        "lower_raw": "7",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "terminal_boundary": {
+        "lower_raw": "7",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      }
+    },
+    "joint_by_asset": {
+      "ETH": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "0"
+      }
+    },
+    "justification": "Integer capacities and 1:1 semantic junctions yield a totally unimodular network; integral extrema equal continuous extrema.",
+    "oracle_version": "CONTROLLED_TIME_STATE_MINCOST_V1",
+    "status": "OPTIMAL_EXACT_INTEGER_NETWORK"
+  },
+  "passed": true,
+  "tiny_crosscheck": {
+    "reason": "Only prespecified two per family require third enumeration",
+    "status": "NOT_REQUIRED"
+  }
+}

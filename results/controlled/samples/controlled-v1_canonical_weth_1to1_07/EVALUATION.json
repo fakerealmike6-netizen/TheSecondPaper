@@ -1,0 +1,211 @@
+{
+  "address_metrics": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    },
+    "BOUNDED_REACHABILITY": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    },
+    "FULL_INTERVAL": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    },
+    "HAIRCUT": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "0",
+      "status": "COMPLETED",
+      "true_positive_count": 0
+    },
+    "POISON": {
+      "false_positive_count": 0,
+      "no_positive_control": false,
+      "oracle_positive_count": 2,
+      "recall": "1",
+      "status": "COMPLETED",
+      "true_positive_count": 2
+    }
+  },
+  "comparisons": [
+    {
+      "category": "addresses",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "2",
+      "objective": "T|WETH",
+      "positive_lower": false,
+      "width_over_seed": "6/7",
+      "width_raw": "6"
+    },
+    {
+      "category": "addresses",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "5",
+      "objective": "U|WETH",
+      "positive_lower": false,
+      "width_over_seed": "6/7",
+      "width_raw": "6"
+    },
+    {
+      "category": "events",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "2",
+      "objective": "weth_split:output0",
+      "positive_lower": false,
+      "width_over_seed": "6/7",
+      "width_raw": "6"
+    },
+    {
+      "category": "events",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "5",
+      "objective": "weth_split:output1",
+      "positive_lower": false,
+      "width_over_seed": "6/7",
+      "width_raw": "6"
+    },
+    {
+      "category": "joint_by_asset",
+      "endpoint_error_raw": "0",
+      "hidden_covered": true,
+      "hidden_raw": "7",
+      "objective": "WETH",
+      "positive_lower": true,
+      "width_over_seed": "1/7",
+      "width_raw": "1"
+    }
+  ],
+  "errors": [],
+  "haircut_full_assignment_audit": {
+    "bad_bounds": [],
+    "bad_equalities": [],
+    "exact_feasible": true
+  },
+  "haircut_point_errors": [
+    {
+      "absolute_point_error_to_one_hidden_assignment_raw": "16/13",
+      "address_asset": "T|WETH",
+      "hidden_raw": "2",
+      "normalized_absolute_error": "16/91",
+      "point_raw": "42/13"
+    },
+    {
+      "absolute_point_error_to_one_hidden_assignment_raw": "23/13",
+      "address_asset": "U|WETH",
+      "hidden_raw": "5",
+      "normalized_absolute_error": "23/91",
+      "point_raw": "42/13"
+    }
+  ],
+  "hidden_exact_feasibility": {
+    "bad_bounds": [],
+    "bad_equalities": [],
+    "exact_feasible": true
+  },
+  "oracle": {
+    "addresses": {
+      "T|WETH": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "6"
+      },
+      "U|WETH": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "6"
+      }
+    },
+    "continuous_extrema_exact": true,
+    "events": {
+      "seed": {
+        "lower_raw": "7",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "weth_split:input": {
+        "lower_raw": "6",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "weth_split:output0": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "6"
+      },
+      "weth_split:output1": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "6"
+      },
+      "wrap:input": {
+        "lower_raw": "7",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "wrap:net": {
+        "lower_raw": "6",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "wrap:output": {
+        "lower_raw": "6",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      },
+      "wrap:refund": {
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "1"
+      }
+    },
+    "joint_by_asset": {
+      "WETH": {
+        "lower_raw": "6",
+        "status": "OPTIMAL_EXACT_INTEGER_NETWORK",
+        "upper_raw": "7"
+      }
+    },
+    "justification": "Integer capacities and 1:1 semantic junctions yield a totally unimodular network; integral extrema equal continuous extrema.",
+    "oracle_version": "CONTROLLED_TIME_STATE_MINCOST_V1",
+    "status": "OPTIMAL_EXACT_INTEGER_NETWORK"
+  },
+  "passed": true,
+  "tiny_crosscheck": {
+    "reason": "Only prespecified two per family require third enumeration",
+    "status": "NOT_REQUIRED"
+  }
+}

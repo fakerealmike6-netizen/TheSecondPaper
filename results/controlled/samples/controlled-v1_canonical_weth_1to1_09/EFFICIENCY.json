@@ -1,0 +1,851 @@
+{
+  "common_scope": "Fixed local input JSON read once; no online acquisition was timed",
+  "method_order": [
+    "POISON",
+    "HAIRCUT",
+    "NO_CROSS_TARGET_COUPLING",
+    "NO_PROTOCOL_CONTINUATION",
+    "BALANCE_INFORMATION_REMOVED",
+    "FULL_INTERVAL",
+    "BOUNDED_REACHABILITY"
+  ],
+  "profiles": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.021710900000471156,
+      "median_seconds": 0.011031899994122796,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.00961519999691518,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.02983690000110073,
+          "parts": {
+            "model_build_seconds": 0.0012100000021746382,
+            "solve_and_certification_seconds": 0.028260999999474734
+          },
+          "python_peak_allocated_bytes_warmup_only": 52482,
+          "repetition": 0,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.021710900000471156,
+          "parts": {
+            "model_build_seconds": 0.0011002000028383918,
+            "solve_and_certification_seconds": 0.020448899995244574
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.019344599997566547,
+          "parts": {
+            "model_build_seconds": 0.0012634000013349578,
+            "solve_and_certification_seconds": 0.017954000002646353
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.011031899994122796,
+          "parts": {
+            "model_build_seconds": 0.00038109999877633527,
+            "solve_and_certification_seconds": 0.010533000000577886
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.010495000002265442,
+          "parts": {
+            "model_build_seconds": 0.00036469999758992344,
+            "solve_and_certification_seconds": 0.010016100000939332
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00961519999691518,
+          "parts": {
+            "model_build_seconds": 0.00037510000402107835,
+            "solve_and_certification_seconds": 0.009133999999903608
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "bcef1f9dca116e4eb70d46295047300eff6d770e714c63d9f455b0416144e0d4",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 52482
+    },
+    "BOUNDED_REACHABILITY": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.00037590000283671543,
+      "median_seconds": 0.0001688999982434325,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.00013800000306218863,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.0004608000017469749,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": 11055,
+          "repetition": 0,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.00014319999900180846,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.000228899996727705,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00037590000283671543,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.0001688999982434325,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00013800000306218863,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "13fe416d5416f833086b225ff3c01883f801be09061c0c26a49134df9397c422",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 11055
+    },
+    "FULL_INTERVAL": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.011680199997499585,
+      "median_seconds": 0.010934400001133326,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.010297000000718981,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.020958700006303843,
+          "parts": {
+            "model_build_seconds": 0.00077860000601504,
+            "solve_and_certification_seconds": 0.019910600000002887
+          },
+          "python_peak_allocated_bytes_warmup_only": 50973,
+          "repetition": 0,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.010934400001133326,
+          "parts": {
+            "model_build_seconds": 0.00021220000053290278,
+            "solve_and_certification_seconds": 0.010592899998300709
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.01130379999813158,
+          "parts": {
+            "model_build_seconds": 0.00019040000188397244,
+            "solve_and_certification_seconds": 0.011002300001564436
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.011680199997499585,
+          "parts": {
+            "model_build_seconds": 0.00019559999782359228,
+            "solve_and_certification_seconds": 0.011377399998309556
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.010297000000718981,
+          "parts": {
+            "model_build_seconds": 0.00019150000298395753,
+            "solve_and_certification_seconds": 0.00999980000051437
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.010692500000004657,
+          "parts": {
+            "model_build_seconds": 0.0001993000041693449,
+            "solve_and_certification_seconds": 0.010372899996582419
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "09cec54d8902f2f55a3244f48b5318565ba0daa0222ab521e9c5ff8229ea138a",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 50973
+    },
+    "HAIRCUT": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.00022250000620260835,
+      "median_seconds": 0.00021520000154851004,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.00020470000163186342,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.0006848999983048998,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": 15570,
+          "repetition": 0,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.00022250000620260835,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00021520000154851004,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00021530000230995938,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00020470000163186342,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00020780000340892002,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "8edf186f9efe8e0f6739981cd4c379718539214e678a0eebcb43e702eefb388b",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 15570
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.009226900001522154,
+      "median_seconds": 0.008965499997430015,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.007524200002080761,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.01675249999971129,
+          "parts": {
+            "model_build_seconds": 0.0008716000011190772,
+            "solve_and_certification_seconds": 0.015633700000762474
+          },
+          "python_peak_allocated_bytes_warmup_only": 58288,
+          "repetition": 0,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.007524200002080761,
+          "parts": {
+            "model_build_seconds": 0.00020290000247769058,
+            "solve_and_certification_seconds": 0.00722249999671476
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.008330999997269828,
+          "parts": {
+            "model_build_seconds": 0.00018819999968400225,
+            "solve_and_certification_seconds": 0.008002100003068335
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00903160000598291,
+          "parts": {
+            "model_build_seconds": 0.00019540000357665122,
+            "solve_and_certification_seconds": 0.008656599995447323
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.009226900001522154,
+          "parts": {
+            "model_build_seconds": 0.00021910000214120373,
+            "solve_and_certification_seconds": 0.008898200001567602
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.008965499997430015,
+          "parts": {
+            "model_build_seconds": 0.0001916999972308986,
+            "solve_and_certification_seconds": 0.008665900000778493
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "1544a4b82ac5f41025d416f7ca5c2daa87965767680a5ea2e5df0b3f1176422c",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 11,
+            "base_variables": 16,
+            "endpoint_optimizations": 4,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 58288
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.017354000003251713,
+      "median_seconds": 0.013252700002340134,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.011905100000149105,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.0242528000017046,
+          "parts": {
+            "model_build_seconds": 0.0008155999967129901,
+            "solve_and_certification_seconds": 0.02317140000377549
+          },
+          "python_peak_allocated_bytes_warmup_only": 50961,
+          "repetition": 0,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.012590099999215454,
+          "parts": {
+            "model_build_seconds": 0.00021810000180266798,
+            "solve_and_certification_seconds": 0.012228200001118239
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.013252700002340134,
+          "parts": {
+            "model_build_seconds": 0.0003166999958921224,
+            "solve_and_certification_seconds": 0.012795000002370216
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.017354000003251713,
+          "parts": {
+            "model_build_seconds": 0.00021950000518700108,
+            "solve_and_certification_seconds": 0.016966399998636916
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.016804300001240335,
+          "parts": {
+            "model_build_seconds": 0.0003161999993608333,
+            "solve_and_certification_seconds": 0.01635540000279434
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.011905100000149105,
+          "parts": {
+            "model_build_seconds": 0.00020930000027874485,
+            "solve_and_certification_seconds": 0.011577400000533089
+          },
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "8a0779ef7e729e3c234b0457f09dbf11d3840669de334f7a0c38b9773aa47ac2",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_intervals": 2,
+            "base_equalities": 10,
+            "base_variables": 16,
+            "endpoint_optimizations": 6,
+            "entry_intervals": 2,
+            "joint_intervals": 1
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 50961
+    },
+    "POISON": {
+      "deterministic": true,
+      "different_output_workloads_not_speed_equivalent": true,
+      "max_seconds": 0.00028139999631093815,
+      "median_seconds": 0.00017110000044340268,
+      "memory_scope": "Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.",
+      "min_seconds": 0.000148899998748675,
+      "repetitions": [
+        {
+          "elapsed_seconds": 0.0005221999963396229,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": 11522,
+          "repetition": 0,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": true
+        },
+        {
+          "elapsed_seconds": 0.00022029999672668055,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 1,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00016679999680491164,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 2,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00017110000044340268,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 3,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.00028139999631093815,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 4,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        },
+        {
+          "elapsed_seconds": 0.000148899998748675,
+          "parts": null,
+          "python_peak_allocated_bytes_warmup_only": null,
+          "repetition": 5,
+          "result_semantic_sha256": "1ff55c5ab06ef588958b266ed7e65e2838691235fe18582c58c2c13f6c009687",
+          "status": "COMPLETED",
+          "task_counts": {
+            "address_outputs": 2,
+            "endpoint_optimizations": 0,
+            "joint_outputs": 1,
+            "physical_ports_visited": 8
+          },
+          "warmup": false
+        }
+      ],
+      "warmup_python_peak_bytes": 11522
+    }
+  },
+  "shared_preprocessing_raw_seconds": [
+    5.94000011915341e-05,
+    2.559999848017469e-05,
+    1.9199993403162807e-05,
+    1.5900004655122757e-05,
+    1.4199998986441642e-05,
+    1.309999788645655e-05
+  ],
+  "timed_repetitions": 5,
+  "warmups": 1
+}

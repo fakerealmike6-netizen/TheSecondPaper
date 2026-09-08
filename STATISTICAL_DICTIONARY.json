@@ -1,0 +1,21 @@
+{
+  "actor_unit": "Frozen known-reference actor mapping is separate from address identity. Unmapped total output actor count is null.",
+  "address_unit": "Unique query,address,asset for query metrics; real global address and address-asset identities deduplicated separately.",
+  "controlled_positive": "Independent Oracle feasible address/asset upper >0; hidden-zero alone is not a negative.",
+  "coupling_ablation": "Independent target-specific complete feasible copies; sum of their maxima need not be realizable in one shared physical allocation.",
+  "event_unit": "Unique exact service-entry physical event; baseline visited context/fee ports excluded from output counts.",
+  "failure_policy": "All prespecified samples retained; ERROR and NOT_APPLICABLE distinct; no missing amount imputed as zero.",
+  "haircut_error": "Absolute distance to one hidden feasible assignment, not error to a uniquely identified source truth; query mean normalized by Q.",
+  "hidden_coverage": "FULL interval contains the separately constructed feasible hidden assignment for the same objective.",
+  "information_ablation": "Same graph and physical events; selected supported source-balance upper bounds relaxed. This is distinct from target-copy coupling ablation.",
+  "normalized_union_width": "(U-L)/Q within query; controlled converted WETH uses the exact 1:1 raw-equivalent source Q. Do not add different assets.",
+  "poison_amount": "POISON_NOMINAL_RAW is nominal marked physical volume. Exceeding feasible joint upper describes looseness, not a conservative allocation guarantee.",
+  "primary_statistical_unit": "One frozen query; synthetic query IDs scoped to their individual graph.",
+  "protocol_ablation": "Net source terminates at supported protocol input boundary; gross/refund conservation retained and actual output source fixed zero.",
+  "raw_endpoint_error": "max(abs(FULL.L-Oracle.L),abs(FULL.U-Oracle.U)); report max separately by asset.",
+  "real_accuracy": "null: neither reference labels, incomplete reference paths, nor Value_in_USD establish real source-amount ground truth.",
+  "real_recall": "Known-positive recall only where the versioned independent reference denominator is nonempty and verified; no false-positive classification outside reference.",
+  "secondary_unit": "Incident macro mean of eligible query means; report eligible/all counts; no extrapolation from two development cases.",
+  "timing": "One warmup plus five method timings; JSON/target preprocessing separate; workloads differ and timings do not establish same-task speed superiority.",
+  "zero_positive_recall": "Recall null with no positive Oracle addresses; these controls remain in total sample and false-positive counts."
+}

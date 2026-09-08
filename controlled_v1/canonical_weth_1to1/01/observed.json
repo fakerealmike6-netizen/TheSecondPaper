@@ -1,0 +1,86 @@
+{
+  "construction_notes": [
+    "Canonical net deposit is 1:1; any refund is an explicitly synthetic gross/refund envelope, never claimed to be a WETH9 native refund."
+  ],
+  "events": [
+    {
+      "amount_raw": "2",
+      "asset": "ETH",
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A"
+    },
+    {
+      "asset": "ETH",
+      "certified_semantics": "SYNTHETIC_CONTROLLED",
+      "from": "A",
+      "gross_raw": "4",
+      "id": "wrap",
+      "kind": "conversion",
+      "order": 2,
+      "output_asset": "WETH",
+      "output_raw": "3",
+      "protocol": "SYNTHETIC_GROSS_REFUND_ENVELOPE_WITH_CANONICAL_NET_WETH_DEPOSIT",
+      "refund_raw": "1",
+      "refund_semantics_note": "Refund belongs to synthetic pre-deposit envelope, not to WETH9.deposit itself.",
+      "to": "A"
+    },
+    {
+      "asset": "WETH",
+      "certified_semantics": "SYNTHETIC_CONTROLLED",
+      "from": "A",
+      "gross_raw": "3",
+      "id": "weth_split",
+      "kind": "multioutput",
+      "order": 3,
+      "outputs": [
+        {
+          "amount_raw": "1",
+          "to": "T"
+        },
+        {
+          "amount_raw": "2",
+          "to": "U"
+        }
+      ]
+    }
+  ],
+  "family": "canonical_weth_1to1",
+  "generator_version": "CONTROLLED_V1_GENERATOR_1.0.0",
+  "incident_id": "SYNTHETIC_CONTROLLED_V1",
+  "index": 1,
+  "initial_balances": {
+    "A|ETH": "2",
+    "A|WETH": "0",
+    "T|WETH": "0",
+    "U|WETH": "0"
+  },
+  "label_version": "CONTROLLED_V1_SERVICES_1",
+  "objective_groups": {
+    "T|WETH": [
+      "weth_split:output0"
+    ],
+    "U|WETH": [
+      "weth_split:output1"
+    ]
+  },
+  "provenance": "ORIGINAL_SYNTHETIC_STAGE1C_NOT_EXTERNAL_BLIND_GT",
+  "query_id": "controlled-v1/canonical_weth_1to1/01",
+  "sampling": {
+    "chain_id": 1,
+    "first_identified_service_stops_branch": true,
+    "lp_fund_age_limit": null,
+    "lp_path_hop_limit": null,
+    "strict_time_order": true
+  },
+  "scenario_id": "controlled-v1/canonical_weth_1to1/01",
+  "schema_version": "stage1c-controlled-observed-1.0",
+  "scope": "FROZEN_ORDERED_OBSERVED_GRAPH",
+  "source_layer": "SYNTHETIC",
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "zero_hop": false
+}

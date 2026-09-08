@@ -1,86 +1,26 @@
 {
-  "schema_version": "stage1b-r4-r1-status-v1",
-  "stage": "Stage1B-R4-R1",
-  "checkpoint_target": "CHECKPOINT_1B_R4_R1_REACHED",
-  "delivery_status": "PAYLOAD_CHECKED_FINAL_ARCHIVE_AND_PUBLICATION_RECEIPTS_ARE_EXTERNAL",
-  "repair_status": "FIXED_AND_TESTED",
-  "new_provider_requests": 0,
-  "new_usage_requests": 0,
-  "new_research_fees": 0,
-  "dune_cumulative": {
-    "cumulative_risk": "47.167873093",
-    "export_upper_not_actual": "15.000000000",
-    "known_actual_lower_bound": "22.845351403",
-    "remaining": "52.832126907",
-    "unknown_or_pending_risk": "9.322521690"
-  },
-  "rpc_cumulative_operations": "160",
-  "alchemy_cu_upper_bound": "3100",
-  "real_inputs": {
-    "Atomic": {
-      "accounts": 5,
-      "anchors": 10,
-      "completeness": "FULL",
-      "modeled_fees": 11,
-      "value_events": 12
-    },
-    "Harmony": {
-      "accounts": 22,
-      "anchors": 45,
-      "completeness": "FULL",
-      "modeled_fees": 50,
-      "value_events": 57
-    }
-  },
-  "same_input_amounts": [
-    {
-      "joint": {
-        "BEST_AVAILABLE_CONTEXT": {
-          "lower_raw": "359495000000000000000",
-          "upper_raw": "359495000000000000000"
-        },
-        "MATCHED_INFORMATION_RELAXED": {
-          "lower_raw": "0",
-          "upper_raw": "359495000000000000000"
-        }
-      },
-      "probe": "atomic_simple_transfer",
-      "same_input_amounts_equal": true
-    },
-    {
-      "joint": {
-        "BEST_AVAILABLE_CONTEXT": {
-          "lower_raw": "504907298683760128997",
-          "upper_raw": "1554999042315467482000"
-        },
-        "MATCHED_INFORMATION_RELAXED": {
-          "lower_raw": "0",
-          "upper_raw": "1554999042315467482000"
-        }
-      },
-      "probe": "harmony_high_branch",
-      "same_input_amounts_equal": true
-    }
+  "Stage1D_started": false,
+  "checkpoint": "CHECKPOINT_1C_REACHED",
+  "controlled_samples": 60,
+  "experiments": "COMPLETED",
+  "external_acceptance": "PENDING_REVIEW",
+  "final_go_revise_stop": "EXTERNAL_RESEARCH_DESIGN_SESSION_ONLY",
+  "haircut_controlled_not_applicable": 6,
+  "haircut_controlled_supported": 54,
+  "methods": [
+    "FULL_INTERVAL",
+    "BOUNDED_REACHABILITY",
+    "POISON",
+    "HAIRCUT",
+    "NO_CROSS_TARGET_COUPLING",
+    "NO_PROTOCOL_CONTINUATION",
+    "BALANCE_INFORMATION_REMOVED"
   ],
-  "same_input_replay_passed": true,
-  "weth": {
-    "certification": "CERTIFIED_LOCAL_WETH_DEPOSIT",
-    "checks_passed": 12,
-    "checks_total": 12,
-    "predicate_implementation_unchanged": true,
-    "materials": {
-      "status": "PASS",
-      "material_status": "VERIFIED_ORIGINAL_SHARED_BODY",
-      "original_body_available": true,
-      "original_body_sha256": "c22430d52fd472458dc477c28a862986b0e2b54d2d4971770f78287033d006e7",
-      "original_body_bytes": 25319,
-      "members_verified": 5,
-      "successful_members": 4,
-      "error_members": 1
-    }
-  },
-  "historical_provenance_gaps": 582,
-  "linux": "NOT_RUN_THIS_REVISION",
-  "external_acceptance_status": "PENDING_REVIEW",
-  "next_stage_started": false
+  "next_batch_collection_started": false,
+  "old12_32_regression": "PASS",
+  "publication": "AUTHORITATIVE_STATUS_IN_EXTERNAL_PUBLICATION_RECEIPT",
+  "real_haircut_supported": 2,
+  "real_queries": 2,
+  "stage": "Stage1C",
+  "tests_passed": 865
 }

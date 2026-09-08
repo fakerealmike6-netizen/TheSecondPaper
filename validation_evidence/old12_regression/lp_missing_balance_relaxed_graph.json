@@ -1,0 +1,38 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "11_missing_balance_relaxation",
+  "title": "Missing initial balance removes bounds without new source",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": null,
+    "T|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "50"
+    },
+    {
+      "id": "enter",
+      "kind": "transfer",
+      "order": 2,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "120"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "T": [
+      "enter"
+    ]
+  }
+}

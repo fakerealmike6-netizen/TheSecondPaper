@@ -1,0 +1,41 @@
+{
+  "byte_mapping": "Each draw hashes seed_digest || unsigned 4-byte big-endian counter.\n\nFirst eight digest bytes are unsigned big-endian, mapped modulo range.\nCounter begins at zero. Modulo bias is intentional and frozen; no PRNG,\nrejection sampling, external entropy, or output-based retries are used.",
+  "families": [
+    "normal_mixing",
+    "split_merge_shared_targets",
+    "repeated_entries_timed_returns",
+    "gas_background_and_anchors",
+    "canonical_weth_1to1",
+    "missing_information_and_boundary_controls"
+  ],
+  "generator_version": "CONTROLLED_V1_GENERATOR_1.0.0",
+  "indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "max_accounts": 16,
+  "max_operations": 40,
+  "max_targets": 3,
+  "no_reachable_service_indices": [
+    "missing_information_and_boundary_controls/2",
+    "missing_information_and_boundary_controls/3"
+  ],
+  "oracle_separation": "Observed, hidden, and Oracle result files are separate; generator does not call Oracle or primary method.",
+  "parameter_rule": "q=normal=2 for indices0,1; otherwise q=3+first_draw%6, normal=2+second_draw%6; structural alternatives fixed by family/index.",
+  "sample_count": 60,
+  "seed_template": "TheSecondPaper/Stage1C/controlled-v1/<family>/<index>",
+  "selection": "ALL_60_FIXED_BEFORE_METHOD_BATCH_NO_RESULT_BASED_FILTERING",
+  "tiny_checks": "indices 0 and 1 of every family; direct chronological complete integer enumeration with network integrality linking continuous extrema",
+  "zero_hop_indices": [
+    "missing_information_and_boundary_controls/0",
+    "missing_information_and_boundary_controls/1"
+  ]
+}

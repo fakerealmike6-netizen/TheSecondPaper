@@ -1,0 +1,118 @@
+{
+  "authorization_id": "STAGE1C_PAIRED_EXPERIMENTS_V1",
+  "checkpoint": "CHECKPOINT_1C_REACHED",
+  "controlled": {
+    "claim_external_blind_gt": false,
+    "families": [
+      "normal_mixing",
+      "split_merge_shared_targets",
+      "repeated_entries_timed_returns",
+      "gas_background_and_anchors",
+      "canonical_weth_1to1",
+      "missing_information_and_boundary_controls"
+    ],
+    "hidden_not_formal_source_amount_truth_for_real_queries": true,
+    "max_accounts": 16,
+    "max_targets": 3,
+    "max_value_and_fee_operations": 40,
+    "may_drop_unfavorable_samples": false,
+    "minimum_no_reachable_service": 2,
+    "minimum_tiny_analytic_or_enumeration_checks": 12,
+    "minimum_zero_hop": 2,
+    "new_suite": "CONTROLLED_V1",
+    "old_12_scenarios_are_regression_not_new_samples": true,
+    "per_family": 10,
+    "sample_count": 60,
+    "secondary_oracle_must_not_import_primary_model_or_solver": true,
+    "seed_derivation": "SHA256 UTF-8; implementation and deterministic byte mapping frozen before batch results",
+    "stable_seed_template": "TheSecondPaper/Stage1C/controlled-v1/<family>/<index>"
+  },
+  "evaluation": {
+    "S1_S2_S3_reported_separately": true,
+    "final_full_sample_denominator_frozen_here": false,
+    "global_counts_deduped_separately": true,
+    "network_collection_speed_claim_from_cache_timing": false,
+    "point_equals_hidden_required_for_feasible_haircut": false,
+    "positive_lower_required": false,
+    "primary_aggregate": "query",
+    "real_amount_accuracy_without_ground_truth": false,
+    "real_extra_candidates_false_by_default": false,
+    "real_reference_main_denominator": "Current versioned reference positives per evaluated query, not runtime predictions",
+    "secondary": "incident_macro",
+    "source_positive_address_definition_controlled": "Independent Oracle feasible source upper > 0",
+    "timed_repetitions": 5,
+    "warmup_repetitions": 1,
+    "zero_hop_included": true
+  },
+  "methods": [
+    {
+      "existing_core_reused": true,
+      "id": "FULL_INTERVAL",
+      "result_kind": "feasible_interval"
+    },
+    {
+      "id": "BOUNDED_REACHABILITY",
+      "result_kind": "address_event_set_no_amount"
+    },
+    {
+      "id": "POISON",
+      "result_kind": "marked_set_and_nominal_not_conservative_amount"
+    },
+    {
+      "boundary_completion_is_observed_fact": false,
+      "boundary_convention": "H_BMIN_BOUNDARY_V1",
+      "id": "HAIRCUT",
+      "result_kind": "proportional_feasible_point"
+    },
+    {
+      "changing_objective_only_counts_as_ablation": false,
+      "id": "NO_CROSS_TARGET_COUPLING",
+      "result_kind": "product_of_target_specific_copies",
+      "target_granularity": "address_asset"
+    },
+    {
+      "id": "NO_PROTOCOL_CONTINUATION",
+      "real_eth_pilots_expected_feature_absent": true,
+      "result_kind": "protocol_boundary_termination"
+    },
+    {
+      "id": "BALANCE_INFORMATION_REMOVED",
+      "is_joint_coupling_ablation": false,
+      "result_kind": "matched_information_relaxation"
+    }
+  ],
+  "next_batch": {
+    "S3_injection_not_guessed": true,
+    "do_not_force_counts_or_fill_unqualified": true,
+    "include_all_registered_queries_in_status_catalog": true,
+    "max_reserves": 2,
+    "new_query_execution_authorized": false,
+    "prefer_other_existing_incidents": true,
+    "preselection_may_use_existing_reference_scope_cost_not_algorithm_outcomes": true,
+    "primary_proposals": 4
+  },
+  "paired_fairness": {
+    "baseline_uses_main_lp_solution_to_generate_output": false,
+    "hidden_or_oracle_visible_to_methods": false,
+    "invalid_point_clipped_into_full_interval": false,
+    "methods_required_to_have_different_address_sets": false,
+    "same_input_provenance_required": true,
+    "shared_labels": true,
+    "shared_physical_facts": true,
+    "shared_time_asset_scope": true
+  },
+  "research_status": "DEVELOPMENT_FIRST_PAIRED_EXPERIMENTS_NOT_FULL_SAMPLE_GENERALIZATION",
+  "sampling_rules": {
+    "chain_id": 1,
+    "depth_and_90_days_only_control_acquisition": true,
+    "first_identified_service_stops_branch": true,
+    "local_window_days": 90,
+    "lp_has_fund_age_limit": false,
+    "lp_has_path_hop_limit": false,
+    "lp_has_strict_time_order": true,
+    "reference_paths_as_neighbor_whitelist": false,
+    "seed_receipt_depth": 0
+  },
+  "schema_version": "stage1c-experiment-policy-1.0",
+  "stage": "Stage1C"
+}

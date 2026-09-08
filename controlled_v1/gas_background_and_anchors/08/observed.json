@@ -1,0 +1,110 @@
+{
+  "construction_notes": [
+    "Actual successful and failed native fees are distinct; latter five instances seed TOK and cannot spend TOK source as ETH gas."
+  ],
+  "events": [
+    {
+      "amount_raw": "6",
+      "asset": "TOK",
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A"
+    },
+    {
+      "amount_raw": "1",
+      "asset": "ETH",
+      "from": "A",
+      "id": "gas_success",
+      "kind": "gas",
+      "order": 2,
+      "transaction_status": "SUCCESS"
+    },
+    {
+      "amount_raw": "1",
+      "asset": "TOK",
+      "id": "background_in",
+      "kind": "normal_incoming",
+      "order": 3,
+      "to": "A"
+    },
+    {
+      "amount_raw": "1",
+      "asset": "ETH",
+      "balance_anchors_after": {
+        "A|ETH": "1",
+        "A|TOK": "14"
+      },
+      "from": "A",
+      "id": "gas_failed",
+      "kind": "gas",
+      "order": 4,
+      "transaction_status": "FAILED"
+    },
+    {
+      "amount_raw": "7",
+      "asset": "TOK",
+      "from": "A",
+      "id": "a_b",
+      "kind": "transfer",
+      "order": 5,
+      "to": "B"
+    },
+    {
+      "amount_raw": "7",
+      "asset": "TOK",
+      "from": "B",
+      "id": "b_t",
+      "kind": "transfer",
+      "order": 6,
+      "to": "T"
+    },
+    {
+      "amount_raw": "7",
+      "asset": "TOK",
+      "from": "A",
+      "id": "a_u",
+      "kind": "transfer",
+      "order": 7,
+      "to": "U"
+    }
+  ],
+  "family": "gas_background_and_anchors",
+  "generator_version": "CONTROLLED_V1_GENERATOR_1.0.0",
+  "incident_id": "SYNTHETIC_CONTROLLED_V1",
+  "index": 8,
+  "initial_balances": {
+    "A|ETH": "3",
+    "A|TOK": "7",
+    "B|TOK": "0",
+    "T|TOK": "0",
+    "U|TOK": "0"
+  },
+  "label_version": "CONTROLLED_V1_SERVICES_1",
+  "objective_groups": {
+    "T|TOK": [
+      "b_t"
+    ],
+    "U|TOK": [
+      "a_u"
+    ]
+  },
+  "provenance": "ORIGINAL_SYNTHETIC_STAGE1C_NOT_EXTERNAL_BLIND_GT",
+  "query_id": "controlled-v1/gas_background_and_anchors/08",
+  "sampling": {
+    "chain_id": 1,
+    "first_identified_service_stops_branch": true,
+    "lp_fund_age_limit": null,
+    "lp_path_hop_limit": null,
+    "strict_time_order": true
+  },
+  "scenario_id": "controlled-v1/gas_background_and_anchors/08",
+  "schema_version": "stage1c-controlled-observed-1.0",
+  "scope": "FROZEN_ORDERED_OBSERVED_GRAPH",
+  "source_layer": "SYNTHETIC",
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "zero_hop": false
+}

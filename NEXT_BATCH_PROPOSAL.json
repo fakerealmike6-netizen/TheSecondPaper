@@ -1,0 +1,145 @@
+{
+  "cost_limits": [
+    "Existing reference event count is a lower bound, not predicted full candidate history size.",
+    "Reference windows only propose outer bounds and must not be converted to branch whitelists.",
+    "Reference fact cache does not establish complete candidate graph or context availability.",
+    "No credit estimate is asserted without an actual provider plan; next collection needs the carried ledger and its own authorization."
+  ],
+  "eligible_unrun_queries": 38,
+  "excluded_selection_features": [
+    "source amount",
+    "positive lower bound",
+    "method recall",
+    "expected label hit",
+    "number of positive reference addresses"
+  ],
+  "external_acceptance": "PENDING_REVIEW",
+  "final_evaluation_denominator_frozen": false,
+  "frozen_input_sha256": "3961d29ab8effff7e582f47ec754e63ddc231078e34899ee904f70d818f6340f",
+  "input_sources": {
+    "cached_event_slice": {
+      "bytes": 879368,
+      "project_path": "03_workspaces/stage1A/revisions/20260906T154921+0800_r1_7d7af06b/derived/reference_event_slice.csv.gz",
+      "sha256": "adc8de9593f6de8fc24506bd1b81c5f8f94ea1e7f1fb4eee3ce4e9becf24d9a5"
+    },
+    "r4_label_history": {
+      "bytes": 1352,
+      "project_path": "03_workspaces/stage1C/runs/20260908T084753+0800_stage1c/code/derived/label_history_r4/F06_HISTORY_SUMMARY.json",
+      "sha256": "5f389c261ecd297bceed672f6e19de8a6cc35aee383345e2366d7470131a50da"
+    },
+    "r4_label_impact": {
+      "bytes": 3631,
+      "project_path": "03_workspaces/stage1C/runs/20260908T084753+0800_stage1c/code/derived/label_history_r4/F06_PILOT_IMPACT.json",
+      "sha256": "5714ee3753a19368eadd94b79e6f72ee5e3b68029a59c658ad431446c770ea3c"
+    },
+    "reference_r1": {
+      "bytes": 1924699,
+      "project_path": "03_workspaces/stage1B/revisions/20260906T212828+0800_stage1b_r1/private/portable_label_reference_final_v1/diffs/reference_relations_updated.csv.gz",
+      "sha256": "a1dca04ea5e7b1d50dd5ec2b6fe056ea6bc29f52dfec36c9f19c412c008871f2"
+    },
+    "reference_r2_delta": {
+      "bytes": 1061143,
+      "project_path": "03_workspaces/stage1B/revisions/20260907T105844+0800_stage1b_r2/derived/reference_delta_r2/labels_003_final/affected_after.csv.gz",
+      "sha256": "78544910efd58396645bd4f6df5ee515c55d25f26fb6f271027aaea1d364f1d8"
+    },
+    "reference_r2_summary": {
+      "bytes": 10479,
+      "project_path": "03_workspaces/stage1B/revisions/20260907T105844+0800_stage1b_r2/derived/reference_delta_r2/labels_003_final/summary.json",
+      "sha256": "3e70924e704280965116c204135a0f1edebbb0c507bdf5148edab1b214156c62"
+    },
+    "registry": {
+      "bytes": 117644,
+      "project_path": "03_workspaces/stage1A/revisions/20260906T154921+0800_r1_7d7af06b/derived/reference_query_members.csv",
+      "sha256": "b710408b6de170a5597e2c77c2068450cead456744bb8835deb42ba7288c072a"
+    },
+    "s3_audit": {
+      "bytes": 380,
+      "project_path": "03_workspaces/stage1A/revisions/20260906T154921+0800_r1_7d7af06b/derived/s3_injection_audit.csv",
+      "sha256": "c38673c4aa4ae53a2740ab278b74e4601f9d0934d0f45d966342827ea0bd8c4c"
+    }
+  },
+  "method_version": "STAGE1C_CATALOG_V1",
+  "new_collection_executed": false,
+  "new_research_requests": 0,
+  "primary": [
+    {
+      "cost_reference_entry_events": 1,
+      "cost_window_seconds": 0,
+      "incident_id": "INC_LIFI_2024",
+      "query_id": "qry:2f337cfbd1635b0918178bfbf33cac4b7cb8390fb04cab0c16e56a420c74c417",
+      "queue_rank": 1,
+      "queue_role": "PRIMARY_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": true
+    },
+    {
+      "cost_reference_entry_events": 45,
+      "cost_window_seconds": 1476480,
+      "incident_id": "INC_TXPHISH_2024",
+      "query_id": "qry:e75466ea01d34b47c18b996e77bd2de94c7b986791b8ac3bc19de06cc75d13fc",
+      "queue_rank": 2,
+      "queue_role": "PRIMARY_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": false
+    },
+    {
+      "cost_reference_entry_events": 73,
+      "cost_window_seconds": 9294644,
+      "incident_id": "INC_XSCAM_2022",
+      "query_id": "qry:17ab959f9d76caf10f732c713f804dc330bc6490e0451e2405f4248c23193987",
+      "queue_rank": 3,
+      "queue_role": "PRIMARY_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": false
+    },
+    {
+      "cost_reference_entry_events": 45,
+      "cost_window_seconds": 1482636,
+      "incident_id": "INC_TXPHISH_2024",
+      "query_id": "qry:ff8529d52dbe86b9eebd22c29135101620aac07ad67e6e97c2d88804a72e4014",
+      "queue_rank": 4,
+      "queue_role": "PRIMARY_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": false
+    }
+  ],
+  "registered_queries_retained": 49,
+  "reserve": [
+    {
+      "cost_reference_entry_events": 445,
+      "cost_window_seconds": 11556383,
+      "incident_id": "INC_XSCAM_2022",
+      "query_id": "qry:b392156bae0856a2f3b802d84e11a1a505088ce521e3b8f964b6314e1c7f180c",
+      "queue_rank": 1,
+      "queue_role": "RESERVE_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": false
+    },
+    {
+      "cost_reference_entry_events": 445,
+      "cost_window_seconds": 11562488,
+      "incident_id": "INC_XSCAM_2022",
+      "query_id": "qry:313b08c2db0fa0d1717b0506893bffd0d7d22925c49df46d39372949803f6915",
+      "queue_rank": 2,
+      "queue_role": "RESERVE_PROPOSED",
+      "stratum": "S2",
+      "supported_seed_structure": "NATIVE_ETH_CURRENT_REAL_CONTEXT_ADAPTER",
+      "zero_hop_reference": false
+    }
+  ],
+  "s3_policy": "All 3 S3 query IDs and 21 member records remain registered; unresolved independent injection is not guessed or replaced with one member.",
+  "schema_version": "stage1c-next-batch-proposal-v1",
+  "selection_order": [
+    "New incident coverage before repetitions of an incident",
+    "Exactly resolved single event in the currently validated native ETH context adapter",
+    "Other-than-development incidents, known window before unknown window, ascending observed reference window seconds",
+    "Ascending number of distinct same-asset causal reference entry events of ALL reference statuses",
+    "Descending cached seed count; query_id lexical order as final deterministic tie-break"
+  ],
+  "zero_hop_policy": "Legal zero-hop queries remain eligible when their exact seed structure is supported; no simplicity exclusion."
+}

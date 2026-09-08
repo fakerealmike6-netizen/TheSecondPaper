@@ -1,0 +1,71 @@
+{
+  "construction_notes": [
+    "Canonical net deposit is 1:1; any refund is an explicitly synthetic gross/refund envelope, never claimed to be a WETH9 native refund."
+  ],
+  "events": [
+    {
+      "amount_raw": "8",
+      "asset": "ETH",
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A"
+    },
+    {
+      "asset": "ETH",
+      "certified_semantics": "SYNTHETIC_CONTROLLED",
+      "from": "A",
+      "gross_raw": "11",
+      "id": "wrap",
+      "kind": "conversion",
+      "order": 2,
+      "output_asset": "WETH",
+      "output_raw": "11",
+      "protocol": "Canonical_WETH9_deposit",
+      "refund_raw": "0",
+      "refund_semantics_note": "Refund belongs to synthetic pre-deposit envelope, not to WETH9.deposit itself.",
+      "to": "A"
+    },
+    {
+      "amount_raw": "11",
+      "asset": "WETH",
+      "from": "A",
+      "id": "weth_enter",
+      "kind": "transfer",
+      "order": 3,
+      "to": "T"
+    }
+  ],
+  "family": "canonical_weth_1to1",
+  "generator_version": "CONTROLLED_V1_GENERATOR_1.0.0",
+  "incident_id": "SYNTHETIC_CONTROLLED_V1",
+  "index": 4,
+  "initial_balances": {
+    "A|ETH": "3",
+    "A|WETH": "0",
+    "T|WETH": "0"
+  },
+  "label_version": "CONTROLLED_V1_SERVICES_1",
+  "objective_groups": {
+    "T|WETH": [
+      "weth_enter"
+    ]
+  },
+  "provenance": "ORIGINAL_SYNTHETIC_STAGE1C_NOT_EXTERNAL_BLIND_GT",
+  "query_id": "controlled-v1/canonical_weth_1to1/04",
+  "sampling": {
+    "chain_id": 1,
+    "first_identified_service_stops_branch": true,
+    "lp_fund_age_limit": null,
+    "lp_path_hop_limit": null,
+    "strict_time_order": true
+  },
+  "scenario_id": "controlled-v1/canonical_weth_1to1/04",
+  "schema_version": "stage1c-controlled-observed-1.0",
+  "scope": "FROZEN_ORDERED_OBSERVED_GRAPH",
+  "source_layer": "SYNTHETIC",
+  "target_accounts": [
+    "T"
+  ],
+  "zero_hop": false
+}

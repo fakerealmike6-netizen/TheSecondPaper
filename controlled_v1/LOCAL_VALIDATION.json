@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "platform": "Windows",
+  "python": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+  "test_framework": "unittest",
+  "tests_run": 83,
+  "test_command": "python -B -m unittest discover -s tests -p test_stage1c_controlled.py -q",
+  "manifest_sha256": "30f5a6aa74ba8084e8eb3fcdf99ba429484aa37cceb365e67b75fa58cd71174d",
+  "source_sha256": {
+    "stage1c_controlled.py": "954ca548bb65a7a01405f362c380f341de3902056d0e7738ab54112472c40503",
+    "stage1c_oracle.py": "fc9e3386dd3ba64d8f75d683fc2715c973460d9c26af38927324ab8caeb74b7e",
+    "test_stage1c_controlled.py": "527d29968dcea60cda5e227f9a7f68e53cadadb7737a1915d8d2891b0099caac"
+  },
+  "initial_attempt_note": "pytest unavailable; no dependency installed; adapted to existing unittest",
+  "generic_empty_target_oracle_correction": "Before batch source freeze: empty union returns0..0 only after network feasibility; all60 frozen controls unchanged;83 control tests re-passed."
+}

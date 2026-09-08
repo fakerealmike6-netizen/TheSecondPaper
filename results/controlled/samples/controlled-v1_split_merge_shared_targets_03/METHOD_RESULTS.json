@@ -1,0 +1,2171 @@
+{
+  "BALANCE_INFORMATION_REMOVED": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "0",
+              "b_d": "0",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "0",
+              "shared_split:output0": "0",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "3",
+              "b_d": "0",
+              "c_d": "3",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "0",
+              "b_d": "0",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "0",
+              "shared_split:output0": "0",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "3",
+              "b_d": "0",
+              "c_d": "3",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "applicability": "SUPPORTED",
+    "events": {
+      "shared_split:output0": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "0",
+              "b_d": "0",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "0",
+              "shared_split:output0": "0",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "3",
+              "b_d": "0",
+              "c_d": "3",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "shared_split:output1": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "0",
+              "b_d": "0",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "0",
+              "shared_split:output0": "0",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "3",
+              "b_d": "0",
+              "c_d": "3",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "joint_by_asset": {
+      "ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "0",
+              "b_d": "0",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "0",
+              "shared_split:output0": "0",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "0",
+              "a_c": "3",
+              "b_d": "0",
+              "c_d": "3",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "BALANCE_INFORMATION_REMOVED",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "model_scope": "INFORMATION_RELAXED",
+    "modifications": {
+      "nesting": {
+        "nested": true,
+        "proof": "Identical variables, event ports, source injection, ordering and equalities; only physical actual-balance upper bounds are removed.",
+        "removed_information": "INITIAL_AND_ALIGNED_AND_REPLAYED_ACTUAL_BALANCE_CAPS"
+      },
+      "raw_graph_unchanged": true,
+      "removed_bound_variables": [
+        "h:A|ETH:a_c",
+        "z:A|ETH:a_c",
+        "h:B|ETH:b_d",
+        "z:B|ETH:b_d",
+        "h:C|ETH:c_d",
+        "z:C|ETH:c_d",
+        "h:D|ETH:shared_split",
+        "z:D|ETH:shared_split"
+      ]
+    },
+    "output_kind": "feasible_interval",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_intervals": 2,
+      "base_equalities": 18,
+      "base_variables": 25,
+      "endpoint_optimizations": 6,
+      "entry_intervals": 2,
+      "joint_intervals": 1
+    },
+    "timing_parts": {
+      "model_build_seconds": 0.001902900003187824,
+      "solve_and_certification_seconds": 0.022818999997980427
+    }
+  },
+  "BOUNDED_REACHABILITY": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output0"
+        ],
+        "nominal_raw": null,
+        "point_raw": null,
+        "source_amount_raw": null,
+        "supported": true
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output1"
+        ],
+        "nominal_raw": null,
+        "point_raw": null,
+        "source_amount_raw": null,
+        "supported": true
+      }
+    },
+    "allocation_raw": null,
+    "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+    "applicability": "APPLICABLE",
+    "boundary_completion": null,
+    "construction_audit": null,
+    "events": {
+      "a_b": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "B|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b"
+        ]
+      },
+      "a_c": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "C|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_c"
+        ]
+      },
+      "b_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d"
+        ]
+      },
+      "c_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_c",
+          "c_d"
+        ]
+      },
+      "seed": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed"
+        ]
+      },
+      "shared_split:input": {
+        "actual_raw": "6",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": null,
+        "role": "MULTIOUTPUT_INPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:input"
+        ]
+      },
+      "shared_split:output0": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "T|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:output0"
+        ]
+      },
+      "shared_split:output1": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": null,
+        "recipient": "U|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:output1"
+        ]
+      }
+    },
+    "failure_reason": null,
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "input_usage": {
+      "actual_fees": true,
+      "balances_and_anchors": false,
+      "hidden_or_oracle": false,
+      "main_endpoints": false,
+      "physical_events_order_assets_targets": true,
+      "source_zero_roles": true
+    },
+    "joint_by_asset": {
+      "ETH": {
+        "addresses": [
+          "T|ETH",
+          "U|ETH"
+        ],
+        "events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "nominal_raw": null,
+        "point_raw": null,
+        "source_amount_raw": null
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "BOUNDED_REACHABILITY",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "output_address_ids": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "output_event_ids": [
+      "shared_split:output0",
+      "shared_split:output1"
+    ],
+    "output_kind": "ADDRESS_EVENT_SET_NO_AMOUNT",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "query_or_sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_outputs": 2,
+      "endpoint_optimizations": 0,
+      "joint_outputs": 1,
+      "physical_ports_visited": 8
+    }
+  },
+  "FULL_INTERVAL": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "applicability": "SUPPORTED",
+    "events": {
+      "shared_split:output0": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "shared_split:output1": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "joint_by_asset": {
+      "ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "3",
+        "objective_events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "FULL_INTERVAL",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "model_scope": "KNOWN_DECLARED_LEDGER",
+    "modifications": {
+      "raw_graph_unchanged": true
+    },
+    "output_kind": "feasible_interval",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_intervals": 2,
+      "base_equalities": 18,
+      "base_variables": 25,
+      "endpoint_optimizations": 6,
+      "entry_intervals": 2,
+      "joint_intervals": 1
+    },
+    "timing_parts": {
+      "model_build_seconds": 0.0012919000000692904,
+      "solve_and_certification_seconds": 0.023547899996628985
+    }
+  },
+  "HAIRCUT": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output0"
+        ],
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "source_amount_raw": "3/2",
+        "supported": true
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output1"
+        ],
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "source_amount_raw": "3/2",
+        "supported": true
+      }
+    },
+    "allocation_raw": {
+      "a_b": "3/2",
+      "a_c": "3/2",
+      "b_d": "3/2",
+      "c_d": "3/2",
+      "seed": "3",
+      "shared_split:input": "3",
+      "shared_split:output0": "3/2",
+      "shared_split:output1": "3/2"
+    },
+    "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+    "applicability": "APPLICABLE",
+    "boundary_completion": {
+      "B0_out_raw": "0",
+      "S0_out_raw": "0",
+      "adopted": false,
+      "asset": "ETH",
+      "convention": "H_BMIN_BOUNDARY_V1",
+      "is_observed_fact": false,
+      "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+      "sequence": []
+    },
+    "construction_audit": {
+      "allocation_construction": "EXACT_FRACTION_PROPORTIONAL_REPLAY",
+      "debit_trace": [
+        {
+          "account_asset": "A|ETH",
+          "actual_before_raw": "6",
+          "actual_debit_raw": "3",
+          "event_id": "a_b",
+          "ratio": "1/2",
+          "source_before_raw": "3",
+          "source_debit_raw": "3/2"
+        },
+        {
+          "account_asset": "A|ETH",
+          "actual_before_raw": "3",
+          "actual_debit_raw": "3",
+          "event_id": "a_c",
+          "ratio": "1/2",
+          "source_before_raw": "3/2",
+          "source_debit_raw": "3/2"
+        },
+        {
+          "account_asset": "B|ETH",
+          "actual_before_raw": "3",
+          "actual_debit_raw": "3",
+          "event_id": "b_d",
+          "ratio": "1/2",
+          "source_before_raw": "3/2",
+          "source_debit_raw": "3/2"
+        },
+        {
+          "account_asset": "C|ETH",
+          "actual_before_raw": "3",
+          "actual_debit_raw": "3",
+          "event_id": "c_d",
+          "ratio": "1/2",
+          "source_before_raw": "3/2",
+          "source_debit_raw": "3/2"
+        },
+        {
+          "account_asset": "D|ETH",
+          "actual_before_raw": "6",
+          "actual_debit_raw": "6",
+          "event_id": "shared_split:input",
+          "ratio": "1/2",
+          "source_before_raw": "3",
+          "source_debit_raw": "3"
+        }
+      ],
+      "final_actual_balance_raw": {
+        "A|ETH": "0",
+        "B|ETH": "0",
+        "C|ETH": "0",
+        "D|ETH": "0",
+        "T|ETH": "3",
+        "U|ETH": "3"
+      },
+      "final_source_balance_raw": {
+        "A|ETH": "0",
+        "B|ETH": "0",
+        "C|ETH": "0",
+        "D|ETH": "0",
+        "T|ETH": "3/2",
+        "U|ETH": "3/2"
+      },
+      "per_asset": {
+        "ETH": {
+          "exact_conserved": true,
+          "fees_and_boundary_sinks_raw": "0",
+          "net_conversion_raw": "0",
+          "retained_in_accounts_terminals_and_outside_raw": "3",
+          "seed_raw": "3"
+        }
+      }
+    },
+    "events": {
+      "a_b": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "B|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      },
+      "a_c": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "C|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      },
+      "b_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      },
+      "c_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      },
+      "seed": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3",
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "source_amount_raw": "3",
+        "supported": true,
+        "witness": null
+      },
+      "shared_split:input": {
+        "actual_raw": "6",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3",
+        "recipient": null,
+        "role": "MULTIOUTPUT_INPUT",
+        "source_amount_raw": "3",
+        "supported": true,
+        "witness": null
+      },
+      "shared_split:output0": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "T|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      },
+      "shared_split:output1": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": null,
+        "point_raw": "3/2",
+        "recipient": "U|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": "3/2",
+        "supported": true,
+        "witness": null
+      }
+    },
+    "failure_reason": null,
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "input_usage": {
+      "actual_fees": true,
+      "balances_and_anchors": true,
+      "hidden_or_oracle": false,
+      "main_endpoints": false,
+      "physical_events_order_assets_targets": true,
+      "source_zero_roles": true
+    },
+    "joint_by_asset": {
+      "ETH": {
+        "addresses": [
+          "T|ETH",
+          "U|ETH"
+        ],
+        "events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "nominal_raw": null,
+        "point_raw": "3",
+        "source_amount_raw": "3"
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "HAIRCUT",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "output_address_ids": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "output_event_ids": [
+      "shared_split:output0",
+      "shared_split:output1"
+    ],
+    "output_kind": "PROPORTIONAL_FEASIBLE_POINT",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "query_or_sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_outputs": 2,
+      "endpoint_optimizations": 0,
+      "joint_outputs": 1,
+      "physical_ports_visited": 8
+    }
+  },
+  "NO_CROSS_TARGET_COUPLING": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "applicability": "SUPPORTED",
+    "events": {
+      "shared_split:output0": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "shared_split:output1": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "joint_by_asset": {
+      "ETH": {
+        "asset": "ETH",
+        "copy_count": 2,
+        "derivation": "Exact sum of extrema in disjoint variables and constraints",
+        "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+        "lower_raw": "0",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "6"
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "NO_CROSS_TARGET_COUPLING",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "model_scope": "KNOWN_DECLARED_LEDGER",
+    "modifications": {
+      "definition": "F_ind = product_a F^(a); omit x_e^(a)=x_e^(b) and corresponding state identity for a != b; each copy retains all targets as absorbing terminals.",
+      "global_common_source_budget": false,
+      "product_copies": [
+        {
+          "address_asset": "T|ETH",
+          "copy_id": "F^0",
+          "cross_copy_identity_equalities_present": false,
+          "equalities": 18,
+          "physical_identity_namespace": "target_copy/0/",
+          "variables": 25
+        },
+        {
+          "address_asset": "U|ETH",
+          "copy_id": "F^1",
+          "cross_copy_identity_equalities_present": false,
+          "equalities": 18,
+          "physical_identity_namespace": "target_copy/1/",
+          "variables": 25
+        }
+      ],
+      "raw_graph_unchanged": true,
+      "unbound_all_state_variables_count": 25,
+      "unbound_identical_physical_variables": [
+        "seed",
+        "a_b",
+        "a_c",
+        "b_d",
+        "c_d",
+        "shared_split:input",
+        "shared_split:output0",
+        "shared_split:output1"
+      ],
+      "within_each_copy_common_source_budget": true
+    },
+    "output_kind": "product_of_target_specific_copies",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_intervals": 2,
+      "base_equalities": 18,
+      "base_variables": 25,
+      "endpoint_optimizations": 4,
+      "entry_intervals": 2,
+      "joint_intervals": 1
+    },
+    "timing_parts": {
+      "model_build_seconds": 0.0012700000006589107,
+      "solve_and_certification_seconds": 0.01730870000028517
+    }
+  },
+  "NO_PROTOCOL_CONTINUATION": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "applicability": "SUPPORTED",
+    "events": {
+      "shared_split:output0": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output0"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      },
+      "shared_split:output1": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "0.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "0",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "0",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "0",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "0",
+              "shared_split:output1": "3"
+            }
+          }
+        },
+        "lower_raw": "0",
+        "objective_events": [
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "joint_by_asset": {
+      "ETH": {
+        "asset": "ETH",
+        "endpoints": {
+          "lower": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          },
+          "upper": {
+            "approximate_raw": "3.0",
+            "certificate": {
+              "certified": true,
+              "exact_dual_feasible": true,
+              "exact_dual_objective": "-1",
+              "exact_primal_feasible": true,
+              "exact_primal_objective": "-1",
+              "failure_detail": null,
+              "primal_recovery": {
+                "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                "status": "EXACT_CANDIDATE_RECOVERED"
+              },
+              "rational_reconstruction_denominator_limit": 1000000000
+            },
+            "raw": "3",
+            "status": "OPTIMAL_EXACT_CERTIFIED",
+            "witness_event_source_raw": {
+              "a_b": "3",
+              "a_c": "0",
+              "b_d": "3",
+              "c_d": "0",
+              "seed": "3",
+              "shared_split:input": "3",
+              "shared_split:output0": "3",
+              "shared_split:output1": "0"
+            }
+          }
+        },
+        "lower_raw": "3",
+        "objective_events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "positive_support": "CERTIFIED_POSITIVE",
+        "status": "OPTIMAL_EXACT_CERTIFIED",
+        "upper_raw": "3"
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "NO_PROTOCOL_CONTINUATION",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "model_scope": "KNOWN_DECLARED_LEDGER",
+    "modifications": {
+      "boundary_source_variables": [],
+      "connected_protocol_count": 0,
+      "feature_status": "FEATURE_ABSENT_SAME_INPUT",
+      "gross_and_refund_conservation_preserved": true,
+      "physical_outputs_retained_as_source_zero": [],
+      "raw_graph_unchanged": true,
+      "unlinked_source_ratio_equalities": []
+    },
+    "output_kind": "feasible_interval",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_intervals": 2,
+      "base_equalities": 18,
+      "base_variables": 25,
+      "endpoint_optimizations": 6,
+      "entry_intervals": 2,
+      "joint_intervals": 1
+    },
+    "timing_parts": {
+      "model_build_seconds": 0.0013012000054004602,
+      "solve_and_certification_seconds": 0.022216999997908715
+    }
+  },
+  "POISON": {
+    "addresses": {
+      "T|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output0"
+        ],
+        "nominal_raw": "3",
+        "point_raw": null,
+        "source_amount_raw": null,
+        "supported": true
+      },
+      "U|ETH": {
+        "asset": "ETH",
+        "events": [
+          "shared_split:output1"
+        ],
+        "nominal_raw": "3",
+        "point_raw": null,
+        "source_amount_raw": null,
+        "supported": true
+      }
+    },
+    "allocation_raw": null,
+    "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+    "applicability": "APPLICABLE",
+    "boundary_completion": null,
+    "construction_audit": null,
+    "events": {
+      "a_b": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "B|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b"
+        ]
+      },
+      "a_c": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "C|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_c"
+        ]
+      },
+      "b_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d"
+        ]
+      },
+      "c_d": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "D|ETH",
+        "role": "TRANSFER",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_c",
+          "c_d"
+        ]
+      },
+      "seed": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed"
+        ]
+      },
+      "shared_split:input": {
+        "actual_raw": "6",
+        "asset": "ETH",
+        "nominal_raw": "6",
+        "point_raw": null,
+        "recipient": null,
+        "role": "MULTIOUTPUT_INPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:input"
+        ]
+      },
+      "shared_split:output0": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "T|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:output0"
+        ]
+      },
+      "shared_split:output1": {
+        "actual_raw": "3",
+        "asset": "ETH",
+        "nominal_raw": "3",
+        "point_raw": null,
+        "recipient": "U|ETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "source_amount_raw": null,
+        "supported": true,
+        "witness": [
+          "seed",
+          "a_b",
+          "b_d",
+          "shared_split:output1"
+        ]
+      }
+    },
+    "failure_reason": null,
+    "input_fact_hash": "a3df913e208f504b9dedf5d8962305e38040954be0135f0b5cbe28a5e7ba94b3",
+    "input_usage": {
+      "actual_fees": true,
+      "balances_and_anchors": false,
+      "hidden_or_oracle": false,
+      "main_endpoints": false,
+      "physical_events_order_assets_targets": true,
+      "source_zero_roles": true
+    },
+    "joint_by_asset": {
+      "ETH": {
+        "addresses": [
+          "T|ETH",
+          "U|ETH"
+        ],
+        "events": [
+          "shared_split:output0",
+          "shared_split:output1"
+        ],
+        "nominal_raw": "6",
+        "point_raw": null,
+        "source_amount_raw": null
+      }
+    },
+    "label_version": "CONTROLLED_V1_SERVICES_1",
+    "method_id": "POISON",
+    "method_version": "stage1c-v1:e1c9ea756c022513",
+    "output_address_ids": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "output_event_ids": [
+      "shared_split:output0",
+      "shared_split:output1"
+    ],
+    "output_kind": "POISON_NOMINAL_RAW",
+    "positive_addresses": [
+      "T|ETH",
+      "U|ETH"
+    ],
+    "query_or_sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "sample_id": "controlled-v1/split_merge_shared_targets/03",
+    "scope_hash": "ddbe74f954f1c9f36cf7898fd7f13b999db11f08450ec308b6e3661f24ec64fa",
+    "status": "COMPLETED",
+    "task_counts": {
+      "address_outputs": 2,
+      "endpoint_optimizations": 0,
+      "joint_outputs": 1,
+      "physical_ports_visited": 8
+    }
+  }
+}

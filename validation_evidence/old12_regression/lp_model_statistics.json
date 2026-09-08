@@ -1,0 +1,280 @@
+[
+  {
+    "variables": 6,
+    "equalities": 4,
+    "nonzero_coefficients": 10,
+    "physical_source_variables": 2,
+    "scenario_id": "01_single_path",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "10"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "10"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:enter",
+      "T|ETH": "z:T|ETH:enter"
+    }
+  },
+  {
+    "variables": 6,
+    "equalities": 4,
+    "nonzero_coefficients": 10,
+    "physical_source_variables": 2,
+    "scenario_id": "02_normal_mixture",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "50"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "50"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:enter",
+      "T|ETH": "z:T|ETH:enter"
+    }
+  },
+  {
+    "variables": 26,
+    "equalities": 19,
+    "nonzero_coefficients": 51,
+    "physical_source_variables": 7,
+    "scenario_id": "03_split_merge",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "10"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "10"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:a_c",
+      "B|ETH": "z:B|ETH:b_u",
+      "C|ETH": "z:C|ETH:c_d",
+      "D|ETH": "z:D|ETH:d_t",
+      "T|ETH": "z:T|ETH:d_t",
+      "U|ETH": "z:U|ETH:b_u"
+    }
+  },
+  {
+    "variables": 10,
+    "equalities": 7,
+    "nonzero_coefficients": 18,
+    "physical_source_variables": 3,
+    "scenario_id": "04_shared_targets",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "100"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "100"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:u",
+      "T|ETH": "z:T|ETH:t",
+      "U|ETH": "z:U|ETH:u"
+    }
+  },
+  {
+    "variables": 10,
+    "equalities": 7,
+    "nonzero_coefficients": 19,
+    "physical_source_variables": 3,
+    "scenario_id": "05_repeated_target",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "100"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "100"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:second",
+      "T|ETH": "z:T|ETH:second"
+    }
+  },
+  {
+    "variables": 16,
+    "equalities": 11,
+    "nonzero_coefficients": 29,
+    "physical_source_variables": 5,
+    "scenario_id": "06_strict_time",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "10"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "10"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:future_out",
+      "T|ETH": "z:T|ETH:later",
+      "U|ETH": "z:U|ETH:future_out"
+    }
+  },
+  {
+    "variables": 12,
+    "equalities": 8,
+    "nonzero_coefficients": 22,
+    "physical_source_variables": 4,
+    "scenario_id": "07_native_gas",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "10"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "10"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:enter",
+      "T|ETH": "z:T|ETH:enter"
+    }
+  },
+  {
+    "variables": 9,
+    "equalities": 6,
+    "nonzero_coefficients": 14,
+    "physical_source_variables": 3,
+    "scenario_id": "08_erc20_gas_separation",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "TOK": "50"
+    },
+    "scales_raw_per_solver_unit": {
+      "TOK": "50"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|TOK": "z:A|TOK:enter",
+      "A|ETH": "z:A|ETH:eth_gas",
+      "T|TOK": "z:T|TOK:enter"
+    }
+  },
+  {
+    "variables": 13,
+    "equalities": 9,
+    "nonzero_coefficients": 24,
+    "physical_source_variables": 6,
+    "scenario_id": "09_weth_one_to_one",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "50",
+      "WETH": "50"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "50",
+      "WETH": "50"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:wrap",
+      "A|WETH": "z:A|WETH:enter",
+      "T|WETH": "z:T|WETH:enter"
+    }
+  },
+  {
+    "variables": 13,
+    "equalities": 9,
+    "nonzero_coefficients": 24,
+    "physical_source_variables": 6,
+    "scenario_id": "10_fractional_swap_refund",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "3",
+      "TOK": "2"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "3",
+      "TOK": "2"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:swap",
+      "A|TOK": "z:A|TOK:enter",
+      "T|TOK": "z:T|TOK:enter"
+    }
+  },
+  {
+    "variables": 6,
+    "equalities": 4,
+    "nonzero_coefficients": 10,
+    "physical_source_variables": 2,
+    "scenario_id": "11_missing_balance_relaxation",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "50"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "50"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:enter",
+      "T|ETH": "z:T|ETH:enter"
+    }
+  },
+  {
+    "variables": 9,
+    "equalities": 6,
+    "nonzero_coefficients": 15,
+    "physical_source_variables": 4,
+    "scenario_id": "12_multioutput_coupling_negative",
+    "model_type": "CONTINUOUS_TIME_EXPANDED_LP",
+    "balance_status": "KNOWN_DECLARED_LEDGER",
+    "source_potential_raw": {
+      "ETH": "100"
+    },
+    "scales_raw_per_solver_unit": {
+      "ETH": "100"
+    },
+    "unknown_initial_balances": [],
+    "acquisition_depth_constraints_in_lp": false,
+    "fund_age_constraints_in_lp": false,
+    "terminal_balances": {
+      "A|ETH": "z:A|ETH:split",
+      "T|ETH": "z:T|ETH:split",
+      "U|ETH": "z:U|ETH:split"
+    }
+  }
+]
