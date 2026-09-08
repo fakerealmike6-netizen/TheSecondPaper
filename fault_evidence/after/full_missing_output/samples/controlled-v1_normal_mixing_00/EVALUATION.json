@@ -1,0 +1,28 @@
+{
+  "address_metrics": {},
+  "comparisons": [],
+  "contract_passed": false,
+  "errors": [
+    {
+      "code": "OUTPUT_DOMAIN",
+      "detail": "missing=['T|ETH']; extra=[]",
+      "method": "FULL_INTERVAL",
+      "path": "addresses"
+    },
+    {
+      "code": "OUTPUT_DOMAIN",
+      "detail": "missing=['enter']; extra=[]",
+      "method": "FULL_INTERVAL",
+      "path": "events"
+    },
+    {
+      "code": "OUTPUT_DOMAIN",
+      "detail": "missing=['ETH']; extra=[]",
+      "method": "FULL_INTERVAL",
+      "path": "joint_by_asset"
+    }
+  ],
+  "haircut_full_assignment_audit": null,
+  "passed": false,
+  "status": "NOT_CERTIFIED_CONTRACT_FAILED"
+}

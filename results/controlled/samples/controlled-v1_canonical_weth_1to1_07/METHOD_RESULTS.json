@@ -277,6 +277,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "joint_by_asset": {
       "WETH": {
@@ -369,11 +370,13 @@
         "z:U|WETH:weth_split"
       ]
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
     "status": "COMPLETED",
@@ -386,8 +389,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0012252000014996156,
-      "solve_and_certification_seconds": 0.020249799999874085
+      "model_build_seconds": 0.0032719000009819865,
+      "solve_and_certification_seconds": 0.049102599994512275
     }
   },
   "BOUNDED_REACHABILITY": {
@@ -535,6 +538,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "input_usage": {
       "actual_fees": true,
@@ -562,6 +566,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "BOUNDED_REACHABILITY",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "93ff1cda63656f6fd7401b49f34555c31c856c4a277504ca8e4d540217a47c99",
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07"
+    },
     "output_address_ids": [
       "T|WETH",
       "U|WETH"
@@ -575,6 +585,7 @@
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
@@ -864,6 +875,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "joint_by_asset": {
       "WETH": {
@@ -943,11 +955,13 @@
     "modifications": {
       "raw_graph_unchanged": true
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
     "status": "COMPLETED",
@@ -960,8 +974,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0008491999979014508,
-      "solve_and_certification_seconds": 0.02099310000630794
+      "model_build_seconds": 0.0014076999941607937,
+      "solve_and_certification_seconds": 0.04622210000525229
     }
   },
   "HAIRCUT": {
@@ -1151,6 +1165,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "input_usage": {
       "actual_fees": true,
@@ -1178,6 +1193,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "HAIRCUT",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "93ff1cda63656f6fd7401b49f34555c31c856c4a277504ca8e4d540217a47c99",
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07"
+    },
     "output_address_ids": [
       "T|WETH",
       "U|WETH"
@@ -1191,6 +1212,7 @@
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
@@ -1480,6 +1502,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "joint_by_asset": {
       "WETH": {
@@ -1531,11 +1554,13 @@
       ],
       "within_each_copy_common_source_budget": true
     },
+    "native_identity": {},
     "output_kind": "product_of_target_specific_copies",
     "positive_addresses": [
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
     "status": "COMPLETED",
@@ -1548,8 +1573,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0007664000004297122,
-      "solve_and_certification_seconds": 0.015297199999622535
+      "model_build_seconds": 0.001711999997496605,
+      "solve_and_certification_seconds": 0.035194800002500415
     }
   },
   "NO_PROTOCOL_CONTINUATION": {
@@ -1830,6 +1855,7 @@
         "upper_raw": "0"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "joint_by_asset": {
       "WETH": {
@@ -1921,8 +1947,10 @@
         "protocol:wrap:fixed_ratio"
       ]
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",
     "status": "COMPLETED",
@@ -1935,8 +1963,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0007899000047473237,
-      "solve_and_certification_seconds": 0.020915799999784213
+      "model_build_seconds": 0.0019973000016761944,
+      "solve_and_certification_seconds": 0.04439520000596531
     }
   },
   "POISON": {
@@ -2084,6 +2112,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "02673451aea7539ea932dfa0fe3c73f7dee433cface511a2a7d95abbd23be10a",
     "input_usage": {
       "actual_fees": true,
@@ -2111,6 +2140,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "POISON",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "93ff1cda63656f6fd7401b49f34555c31c856c4a277504ca8e4d540217a47c99",
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07"
+    },
     "output_address_ids": [
       "T|WETH",
       "U|WETH"
@@ -2124,6 +2159,7 @@
       "T|WETH",
       "U|WETH"
     ],
+    "query_id": "controlled-v1/canonical_weth_1to1/07",
     "query_or_sample_id": "controlled-v1/canonical_weth_1to1/07",
     "sample_id": "controlled-v1/canonical_weth_1to1/07",
     "scope_hash": "2db84ac048ebe991e9ecad45ccc7f36537d1a4da0a8c7bc1a0576d40be633425",

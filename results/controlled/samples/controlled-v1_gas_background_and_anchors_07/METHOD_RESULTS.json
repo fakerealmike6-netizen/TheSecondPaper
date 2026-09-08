@@ -269,6 +269,7 @@
         "upper_raw": "7"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "joint_by_asset": {
       "TOK": {
@@ -362,11 +363,13 @@
         "z:U|TOK:a_u"
       ]
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
     "status": "COMPLETED",
@@ -379,8 +382,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0018045000033453107,
-      "solve_and_certification_seconds": 0.02303109999775188
+      "model_build_seconds": 0.005123700000694953,
+      "solve_and_certification_seconds": 0.05317440000362694
     }
   },
   "BOUNDED_REACHABILITY": {
@@ -503,6 +506,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "input_usage": {
       "actual_fees": true,
@@ -530,6 +534,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "BOUNDED_REACHABILITY",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "47f729a06bea6f029dc4dabbd987f65a285eb2af32029bd218d0cd0e57c3de69",
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07"
+    },
     "output_address_ids": [
       "T|TOK",
       "U|TOK"
@@ -543,6 +553,7 @@
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
@@ -824,6 +835,7 @@
         "upper_raw": "7"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "joint_by_asset": {
       "TOK": {
@@ -901,11 +913,13 @@
     "modifications": {
       "raw_graph_unchanged": true
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
     "status": "COMPLETED",
@@ -918,8 +932,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.001241500001924578,
-      "solve_and_certification_seconds": 0.022577600000659004
+      "model_build_seconds": 0.0023210999934235588,
+      "solve_and_certification_seconds": 0.05665380001300946
     }
   },
   "HAIRCUT": {
@@ -1126,6 +1140,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "input_usage": {
       "actual_fees": true,
@@ -1153,6 +1168,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "HAIRCUT",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "47f729a06bea6f029dc4dabbd987f65a285eb2af32029bd218d0cd0e57c3de69",
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07"
+    },
     "output_address_ids": [
       "T|TOK",
       "U|TOK"
@@ -1166,6 +1187,7 @@
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
@@ -1447,6 +1469,7 @@
         "upper_raw": "7"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "joint_by_asset": {
       "TOK": {
@@ -1497,11 +1520,13 @@
       ],
       "within_each_copy_common_source_budget": true
     },
+    "native_identity": {},
     "output_kind": "product_of_target_specific_copies",
     "positive_addresses": [
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
     "status": "COMPLETED",
@@ -1514,8 +1539,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0019452000051387586,
-      "solve_and_certification_seconds": 0.017927100001543295
+      "model_build_seconds": 0.003792500006966293,
+      "solve_and_certification_seconds": 0.04119679999712389
     }
   },
   "NO_PROTOCOL_CONTINUATION": {
@@ -1788,6 +1813,7 @@
         "upper_raw": "7"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "joint_by_asset": {
       "TOK": {
@@ -1871,11 +1897,13 @@
       "raw_graph_unchanged": true,
       "unlinked_source_ratio_equalities": []
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",
     "status": "COMPLETED",
@@ -1888,8 +1916,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0013968999992357567,
-      "solve_and_certification_seconds": 0.023386000000755303
+      "model_build_seconds": 0.003087799996137619,
+      "solve_and_certification_seconds": 0.059638999999151565
     }
   },
   "POISON": {
@@ -2012,6 +2040,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
     "input_usage": {
       "actual_fees": true,
@@ -2039,6 +2068,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "POISON",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "47f729a06bea6f029dc4dabbd987f65a285eb2af32029bd218d0cd0e57c3de69",
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07"
+    },
     "output_address_ids": [
       "T|TOK",
       "U|TOK"
@@ -2052,6 +2087,7 @@
       "T|TOK",
       "U|TOK"
     ],
+    "query_id": "controlled-v1/gas_background_and_anchors/07",
     "query_or_sample_id": "controlled-v1/gas_background_and_anchors/07",
     "sample_id": "controlled-v1/gas_background_and_anchors/07",
     "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec",

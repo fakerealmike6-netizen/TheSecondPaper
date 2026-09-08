@@ -16,7 +16,7 @@ import re
 import statistics
 
 METHODS = ("FULL_INTERVAL", "BOUNDED_REACHABILITY", "POISON", "HAIRCUT", "NO_CROSS_TARGET_COUPLING", "NO_PROTOCOL_CONTINUATION", "BALANCE_INFORMATION_REMOVED")
-REPORT_VERSION = "STAGE1C_POST_RESULT_REPORTS_V1"
+REPORT_VERSION = "STAGE1C_R1_VERIFIED_POST_RESULT_REPORTS_V1"
 
 
 def read(path):
@@ -234,6 +234,7 @@ def efficiency_summary(records):
                     "fixed_graph_end_to_end_median_seconds": profile["median_seconds"] + statistics.median(preprocessing),
                     "python_warmup_peak_bytes": profile["warmup_python_peak_bytes"],
                     "task_counts": item["methods"][method].get("task_counts"),
+                    "post_method_validation_seconds": efficiency.get("post_method_validation"),
                     "median_model_build_seconds": statistics.median(r["parts"]["model_build_seconds"] for r in profile["repetitions"][1:]) if all(r.get("parts") and "model_build_seconds" in r["parts"] for r in profile["repetitions"][1:]) else None,
                     "median_solve_and_certification_seconds": statistics.median(r["parts"]["solve_and_certification_seconds"] for r in profile["repetitions"][1:]) if all(r.get("parts") and "solve_and_certification_seconds" in r["parts"] for r in profile["repetitions"][1:]) else None})
             supported = [r for r in rows if r["method_status"] == "COMPLETED"]
@@ -272,7 +273,7 @@ DICTIONARY = {
 def markdown_reports(stats):
     c, real, efficiency = stats["controlled"], stats["real"], stats["efficiency"]
     status_rows = [(m, c["method_status_counts"][m].get("COMPLETED", 0), c["method_status_counts"][m].get("NOT_APPLICABLE", 0), c["method_status_counts"][m].get("ERROR", 0)) for m in METHODS]
-    overall = "# Stage1C first paired experiment results\n\nExternal acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_REACHED`.\n\n"
+    overall = "# Stage1C-R1 same-input paired experiment regression\n\nExternal acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_R1_REACHED`.\n\n"
     overall += f"Actual batch status: {stats['batch_status']}; {c['query_count']} controlled queries and {real['query_count']} real development queries. Controlled evaluations passed: {c['evaluation_passed']}/{c['query_count']}. These are first development validations, not unseen holdout or full-population evidence.\n\n"
     overall += table(["Method", "Completed controls", "Not applicable", "Errors"], status_rows) + "\n\n"
     overall += f"Maximum FULL/independent-Oracle endpoint error by asset: {json.dumps(c['maximum_endpoint_error_raw_by_asset'])}. Joint hidden coverage: {c['joint_hidden_covered_count']}/{c['resolved_query_asset_union_count']}. Haircut exact feasible assignments: {c['haircut_exact_feasible_query_count']}; all unsupported cases remain listed.\n\n"
@@ -322,6 +323,25 @@ def markdown_reports(stats):
 
 def generate_reports(tree, results, output, public_output=None):
     tree, results, output = Path(tree), Path(results), Path(output)
+    for destination in [output]+([Path(public_output)] if public_output is not None else []):
+        if destination.exists() and any(destination.iterdir()):
+            raise ValueError('Report output must be fresh; prior reports and failures are retained')
+    from stage1c_result_gate import validate_saved_batch
+    gate=validate_saved_batch(tree,results)
+    output.mkdir(parents=True,exist_ok=True)
+    write(output/'REPORT_ACCEPTANCE.json',gate)
+    if not gate['passed']:
+        failed={'schema_version':REPORT_VERSION,'passed':False,'batch_status':'FAILED_OUTPUT_ACCEPTANCE',
+                'controlled':{'query_count':None},'real':{'query_count':None},'query_count':gate['sample_count'],
+                'failed_queries':gate['failed_queries'],'certified_statistics_generated':False,
+                'external_acceptance':'PENDING_REVIEW','checkpoint':'CHECKPOINT_1C_R1_REACHED'}
+        write(output/'STATISTICS.json',failed)
+        (output/'01_CHECKPOINT_1C_REPORT.md').write_text('# FAILED: Stage1C-R1 result acceptance\n\nNo certified experiment metrics were generated. Inspect REPORT_ACCEPTANCE.json for every retained failure.\n',encoding='utf-8')
+        if public_output is not None:
+            public=Path(public_output);public.mkdir(parents=True,exist_ok=True)
+            write(public/'STATISTICS.json',failed)
+            write(public/'REPORT_ACCEPTANCE.json',{'passed':False,'status':'FAIL','sample_count':gate['sample_count'],'failed_queries':gate['failed_queries'],'details':'Private diagnostic receipt retains exact failing targets; no real identities are published.'})
+        return failed
     index = read(results / "RESULTS_INDEX.json")
     records = []
     for row in index["method_results_index"]:
@@ -332,11 +352,12 @@ def generate_reports(tree, results, output, public_output=None):
     references = {q["name"]: q for q in read(reference_path).get("queries", [])} if reference_path.exists() else {}
     meta_path = tree / "private/REAL_EXPERIMENT_INPUTS.json"
     metadata = {q["sample_id"]: q for q in read(meta_path)} if meta_path.exists() else {}
-    stats = {"schema_version": REPORT_VERSION, "batch_status": index["status"], "runtime": index["runtime"],
+    stats = {"schema_version": REPORT_VERSION, "passed":True,"batch_status": index["status"], "runtime": index["runtime"],
+             "result_acceptance_recomputed":True,"report_validation_seconds":gate['elapsed_validation_seconds'],
              "results_index_sha256": hashlib.sha256((results / "RESULTS_INDEX.json").read_bytes()).hexdigest(),
              "controlled": controlled_summary([r for r in records if r["index"]["kind"] == "controlled"]),
              "real": real_summary([r for r in records if r["index"]["kind"] == "real"], references, metadata),
-             "efficiency": efficiency_summary(records), "external_acceptance": "PENDING_REVIEW", "checkpoint": "CHECKPOINT_1C_REACHED",
+             "efficiency": efficiency_summary(records), "external_acceptance": "PENDING_REVIEW", "checkpoint": "CHECKPOINT_1C_R1_REACHED",
              "new_research_platform_requests": index.get("research_platform_requests"), "new_research_cost": index.get("new_research_cost"),
              "public_safety": "ALLOWLISTED_AGGREGATES_NO_REAL_ADDRESSES_EVENTS_REFERENCE_ROWS_OR_ACCOUNT_LEDGER"}
     documents = markdown_reports(stats)
@@ -363,8 +384,8 @@ def main():
     parser.add_argument("--public-output", type=Path)
     args = parser.parse_args()
     stats = generate_reports(args.tree, args.results, args.output, args.public_output)
-    print(json.dumps({"status": "GENERATED", "controlled": stats["controlled"]["query_count"], "real": stats["real"]["query_count"]}))
-    return 0
+    print(json.dumps({"status": "GENERATED" if stats.get('passed') else "FAILED_OUTPUT_ACCEPTANCE", "controlled": stats["controlled"]["query_count"], "real": stats["real"]["query_count"]}))
+    return 0 if stats.get('passed') is True else 1
 
 
 if __name__ == "__main__":

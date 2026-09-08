@@ -1,0 +1,39 @@
+{
+  "checkpoint": "CHECKPOINT_1C_R1_REACHED",
+  "external_acceptance": "PENDING_REVIEW",
+  "final_zip_execution_receipts": "External EXTRACTED_VALIDATION_RECEIPTS.json binds final archive hashes; no self-referential receipt inside archive.",
+  "finding": "C1-V01",
+  "internal_status": "CLOSED_WITH_EXECUTED_EVIDENCE",
+  "new_research_cost": "0",
+  "new_tests": 85,
+  "old12_32": "PASS",
+  "research_requests": 0,
+  "retained_tests": 865,
+  "same_input_method_pairs": 434,
+  "schema_version": "stage1c-r1-repair-closure-v1",
+  "scientific_differences": 0,
+  "symptoms": {
+    "A_expected_output_domains": {
+      "evidence": [
+        "OUTPUT_CONTRACT_SPEC.md",
+        "fault_evidence/after/full_missing_output/"
+      ],
+      "status": "PASS"
+    },
+    "B_complete_haircut_assignment_and_report_equality": {
+      "evidence": [
+        "fault_evidence/after/haircut_missing_witness_bad_point/",
+        "fault_evidence/after/haircut_bad_point_with_valid_witness/"
+      ],
+      "status": "PASS"
+    },
+    "C_hard_invariant_and_failure_propagation": {
+      "evidence": [
+        "05_FAULT_PROPAGATION_RESULTS.json",
+        "fault_evidence/full_package/FULL_VALIDATOR_FAULT_CHECK.json"
+      ],
+      "status": "PASS"
+    }
+  },
+  "tests_passed": 950
+}

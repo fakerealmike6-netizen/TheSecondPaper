@@ -5,6 +5,7 @@ from datetime import datetime,timezone
 from validate_review_bundle_r1 import Validator, input_path, read, write, tree_hashes
 from archive_safety import verify_manifest
 from run_stage1c import verify_freeze
+from stage1c_result_gate import validate_saved_batch
 
 def result_projection(data):
     result={}
@@ -20,21 +21,33 @@ class Stage1CValidator(Validator):
         super().__init__(tree,output,kind)
         if (self.tree/'controlled_v1').exists():shutil.copytree(self.tree/'controlled_v1',self.mirror/'controlled_v1')
 
+    def verify_saved_results(self,folder,selection,label):
+        receipt_path=self.out/(label+'_acceptance.json')
+        ok=self.command(label+'_acceptance_execution','src/stage1c_result_gate.py',
+            ['--tree',self.tree,'--results',folder,'--kind',self.kind,'--selection',selection,'--output',receipt_path])
+        receipt=read(receipt_path) if receipt_path.exists() else {}
+        self.check(label+'_acceptance_receipt',ok and receipt.get('passed') is True and receipt.get('recomputed_common_contract_and_scientific_checks') is True,
+            samples=receipt.get('sample_count'),failed_queries=receipt.get('failed_queries'),receipt=receipt_path.name)
+        return ok and receipt.get('passed') is True
+
     def batch(self,selection):
         folder=self.out/('stage1c_'+selection)
-        if self.command('stage1c_'+selection,'src/run_stage1c.py',
-            ['--tree',self.tree,'--kind',self.kind,'--selection',selection,'--output',folder]):
+        executed=self.command('stage1c_'+selection,'src/run_stage1c.py',
+            ['--tree',self.tree,'--kind',self.kind,'--selection',selection,'--output',folder])
+        if (folder/'RESULTS_INDEX.json').exists():
             result=read(folder/'RESULTS_INDEX.json')
             expected_count=60 if selection=='controlled' else 2
-            self.check(selection+'_result_receipt',result.get('passed') is True and result.get('sample_count')==expected_count and result.get('input_unchanged') is True,
+            self.check(selection+'_result_receipt',executed and result.get('passed') is True and result.get('sample_count')==expected_count and result.get('input_unchanged') is True,
                 samples=result.get('sample_count'),success=result.get('passed'))
             saved=self.tree/'results'/selection
+            current_accepted=self.verify_saved_results(folder,selection,selection+'_reexecuted')
+            saved_accepted=self.verify_saved_results(saved,selection,selection+'_saved')
             checks=[]
             for row in result['method_results_index']:
                 name=row['path'];prior=input_path(saved,name+'/METHOD_RESULTS.json')
                 current=folder/name/'METHOD_RESULTS.json'
                 checks.append(result_projection(read(prior))==result_projection(read(current)))
-            self.check(selection+'_fixed_result_reproduction',all(checks) and len(checks)==expected_count,samples_compared=len(checks),
+            self.check(selection+'_fixed_result_reproduction',current_accepted and saved_accepted and all(checks) and len(checks)==expected_count,samples_compared=len(checks),
                 comparison='Exact typed intervals/point/nominal/sets/input identities; nonunique LP witnesses and host timings excluded, independently re-audited in runner')
 
     def run_stage1c(self):
@@ -50,8 +63,10 @@ class Stage1CValidator(Validator):
                 self.check('real_evidence_replay_receipt',receipt.get('passed') is True,receipt=receipt)
         else:self.skipped('private_real_models','Public package intentionally excludes private original evidence and two-real replay',required=False)
         self.check('frozen_tree_unchanged',tree_hashes(self.tree)==self.before)
-        failures=self.validation_failures(['payload_manifest_verified','frozen_source_and_inputs_verified','unit_test_receipt','controlled_oracle_receipt','controlled_result_receipt','controlled_fixed_result_reproduction','frozen_tree_unchanged']+(['real_result_receipt','real_fixed_result_reproduction','real_evidence_replay_receipt'] if self.kind=='min' else []))
-        result={'schema_version':'stage1c-extracted-validation-1.0','passed':not failures,'status':'PASS' if not failures else 'FAIL',
+        required=['payload_manifest_verified','frozen_source_and_inputs_verified','unit_test_receipt','controlled_oracle_receipt','controlled_result_receipt','controlled_fixed_result_reproduction','frozen_tree_unchanged']
+        required += [s+'_'+label+'_acceptance_receipt' for s in (('controlled','real') if self.kind=='min' else ('controlled',)) for label in ('saved','reexecuted')]
+        failures=self.validation_failures(required+(['real_result_receipt','real_fixed_result_reproduction','real_evidence_replay_receipt'] if self.kind=='min' else []))
+        result={'schema_version':'stage1c-r1-extracted-validation-1.0','passed':not failures,'status':'PASS' if not failures else 'FAIL',
             'kind':self.kind,'runtime':platform.platform(),'python':platform.python_version(),
             'utc':datetime.now(timezone.utc).isoformat(),'checks':self.commands,'failures':failures,
             'guard':'Unmodified Stage1B-R1/R4 inherited OFFLINE_SITE/GUARDED_LAUNCH; sanitized child environment; sockets/DNS blocked; only guarded Python subprocesses; writes confined to new output.',

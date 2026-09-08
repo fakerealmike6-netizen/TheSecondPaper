@@ -1,0 +1,352 @@
+{
+  "bindings": {
+    "contract_module_sha256": "651f544ad251dc90c66ddb3efc8a7f10dce181fba44d4309b715f35dc3a8f655",
+    "expected_identity_sha256": "d62e3945b58f5ca69da2a82338d9ec2c76870429493a84ac1f5c44dac468eb3d",
+    "input_document_sha256": "daf1ed108bdadc309265696ec500788786222e611a1d1d169e09a365401aebe7",
+    "method_results_sha256": "af329ad218180a25ddd83849314fed020fe60566619f099775f93e942705f5c0"
+  },
+  "contract_version": "stage1c-r1-output-acceptance-v1",
+  "counts": {
+    "post_generation_unique_allocation_audits": 7,
+    "received_methods": 7,
+    "required_addresses": 2,
+    "required_baseline_ports": 8,
+    "required_interval_events": 2,
+    "required_methods": 7
+  },
+  "errors": [],
+  "expected_domains": {
+    "addresses": {
+      "T|WETH": [
+        "weth_split:output0"
+      ],
+      "U|WETH": [
+        "weth_split:output1"
+      ]
+    },
+    "allocation_ports": [
+      "seed",
+      "weth_split:input",
+      "weth_split:output0",
+      "weth_split:output1",
+      "wrap:input",
+      "wrap:net",
+      "wrap:output",
+      "wrap:refund"
+    ],
+    "baseline_events": [
+      "seed",
+      "weth_split:input",
+      "weth_split:output0",
+      "weth_split:output1",
+      "wrap:input",
+      "wrap:net",
+      "wrap:output",
+      "wrap:refund"
+    ],
+    "baseline_joint_assets": [
+      "WETH"
+    ],
+    "boundary_completion_expected": {
+      "B0_out_raw": "0",
+      "S0_out_raw": "0",
+      "adopted": false,
+      "asset": "ETH",
+      "convention": "H_BMIN_BOUNDARY_V1",
+      "is_observed_fact": false,
+      "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+      "sequence": []
+    },
+    "connected_protocol_ids": [
+      "wrap"
+    ],
+    "context_format": false,
+    "derivation": "Frozen observations and unchanged method-specific physical port semantics only",
+    "empty_target_domain": false,
+    "errors": [],
+    "haircut_not_applicable_basis": null,
+    "interval_events": [
+      "weth_split:output0",
+      "weth_split:output1"
+    ],
+    "interval_joint_assets": [
+      "WETH"
+    ],
+    "passed": true,
+    "port_facts": {
+      "seed": {
+        "amount_raw": "4",
+        "asset": "ETH",
+        "operation_ordinal": 0,
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "sender": null
+      },
+      "weth_split:input": {
+        "amount_raw": "11",
+        "asset": "WETH",
+        "operation_ordinal": 2,
+        "recipient": null,
+        "role": "MULTIOUTPUT_INPUT",
+        "sender": "A|WETH"
+      },
+      "weth_split:output0": {
+        "amount_raw": "5",
+        "asset": "WETH",
+        "operation_ordinal": 2,
+        "recipient": "T|WETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "sender": "A|WETH"
+      },
+      "weth_split:output1": {
+        "amount_raw": "6",
+        "asset": "WETH",
+        "operation_ordinal": 2,
+        "recipient": "U|WETH",
+        "role": "MULTIOUTPUT_OUTPUT",
+        "sender": "A|WETH"
+      },
+      "wrap:input": {
+        "amount_raw": "11",
+        "asset": "ETH",
+        "operation_ordinal": 1,
+        "recipient": null,
+        "role": "PROTOCOL_INPUT",
+        "sender": "A|ETH"
+      },
+      "wrap:net": {
+        "amount_raw": "11",
+        "asset": "ETH",
+        "operation_ordinal": 1,
+        "recipient": null,
+        "role": "PROTOCOL_NET",
+        "sender": "A|ETH"
+      },
+      "wrap:output": {
+        "amount_raw": "11",
+        "asset": "WETH",
+        "operation_ordinal": 1,
+        "recipient": "A|WETH",
+        "role": "PROTOCOL_OUTPUT",
+        "sender": "A|ETH"
+      },
+      "wrap:refund": {
+        "amount_raw": "0",
+        "asset": "ETH",
+        "operation_ordinal": 1,
+        "recipient": "A|ETH",
+        "role": "PROTOCOL_REFUND",
+        "sender": "A|ETH"
+      }
+    },
+    "service_entries_by_asset": {
+      "WETH": [
+        "weth_split:output0",
+        "weth_split:output1"
+      ]
+    },
+    "source_potential_assets": [
+      "ETH",
+      "WETH"
+    ],
+    "temporal_marking_expected": {
+      "seed": true,
+      "weth_split:input": true,
+      "weth_split:output0": true,
+      "weth_split:output1": true,
+      "wrap:input": true,
+      "wrap:net": true,
+      "wrap:output": true,
+      "wrap:refund": false
+    }
+  },
+  "hard_invariants": [
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "FULL_INTERVAL",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "TARGET_COPY_STRUCTURE",
+      "detail": "One full-constraint independent namespace per address-asset; internal budget retained; cross-copy shared identity removed",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.product_copies"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.connected_protocol_count"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.feature_status"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.gross_and_refund_conservation_preserved"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "BALANCE_STRUCTURAL_NESTING",
+      "detail": "Independent unchanged-model reconstruction confirms same variables/equalities and relaxed balance caps",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.nesting"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "addresses.T|WETH"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "addresses.T|WETH"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "addresses.U|WETH"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "addresses.U|WETH"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "events.weth_split:output0"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "events.weth_split:output0"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "events.weth_split:output1"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "events.weth_split:output1"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "joint_by_asset.WETH"
+    },
+    {
+      "code": "TARGET_COPY_JOINT_CONTAINS_FULL",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.WETH"
+    },
+    {
+      "code": "TARGET_COPY_EXACT_DECOMPOSITION",
+      "detail": "Independent joint is the exact sum of target-copy extrema, not a one-seed feasible total",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.WETH"
+    }
+  ],
+  "hidden_or_reference_read": false,
+  "method_checks": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "BOUNDED_REACHABILITY": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "FULL_INTERVAL": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "HAIRCUT": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "full_allocation_audit": {
+        "bad_bounds": [],
+        "bad_equalities": [],
+        "exact_feasible": true
+      },
+      "passed": true
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "POISON": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    }
+  },
+  "no_solver_or_oracle_called": true,
+  "passed": true,
+  "schema_version": "stage1c-r1-output-acceptance-v1",
+  "status": "PASS"
+}

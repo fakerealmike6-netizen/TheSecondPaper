@@ -1,0 +1,124 @@
+{
+  "elapsed_validation_seconds": 0.14203170000109822,
+  "errors": [
+    {
+      "code": "BATCH_RECEIPT_FAILED"
+    }
+  ],
+  "failed_queries": 1,
+  "fault_hook_scope": "PRODUCTION_SAVED_RESULT_GATE_NOT_PAYLOAD_HASH_FAILURE",
+  "passed": false,
+  "queries": [
+    {
+      "errors": [
+        {
+          "code": "RECOMPUTED_OUTPUT_CONTRACT_FAILED",
+          "errors": [
+            {
+              "code": "FIELD_TYPE",
+              "detail": "Expected dictionary",
+              "method": "HAIRCUT",
+              "path": "allocation_raw"
+            },
+            {
+              "code": "POINT_ALLOCATION_MISMATCH",
+              "detail": "Event point differs from complete allocation",
+              "method": "HAIRCUT",
+              "path": "events.enter"
+            },
+            {
+              "code": "POINT_ALLOCATION_MISMATCH",
+              "detail": "Event point differs from complete allocation",
+              "method": "HAIRCUT",
+              "path": "events.seed"
+            },
+            {
+              "code": "POINT_AGGREGATE_MISMATCH",
+              "detail": "Aggregate differs from frozen service-entry allocation sum",
+              "method": "HAIRCUT",
+              "path": "addresses.T|ETH"
+            },
+            {
+              "code": "POINT_ALIAS_MISMATCH",
+              "detail": "Point alias mismatch",
+              "method": "HAIRCUT",
+              "path": "addresses.T|ETH"
+            },
+            {
+              "code": "POINT_AGGREGATE_MISMATCH",
+              "detail": "Aggregate differs from frozen service-entry allocation sum",
+              "method": "HAIRCUT",
+              "path": "joint_by_asset.ETH"
+            },
+            {
+              "code": "POINT_ALIAS_MISMATCH",
+              "detail": "Point alias mismatch",
+              "method": "HAIRCUT",
+              "path": "joint_by_asset.ETH"
+            }
+          ]
+        },
+        {
+          "code": "RECOMPUTED_SCIENTIFIC_CHECK_FAILED",
+          "errors": [
+            {
+              "code": "FIELD_TYPE",
+              "detail": "Expected dictionary",
+              "method": "HAIRCUT",
+              "path": "allocation_raw"
+            },
+            {
+              "code": "POINT_ALLOCATION_MISMATCH",
+              "detail": "Event point differs from complete allocation",
+              "method": "HAIRCUT",
+              "path": "events.enter"
+            },
+            {
+              "code": "POINT_ALLOCATION_MISMATCH",
+              "detail": "Event point differs from complete allocation",
+              "method": "HAIRCUT",
+              "path": "events.seed"
+            },
+            {
+              "code": "POINT_AGGREGATE_MISMATCH",
+              "detail": "Aggregate differs from frozen service-entry allocation sum",
+              "method": "HAIRCUT",
+              "path": "addresses.T|ETH"
+            },
+            {
+              "code": "POINT_ALIAS_MISMATCH",
+              "detail": "Point alias mismatch",
+              "method": "HAIRCUT",
+              "path": "addresses.T|ETH"
+            },
+            {
+              "code": "POINT_AGGREGATE_MISMATCH",
+              "detail": "Aggregate differs from frozen service-entry allocation sum",
+              "method": "HAIRCUT",
+              "path": "joint_by_asset.ETH"
+            },
+            {
+              "code": "POINT_ALIAS_MISMATCH",
+              "detail": "Point alias mismatch",
+              "method": "HAIRCUT",
+              "path": "joint_by_asset.ETH"
+            }
+          ]
+        },
+        {
+          "code": "QUERY_RECEIPT_FAILED"
+        },
+        {
+          "code": "QUERY_INDEX_FAILED"
+        }
+      ],
+      "passed": false,
+      "sample_id": "controlled-v1/normal_mixing/00"
+    }
+  ],
+  "recomputed_common_contract_and_scientific_checks": true,
+  "sample_count": 1,
+  "schema_version": "stage1c-r1-saved-result-gate-1.0",
+  "status": "FAIL",
+  "timing_scope": "Result acceptance verification; not algorithm execution timing"
+}

@@ -1,0 +1,43 @@
+{
+  "absent_dependencies": [
+    "EXPERIMENT_INPUTS.json",
+    "EXPERIMENT_FREEZE.json",
+    "results"
+  ],
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_stage1c_output_contract.py",
+    "-v"
+  ],
+  "elapsed_seconds": 1.5655119000002742,
+  "exit_code": 0,
+  "failure_or_error_or_skip": false,
+  "mirror_root_children": [
+    "configs",
+    "controlled_v1",
+    "fixtures",
+    "src",
+    "tests"
+  ],
+  "old_failure_evidence_retained": true,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "schema_version": "stage1c-r1-targeted-tests-1.0",
+  "scope": "Actual minimal validator-like mirror contains src/tests/fixtures/configs/controlled_v1 only, no root experiment manifests or saved results. Six frozen Haircut NA cases dispatch genuine methods from observed files; every prior assertion retained and all null fields additionally asserted.",
+  "source_files": {
+    "src/stage1c_output_contract.py": "651f544ad251dc90c66ddb3efc8a7f10dce181fba44d4309b715f35dc3a8f655",
+    "tests/test_stage1c_output_contract.py": "641147ae716c70dcf00547985347b0567946bc77ba47f1052f396dffff6e659b"
+  },
+  "status": "PASS",
+  "suite": "test_stage1c_output_contract.py",
+  "tests_run": 36,
+  "transcript": "checks\\OUTPUT_CONTRACT_MINIMAL_MIRROR_TESTS.txt",
+  "transcript_sha256": "75f1a03146e8e59e4ed00a8249f6bcb201f479990db7cb795e17a8c0dd9a1bc4",
+  "working_directory": "Minimal src/tests/fixtures/configs/controlled_v1 mirror; local host paths omitted"
+}

@@ -1,0 +1,2026 @@
+--- accepted-stage1c/.github/workflows/stage1c-release.yml
++++ stage1c-r1/.github/workflows/stage1c-release.yml
+@@ -1,7 +1,7 @@
+-name: Publish frozen Stage1C public review bundle
++name: Publish frozen Stage1C-R1 public review bundle
+ on:
+   push:
+-    branches: ['stage1c-20260908T084753+0800']
++    branches: ['stage1c-r1-20260908T104446-0800']
+ permissions:
+   contents: write
+ jobs:
+@@ -25,10 +25,10 @@
+           GH_REPO: fakerealmike6-netizen/TheSecondPaper
+           COMMIT: ${{ github.sha }}
+         run: |
+-          python3 tools/stage1c_release.py --output "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip"
+-          tag='stage1c-20260908T084753+0800'
++          python3 tools/stage1c_release.py --output "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip"
++          tag='stage1c-r1-20260908T104446-0800'
+           if gh release view "$tag" >/dev/null 2>&1; then
+             echo 'Existing release is never overwritten.'
+             exit 1
+           fi
+-          gh release create "$tag" "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip" "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip.sha256" --target "$COMMIT" --title 'Stage1C: paired experiments and ablations' --notes-file docs/RELEASE_NOTES.md
++          gh release create "$tag" "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip" "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip.sha256" --target "$COMMIT" --title 'Stage1C-R1: output acceptance and same-input regression' --notes-file docs/RELEASE_NOTES.md
+--- accepted-stage1c/src/run_stage1c.py
++++ stage1c-r1/src/run_stage1c.py
+@@ -10,6 +10,7 @@
+ from pathlib import Path
+ from stage1c_intervals import run_interval, audit_allocation, groups, verify_product, METHODS as INTERVALS
+ from stage1c_baselines import run_baseline, observed_targets
++from stage1c_output_contract import accept_method_results
+ 
+ METHODS=('FULL_INTERVAL','BOUNDED_REACHABILITY','POISON','HAIRCUT','NO_CROSS_TARGET_COUPLING','NO_PROTOCOL_CONTINUATION','BALANCE_INFORMATION_REMOVED')
+ def canonical(value): return (json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()
+@@ -18,7 +19,16 @@
+ def read(path): return json.loads(Path(path).read_text(encoding='utf-8'))
+ def write(path,value):
+     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+-    path.write_text(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
++    path.write_text(diagnostic_json(value,indent=2)+'\n',encoding='utf-8')
++
++def diagnostic_value(value):
++    if isinstance(value,F):return str(value)
++    return {'unserializable_type':type(value).__name__,'representation':repr(value)}
++
++def diagnostic_json(value,indent=None):
++    try:return json.dumps(value,ensure_ascii=False,sort_keys=True,indent=indent,default=diagnostic_value)
++    except (TypeError,ValueError,RecursionError) as exc:
++        return json.dumps({'malformed_serialization':type(exc).__name__,'original_type':type(value).__name__,'original_representation':repr(value)},ensure_ascii=False,indent=indent)
+ def safe_path(tree,name):
+     from validate_review_bundle_r1 import input_path
+     return input_path(Path(tree).resolve(),name)
+@@ -33,6 +43,8 @@
+         for folder in ('src','tests') for p in sorted((tree/folder).glob('*.py'))]
+ 
+ def freeze(tree,version):
++    if (tree/'EXPERIMENT_FREEZE.json').exists():
++        raise ValueError('Existing scientific freeze is immutable; use --freeze-revision for Stage1C-R1 execution changes')
+     from stage1c_controlled import generate_suite
+     manifest=generate_suite(tree)
+     original=read(tree/'configs/stage1c/config/STAGE1C_POLICY.json')
+@@ -90,7 +102,10 @@
+ 
+ def verify_freeze(tree,kind):
+     frozen=read(tree/'EXPERIMENT_FREEZE.json')
+-    if source_inventory(tree)!=frozen['source_inventory']: raise ValueError('Frozen source/test version changed')
++    if (tree/'REVISION_FREEZE.json').exists():
++        from stage1c_revision import verify_revision
++        frozen={**frozen,'execution_revision':verify_revision(tree,frozen)}
++    elif source_inventory(tree)!=frozen['source_inventory']: raise ValueError('Frozen source/test version changed')
+     for name,key in [('EXPERIMENT_INPUTS.json','inputs_manifest_sha256'),('configs/STAGE1C_EFFECTIVE_POLICY.json','effective_policy_sha256'),('METHOD_SPEC_EFFECTIVE.md','method_spec_sha256'),('controlled_v1/MANIFEST.json','controlled_manifest_sha256')]:
+         if file_hash(tree/name)!=frozen[key]: raise ValueError('Freeze mismatch '+name)
+     inp=read(tree/'EXPERIMENT_INPUTS.json');rows=inp['controlled']
+@@ -104,12 +119,14 @@
+     return frozen,rows
+ 
+ def semantic_result(result):
++    if not isinstance(result,dict):return result
+     return {k:v for k,v in result.items() if k not in ('timing_parts','elapsed_seconds','profile')}
+ 
+ def dispatch(doc,method):
+     return run_interval(doc,method) if method in INTERVALS else run_baseline(doc,method)
+ 
+ def normalized(result):
++    if not isinstance(result,dict):raise TypeError('Method return must be an object')
+     result=copy.deepcopy(result)
+     if result.get('status')=='OK': result['status']='COMPLETED'
+     if 'positive_addresses' not in result: result['positive_addresses']=result.get('output_address_ids')
+@@ -140,28 +157,32 @@
+     return facts
+ 
+ def measure(doc,method):
+-    before=digest(canonical(doc));rows=[];errors=[];chosen=None;signature=None
++    before=digest(canonical(doc));rows=[];errors=[];chosen=None;signature=None;raw_first=None;raw_failures=[]
+     for repetition in range(6):
+         # Separate warm-up Python-allocation high-water measurement; timings
+         # exclude tracemalloc, imported-library setup and input I/O.
+         if repetition==0: tracemalloc.start()
+         start=time.perf_counter()
++        raw=None
+         try:
+-            result=normalized(dispatch(copy.deepcopy(doc),method))
++            raw=dispatch(copy.deepcopy(doc),method)
++            result=normalized(raw)
+         except Exception as exc:
+             result={'status':'ERROR','applicability':'ERROR','output_kind':None,
+                 'addresses':None,'events':None,'joint_by_asset':None,'positive_addresses':None,
+                 'failure_reason':type(exc).__name__+': '+str(exc)}
+         elapsed=time.perf_counter()-start
++        if repetition==0:raw_first=copy.deepcopy(raw)
++        if result.get('status')=='ERROR':raw_failures.append({'repetition':repetition,'raw_return':copy.deepcopy(raw),'failure':result.get('failure_reason')})
+         memory=None
+         if repetition==0:
+             _,memory=tracemalloc.get_traced_memory();tracemalloc.stop()
+-        current=digest(canonical(semantic_result(result)))
++        current=digest(diagnostic_json(semantic_result(result)).encode())
+         if signature is None: signature=current;chosen=result
+         if current!=signature: errors.append('Non-deterministic method output at repetition '+str(repetition))
+         rows.append({'repetition':repetition,'warmup':repetition==0,'elapsed_seconds':elapsed,
+                      'python_peak_allocated_bytes_warmup_only':memory,
+-                     'result_semantic_sha256':current,'status':result['status'],
++                     'result_semantic_sha256':current,'status':result.get('status','MISSING'),
+                      'parts':result.get('timing_parts'),'task_counts':result.get('task_counts')})
+     if digest(canonical(doc))!=before:errors.append('Method mutated shared observed input')
+     if errors:chosen['status']='ERROR';chosen['execution_errors']=errors
+@@ -169,7 +190,8 @@
+     return chosen,{'repetitions':rows,'median_seconds':statistics.median(times),'min_seconds':min(times),'max_seconds':max(times),
+         'warmup_python_peak_bytes':rows[0]['python_peak_allocated_bytes_warmup_only'],
+         'memory_scope':'Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.',
+-        'different_output_workloads_not_speed_equivalent':True,'deterministic':not errors}
++        'different_output_workloads_not_speed_equivalent':True,'deterministic':not errors,
++        'raw_method_return':raw_first,'raw_failed_attempts':raw_failures}
+ 
+ def evaluate_controlled(doc,hidden,results):
+     from stage1c_oracle import oracle_intervals, tiny_enumeration_check
+@@ -239,14 +261,110 @@
+             'protocol_result_changed':any(F(v[k])!=F(no_protocol[k]) for k in ('lower_raw','upper_raw'))})
+     return out
+ 
++def expected_identity(row,frozen):
++    return {k:row[k] for k in ('sample_id','query_id','input_fact_hash','scope_hash','label_version')} | {'method_versions':frozen['method_versions']}
++
++def attach_identity(doc,method,value,row,frozen):
++    """Validate native algorithm metadata before adding the execution envelope."""
++    from stage1c_baselines import VERSION as BASELINE_VERSION, _hash
++    value=copy.deepcopy(value);errors=[];native={}
++    expected=expected_identity(row,frozen)
++    native_expected={'method_id':method,'method_version':BASELINE_VERSION,'query_or_sample_id':doc.get('query_id',doc.get('scenario_id')),'input_fact_hash':_hash(doc)} if method not in INTERVALS else {}
++    for key,want in native_expected.items():
++        native[key]=value.get(key)
++        if value.get('status')!='ERROR' and (key not in value or value[key]!=want):
++            errors.append({'code':'NATIVE_IDENTITY_MISMATCH','method':method,'path':key,'expected':want,'actual':value.get(key)})
++    envelope={**{k:v for k,v in expected.items() if k!='method_versions'},'method_id':method,'method_version':expected['method_versions'][method]}
++    for key,want in envelope.items():
++        if key in value and key not in native_expected and value[key]!=want:
++            errors.append({'code':'EXECUTION_IDENTITY_MISMATCH','method':method,'path':key,'expected':want,'actual':value[key]})
++        value[key]=want
++    value['native_identity']=native
++    value['identity_errors']=errors
++    return value
++
++def evaluate_real(doc,row,results):
++    point=results['HAIRCUT']
++    audit=audit_allocation(doc,point['allocation_raw']) if point.get('allocation_raw') is not None else None
++    v=(results['FULL_INTERVAL'].get('joint_by_asset') or {}).get('ETH',{'lower_raw':None,'upper_raw':None})
++    accepted=row['accepted_same_input_joint_eth']
++    regression=all(v[k] is not None and F(v[k])/10**18==F(accepted[i]) for i,k in enumerate(('lower_raw','upper_raw')))
++    errors=[]
++    if not regression:errors.append('SAME_INPUT_FULL_REGRESSION_MISMATCH')
++    if audit is not None and not audit['exact_feasible']:errors.append('HAIRCUT_ASSIGNMENT_INFEASIBLE')
++    return {'same_input_full_regression':regression,'haircut_full_assignment_audit':audit,
++        'real_source_amount_ground_truth':None,'real_amount_accuracy':None,
++        'reference_evaluation':'POST_RESULT_ONLY_SEPARATE_REVIEW_REPORT','errors':errors,'passed':not errors}
++
++def evaluate_query(tree,row,frozen,doc,results):
++    """One acceptance path for controlled and real; science runs only after it."""
++    started=time.perf_counter()
++    contract=accept_method_results(doc,results,expected_identity=expected_identity(row,frozen))
++    identity_errors=[e for value in results.values() if isinstance(value,dict) for e in value.get('identity_errors',[])]
++    if identity_errors:
++        contract['errors'].extend(identity_errors);contract['passed']=False;contract['status']='FAIL'
++        for error in identity_errors:
++            if error['method'] in contract['method_checks']:
++                record=contract['method_checks'][error['method']]
++                record['passed']=False;record['errors'].append(error)
++    contract_seconds=time.perf_counter()-started
++    science_started=time.perf_counter()
++    if not contract['passed']:
++        evaluation={'passed':False,'status':'NOT_CERTIFIED_CONTRACT_FAILED','errors':contract['errors'],
++                    'comparisons':[],'address_metrics':{},'haircut_full_assignment_audit':None}
++        ablations=[]
++    else:
++        try:
++            evaluation=evaluate_controlled(doc,read(safe_path(tree,row['hidden_path'])),results) if row['kind']=='controlled' else evaluate_real(doc,row,results)
++            ablations=ablation_comparison(results)
++            hard=[{'code':'HARD_ABLATION_FAILURE','asset':a.get('asset'),'details':a} for a in ablations
++                  if a.get('status') in ('ERROR','UNRESOLVED','NOT_COMPARABLE') or a.get('balance_nested_endpoints') is False]
++            if hard:evaluation.setdefault('errors',[]).extend(hard);evaluation['passed']=False
++        except Exception as exc:
++            evaluation={'passed':False,'status':'SCIENTIFIC_CHECK_ERROR','errors':[type(exc).__name__+': '+str(exc)],'comparisons':[]};ablations=[]
++    evaluation['contract_passed']=contract['passed']
++    evaluation['passed']=evaluation.get('passed') is True and contract['passed'] is True
++    return contract,evaluation,ablations,{'common_output_contract_seconds':contract_seconds,'scientific_evaluation_seconds':time.perf_counter()-science_started,
++        'scope':'Post-method validation only; excluded from algorithm warmup and five timed executions'}
++
++def query_binding(tree,folder,row,frozen):
++    return {'expected_identity':expected_identity(row,frozen),'parent_freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),
++        'execution_revision':frozen.get('execution_revision'),
++        'files':{name:file_hash(folder/name) for name in ('METHOD_RESULTS.json','EVALUATION.json','ABLATIONS.json','OUTPUT_CONTRACT.json')},
++        'observed_sha256':file_hash(safe_path(tree,row['observed_path']))}
++
++def flat_results(row,results,tg,physical):
++    records=[]
++    for method,value in results.items():
++        for category in ('addresses','events','joint_by_asset'):
++            for target,rec in (value.get(category) or {}).items():
++                names=[target] if category=='events' else tg[target] if category=='addresses' else [e for g,es in tg.items() if g.rsplit('|',1)[1]==target for e in es]
++                asset=physical[target]['asset'] if category=='events' else target.rsplit('|',1)[1] if category=='addresses' else target
++                records.append({'sample_id':row['sample_id'],'query_id':row['query_id'],'incident_id':row['incident_id'],'kind':row['kind'],
++                    'source_layer':row['source_layer'],'zero_hop':row.get('zero_hop',False),'method':method,'category':category,'target':target,
++                    'status':value['status'],'output_kind':value['output_kind'],'lower_raw':rec.get('lower_raw'),'upper_raw':rec.get('upper_raw'),
++                    'point_raw':rec.get('point_raw'),'POISON_NOMINAL_RAW':rec.get('nominal_raw'),
++                    'physical_capacity_raw':str(sum((F(physical[e]['amount_raw']) for e in names),F(0))),'asset':asset,
++                    'evidence_ids':json.dumps(sorted({x for e in names for x in physical[e]['evidence_ids']})),
++                    'unit':'raw_by_asset_no_cross_asset_sum','input_fact_hash':row['input_fact_hash'],'certification':'QUERY_ACCEPTED'})
++    return records
++
++def select_rows(rows,selection):
++    if selection=='all':return list(rows)
++    if isinstance(selection,str) and selection.startswith('ids:'):
++        ids=selection[4:].split(',');known={r['sample_id']:r for r in rows}
++        if not ids or len(set(ids))!=len(ids) or any(s not in known for s in ids):raise ValueError('Empty, duplicate or unknown selection')
++        return [known[s] for s in ids]
++    return [r for r in rows if r['kind']==selection or r['sample_id']==selection]
++
+ def run(tree,out,kind='min',selection='all'):
+     import numpy,scipy
+     frozen,rows=verify_freeze(tree,kind)
+-    if selection!='all':rows=[r for r in rows if r['kind']==selection or r['sample_id']==selection]
++    rows=select_rows(rows,selection)
+     if not rows:raise ValueError('Empty or unknown selection')
+     if out.exists():raise ValueError('Run output must be fresh; prior failures are retained')
+     out.mkdir(parents=True)
+-    index=[];support=[];flat=[];timing_rows=[];all_passed=True
++    index=[];support=[];flat=[];timing_rows=[];validation_rows=[];all_passed=True
+     for number,row in enumerate(rows):
+         sid=row['sample_id']; data_bytes=safe_path(tree,row['observed_path']).read_bytes()
+         # Timed common preprocessing = deserialize and canonical target extraction.
+@@ -258,65 +376,50 @@
+         physical=observed_port_facts(doc)
+         offset=hashlib.sha256(sid.encode()).digest()[0]%len(METHODS)
+         order=METHODS[offset:]+METHODS[:offset]
+-        results={};profiles={}
++        results={};profiles={};raw_returns={}
+         for method in order:
+             value,profile=measure(doc,method)
+-            value.update(method_id=method,method_version=frozen['method_versions'][method],
+-                sample_id=sid,input_fact_hash=row['input_fact_hash'],scope_hash=row['scope_hash'],label_version=row['label_version'])
++            raw_returns[method]={'first_return':profile.pop('raw_method_return'),'failed_attempts':profile.pop('raw_failed_attempts')}
++            value=attach_identity(doc,method,value,row,frozen)
+             results[method]=value;profiles[method]=profile
+-            support.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'method':method,
+-                'status':value['status'],'applicability':value.get('applicability'),'output_kind':value.get('output_kind'),
+-                'reason':value.get('failure_reason')})
+             timing_rows.append({'sample_id':sid,'method':method,'median_seconds':profile['median_seconds'],
+                 'min_seconds':profile['min_seconds'],'max_seconds':profile['max_seconds'],
+                 'common_preprocess_median_seconds':statistics.median(preprocess[1:]),
+                 'fixed_graph_end_to_end_median_seconds':profile['median_seconds']+statistics.median(preprocess[1:]),
+                 'warmup_python_peak_bytes':profile['warmup_python_peak_bytes'],
+                 'endpoint_optimizations':(value.get('task_counts') or {}).get('endpoint_optimizations',0)})
+-            if value['status']=='ERROR':all_passed=False
+-            for category in ('addresses','events','joint_by_asset'):
+-                for target,rec in (value.get(category) or {}).items():
+-                    names=[target] if category=='events' else tg[target] if category=='addresses' else [e for g,es in tg.items() if g.rsplit('|',1)[1]==target for e in es]
+-                    asset=physical[target]['asset'] if category=='events' else target.rsplit('|',1)[1] if category=='addresses' else target
+-                    capacity=str(sum((F(physical[e]['amount_raw']) for e in names),F(0)))
+-                    flat.append({'sample_id':sid,'query_id':row['query_id'],'incident_id':row['incident_id'],'kind':row['kind'],
+-                        'source_layer':row['source_layer'],'zero_hop':row.get('zero_hop',False),'method':method,'category':category,
+-                        'target':target,'status':value['status'],'output_kind':value['output_kind'],
+-                        'lower_raw':rec.get('lower_raw'),'upper_raw':rec.get('upper_raw'),'point_raw':rec.get('point_raw'),
+-                        'POISON_NOMINAL_RAW':rec.get('nominal_raw'),'physical_capacity_raw':capacity,'asset':asset,
+-                        'evidence_ids':json.dumps(sorted({x for e in names for x in physical[e]['evidence_ids']})),
+-                        'unit':'raw_by_asset_no_cross_asset_sum','input_fact_hash':row['input_fact_hash']})
+         # Persist methods before opening hidden/reference or running Oracle.
+         dest=out/'samples'/sid.replace(':','_').replace('/','_')
++        write(dest/'RAW_METHOD_RETURNS.json',raw_returns)
+         write(dest/'METHOD_RESULTS.json',results)
+-        evaluation=None
+-        if row['kind']=='controlled':
+-            try:evaluation=evaluate_controlled(doc,read(safe_path(tree,row['hidden_path'])),results)
+-            except Exception as exc:evaluation={'passed':False,'errors':[type(exc).__name__+': '+str(exc)]}
+-            if not evaluation['passed']:all_passed=False
+-        else:
+-            point=results['HAIRCUT']
+-            audit=audit_allocation(doc,point['allocation_raw']) if point.get('allocation_raw') is not None else None
+-            v=(results['FULL_INTERVAL'].get('joint_by_asset') or {}).get('ETH',{'lower_raw':None,'upper_raw':None});accepted=row['accepted_same_input_joint_eth']
+-            regression=all(v[k] is not None and F(v[k])/10**18==F(accepted[i]) for i,k in enumerate(('lower_raw','upper_raw')))
+-            evaluation={'same_input_full_regression':regression,'haircut_full_assignment_audit':audit,
+-                'real_source_amount_ground_truth':None,'real_amount_accuracy':None,
+-                'reference_evaluation':'POST_RESULT_ONLY_SEPARATE_REVIEW_REPORT',
+-                'passed':regression and (audit is None or audit['exact_feasible'])}
+-            if not evaluation['passed']:all_passed=False
++        contract,evaluation,ablations,validation_time=evaluate_query(tree,row,frozen,doc,results)
++        write(dest/'OUTPUT_CONTRACT.json',contract)
+         write(dest/'EVALUATION.json',evaluation)
+-        ablations=ablation_comparison(results);write(dest/'ABLATIONS.json',ablations)
++        write(dest/'ABLATIONS.json',ablations)
++        write(dest/'QUERY_ACCEPTANCE.json',{'schema_version':'stage1c-r1-query-acceptance-1.0','passed':evaluation['passed'],
++            'binding':query_binding(tree,dest,row,frozen),'contract_passed':contract['passed'],'scientific_checks_passed':evaluation['passed'],
++            'errors':evaluation.get('errors',[]),'validation_timing':validation_time})
++        validation_rows.append({'sample_id':sid,**validation_time})
++        if evaluation['passed']:flat.extend(flat_results(row,results,tg,physical))
++        else:all_passed=False
++        for method,value in results.items():
++            support.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'method':method,
++                'status':value.get('status','MISSING'),'applicability':value.get('applicability'),'output_kind':value.get('output_kind'),
++                'reason':value.get('failure_reason'),'contract_passed':contract['passed'],'query_passed':evaluation['passed']})
+         write(dest/'EFFICIENCY.json',{'method_order':order,'shared_preprocessing_raw_seconds':preprocess,'profiles':profiles,
+-            'common_scope':'Fixed local input JSON read once; no online acquisition was timed','warmups':1,'timed_repetitions':5})
++            'common_scope':'Fixed local input JSON read once; no online acquisition was timed','warmups':1,'timed_repetitions':5,
++            'post_method_validation':validation_time})
+         index.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'path':dest.relative_to(out).as_posix(),
+-            'input_fact_hash':row['input_fact_hash'],'method_statuses':{m:r['status'] for m,r in results.items()},
+-            'evaluation_passed':evaluation['passed']})
++            'input_fact_hash':row['input_fact_hash'],'method_statuses':{m:r.get('status','MISSING') for m,r in results.items()},
++            'evaluation_passed':evaluation['passed'],'contract_passed':contract['passed'],'passed':evaluation['passed'],
++            'query_acceptance_sha256':file_hash(dest/'QUERY_ACCEPTANCE.json')})
+         print(json.dumps({'sample':sid,'n':number+1,'total':len(rows),'passed':evaluation['passed'],'statuses':index[-1]['method_statuses']}),flush=True)
+     write_csv(out/'METHOD_SUPPORT_MATRIX.csv',support);write_csv(out/'PAIRED_RESULTS.csv',flat);write_csv(out/'TIMINGS.csv',timing_rows)
+-    summary={'schema_version':'stage1c-run-results-1.0','status':'COMPLETED' if all_passed else 'PARTIAL',
++    write_csv(out/'VALIDATION_TIMINGS.csv',validation_rows)
++    summary={'schema_version':'stage1c-r1-run-results-1.0','status':'COMPLETED' if all_passed else 'PARTIAL',
+         'passed':all_passed,'scope':kind,'selection':selection,'sample_count':len(rows),
+         'controlled_count':sum(r['kind']=='controlled' for r in rows),'real_count':sum(r['kind']=='real' for r in rows),
+-        'freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),'method_results_index':index,
++        'freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),'execution_revision':frozen.get('execution_revision'),'method_results_index':index,
+         'runtime':{'system':platform.system(),'platform':platform.platform(),'python':platform.python_version(),'numpy':numpy.__version__,'scipy':scipy.__version__},
+         'research_platform_requests':0,'new_research_cost':'0','external_acceptance':'PENDING_REVIEW',
+         'input_unchanged':verify_freeze(tree,kind)[0]==frozen}
+@@ -326,9 +429,13 @@
+ def main():
+     p=argparse.ArgumentParser();p.add_argument('--tree',type=Path,default=Path(__file__).resolve().parents[1])
+     p.add_argument('--freeze',action='store_true');p.add_argument('--version',default='stage1c-v1')
++    p.add_argument('--freeze-revision',action='store_true')
+     p.add_argument('--kind',choices=('min','public'),default='public');p.add_argument('--selection',default='all')
+     p.add_argument('--output',type=Path);a=p.parse_args();tree=a.tree.resolve()
+     try:
++        if a.freeze_revision:
++            from stage1c_revision import freeze_revision
++            result=freeze_revision(tree,a.version);print(json.dumps({'revision_frozen':result['version']}));return 0
+         if a.freeze: result=freeze(tree,a.version);print(json.dumps({'frozen':result['version']}));return 0
+         if a.output is None:raise ValueError('--output required')
+         result=run(tree,a.output.resolve(),a.kind,a.selection)
+--- accepted-stage1c/src/stage1c_output_contract.py
++++ stage1c-r1/src/stage1c_output_contract.py
+@@ -0,0 +1,525 @@
++"""Stage1C-R1 acceptance of already generated typed method results.
++
++Expected keys come from observations, never returned dictionaries, hidden data,
++Oracle answers or optimal endpoints. Primary constraint code is used only after
++generation to audit supplied allocations/witnesses and structural relaxations;
++this module never calls a solver or repairs an answer.
++"""
++from __future__ import annotations
++
++from fractions import Fraction as F
++import hashlib
++import json
++from pathlib import Path
++
++from stage1c_baselines import _compile, _operation_ports, _boundary_completion, OUTSIDE
++
++CONTRACT_VERSION = "stage1c-r1-output-acceptance-v1"
++INTERVAL_METHODS = ("FULL_INTERVAL", "NO_CROSS_TARGET_COUPLING", "NO_PROTOCOL_CONTINUATION", "BALANCE_INFORMATION_REMOVED")
++METHODS = ("FULL_INTERVAL", "BOUNDED_REACHABILITY", "POISON", "HAIRCUT",
++           "NO_CROSS_TARGET_COUPLING", "NO_PROTOCOL_CONTINUATION", "BALANCE_INFORMATION_REMOVED")
++KINDS = {**{m: "feasible_interval" for m in INTERVAL_METHODS},
++         "NO_CROSS_TARGET_COUPLING": "product_of_target_specific_copies",
++         "BOUNDED_REACHABILITY": "ADDRESS_EVENT_SET_NO_AMOUNT", "POISON": "POISON_NOMINAL_RAW",
++         "HAIRCUT": "PROPORTIONAL_FEASIBLE_POINT"}
++
++
++def _hash(value):
++    try:
++        data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=True).encode("utf-8")
++        return hashlib.sha256(data).hexdigest()
++    except (TypeError, ValueError, RecursionError):
++        return None
++
++
++def exact(value):
++    """Accept exact integer/rational/decimal strings; reject float/bool/null."""
++    if isinstance(value, bool) or not isinstance(value, (int, str, F)):
++        raise ValueError("Expected a finite exact integer or rational representation")
++    return F(value)
++
++
++def _input_analysis(doc):
++    initial, operations, compiled_targets, context = _compile(doc)
++    ports = {}
++    for ordinal, op in enumerate(operations):
++        for eid, asset, amount, receiver, role in _operation_ports(op):
++            ports[eid] = {"asset": asset, "amount_raw": str(amount), "recipient": receiver,
++                          "sender": op.get("sender"), "role": role, "operation_ordinal": ordinal}
++    declared = doc.get("objective_groups")
++    if not isinstance(declared, dict):
++        raise ValueError("Frozen objective_groups dictionary is required")
++    independent = {}
++    if context:
++        flows = {f["event_id"]: f for tx in doc["transactions"] for f in tx.get("flows", [])}
++        for group, entries in declared.items():
++            if not isinstance(group, str) or not isinstance(entries, list) or not entries:
++                raise ValueError("Declared context target group is malformed")
++            for eid in entries:
++                f = flows[eid]
++                if f["role"] != "CANDIDATE" or f.get("to_account") != group:
++                    raise ValueError("Context service entry must be a candidate to its declared terminal")
++            independent[group] = list(entries)
++        if set(doc.get("all_service_entries", [e for es in independent.values() for e in es])) != {e for es in independent.values() for e in es}:
++            raise ValueError("Declared all-service union differs from candidate target groups")
++    else:
++        targets = doc.get("target_accounts", [])
++        if not isinstance(targets, list) or len(targets) != len(set(targets)):
++            raise ValueError("Target account identities must be a distinct list")
++        for eid, port in ports.items():
++            receiver = port["recipient"]
++            if receiver is not None and receiver.rsplit("|", 1)[0] in targets:
++                independent.setdefault(receiver, []).append(eid)
++    if declared != independent or declared != compiled_targets:
++        raise ValueError("Frozen declared target domain differs from independently parsed service ports")
++    flat = [e for es in independent.values() for e in es]
++    if len(flat) != len(set(flat)) or any(not isinstance(g, str) or "|" not in g for g in independent):
++        raise ValueError("Each physical service entry must belong to one address-asset group")
++    assets = sorted({g.rsplit("|", 1)[1] for g in independent})
++    potential_assets = sorted({op["asset"] for op in operations if op["kind"] == "flow" and op["role"] == "SEED"}
++                              | {op["output_asset"] for op in operations if op["kind"] == "conversion"})
++    boundary, bmin = _boundary_completion(operations, context)
++    return initial, operations, context, boundary, bmin, {
++        "addresses": dict(sorted(independent.items())), "interval_events": sorted(flat),
++        "baseline_events": sorted(ports), "allocation_ports": sorted(ports), "port_facts": ports,
++        "interval_joint_assets": assets if independent else potential_assets,
++        "baseline_joint_assets": assets, "source_potential_assets": potential_assets,
++        "service_entries_by_asset": {a: sorted(e for g, es in independent.items() if g.rsplit("|", 1)[1] == a for e in es) for a in (assets or potential_assets)},
++        "context_format": context, "connected_protocol_ids": [op["id"] for op in operations if op["kind"] == "conversion"],
++        "empty_target_domain": not independent,
++    }
++
++
++def _applicability_and_marks(initial, operations, context, bmin):
++    """Input-only sign/actual-state guard, not an amount allocation generator.
++
++    A known full debit clears proportional source presence. The first positive
++    withdrawal from an unknown actual balance is exactly the frozen Haircut
++    unsupported condition. Persistent reachability separately ignores clears.
++    """
++    actual, related, reached, marks = dict(initial), set(), set(), {}
++    if context:
++        actual[OUTSIDE] = bmin
++    obstruction = None
++
++    def credit(key, amount, positive):
++        if key is not None:
++            actual[key] = None if actual.get(key) is None else actual[key] + amount
++            if positive:
++                related.add(key)
++
++    def debit(key, amount, eid):
++        nonlocal obstruction
++        if key is None or amount == 0:
++            return False
++        value = actual.get(key)
++        positive = key in related
++        if value is None:
++            if positive and obstruction is None:
++                obstruction = {"code": "UNKNOWN_MODELED_ACTUAL_BALANCE", "account_asset": key, "event_id": eid}
++        else:
++            if value < amount:
++                raise ValueError("Observed physical ledger overdraft before " + eid)
++            actual[key] = value - amount
++            if amount == value:
++                related.discard(key)
++        return positive
++
++    for op in operations:
++        kind = op["kind"]
++        if kind == "anchor":
++            for key, observed in op["balances"].items():
++                if actual.get(key) is not None and actual[key] != observed:
++                    raise ValueError("Observed aligned anchor conflicts with replay")
++                actual[key] = observed
++            continue
++        if kind == "flow":
++            mark = op["amount"] > 0 and (op["role"] == "SEED" or (op["fixed"] is None and op["sender"] in reached))
++            marks[op["id"]] = mark
++            if mark and op["receiver"] is not None:
++                reached.add(op["receiver"])
++            positive = op["fixed"] > 0 if op["fixed"] is not None else debit(op["sender"], op["amount"], op["id"])
++            credit(op["receiver"], op["amount"], positive)
++        else:
++            mark = op["gross"] > 0 and op["sender"] in reached
++            for eid, _, amount, receiver, _ in _operation_ports(op):
++                marks[eid] = bool(mark and amount > 0)
++                if marks[eid] and receiver is not None:
++                    reached.add(receiver)
++            positive = debit(op["sender"], op["gross"], op["id"] + ":input")
++            if kind == "conversion":
++                credit(op["refund_to"], op["refund"], positive and op["refund"] > 0)
++                credit(op["receiver"], op["output"], positive and op["output"] > 0)
++            else:
++                for output in op["outputs"]:
++                    credit(output["receiver"], output["amount"], positive and output["amount"] > 0)
++    return obstruction, marks
++
++
++def expected_domains(doc):
++    try:
++        initial, operations, context, boundary, bmin, domains = _input_analysis(doc)
++        obstruction, marks = _applicability_and_marks(initial, operations, context, bmin)
++        return {"passed": True, "errors": [], **domains, "haircut_not_applicable_basis": obstruction,
++                "boundary_completion_expected": boundary, "temporal_marking_expected": marks,
++                "derivation": "Frozen observations and unchanged method-specific physical port semantics only"}
++    except Exception as exc:
++        return {"passed": False, "errors": [{"code": "INPUT_DOMAIN_INVALID", "method": None,
++                 "path": "$input", "detail": type(exc).__name__ + ": " + str(exc)}]}
++
++
++def accept_method_results(doc, results, *, expected_identity=None):
++    """Return a fail-closed receipt without discarding malformed-return detail."""
++    errors, method_checks, hard = [], {}, []
++
++    def fail(code, method, path, detail):
++        errors.append({"code": code, "method": method, "path": path, "detail": str(detail)})
++
++    def check(condition, code, method, path, detail):
++        if not condition:
++            fail(code, method, path, detail)
++        return bool(condition)
++
++    def mapping(value, keys, method, path):
++        if not check(isinstance(value, dict), "FIELD_TYPE", method, path, "Expected dictionary"):
++            return {}
++        check(set(value) == set(keys), "OUTPUT_DOMAIN", method, path,
++              "missing=" + repr(sorted(set(keys) - set(value), key=str)) + "; extra=" + repr(sorted(set(value) - set(keys), key=str)))
++        return value
++
++    def members(value, expected, method, path):
++        if not check(isinstance(value, list) and all(isinstance(v, str) for v in value), "FIELD_TYPE", method, path, "Expected list of string identities"):
++            return False
++        return check(len(value) == len(set(value)) and set(value) == set(expected), "OUTPUT_MEMBERS", method, path, "Expected distinct members " + repr(sorted(expected)))
++
++    def number(value, method, path, *, nonnegative=True):
++        try:
++            parsed = exact(value)
++            if nonnegative and parsed < 0:
++                raise ValueError("Negative source amount")
++            return parsed
++        except Exception as exc:
++            fail("EXACT_NUMBER", method, path, type(exc).__name__ + ": " + str(exc))
++            return None
++
++    def no_amount(row, fields, method, path):
++        for field in fields:
++            check(row.get(field) is None, "AMOUNT_KIND", method, path + "." + field, "This method does not supply this amount kind")
++
++    domains = expected_domains(doc)
++    errors.extend(domains["errors"])
++    identity = expected_identity if isinstance(expected_identity, dict) else {}
++    for key in ("sample_id", "query_id", "input_fact_hash", "scope_hash", "label_version"):
++        check(isinstance(identity.get(key), str) and bool(identity[key]), "EXPECTED_IDENTITY_MISSING", None, "$identity." + key, "Trusted manifest identity is required")
++    if isinstance(doc, dict):
++        expected_query = doc.get("query_id", doc.get("scenario_id"))
++        if expected_query is not None:
++            check(identity.get("query_id") == expected_query, "EXPECTED_IDENTITY_INPUT_MISMATCH", None, "$identity.query_id", "Trusted identity must match observed query")
++        expected_sample = doc.get("scenario_id", doc.get("name", doc.get("sample_id")))
++        if expected_sample is not None:
++            check(identity.get("sample_id") == expected_sample, "EXPECTED_IDENTITY_INPUT_MISMATCH", None, "$identity.sample_id", "Trusted identity must match observed sample")
++    mapping(results, METHODS, None, "$results")
++    supplied = results if isinstance(results, dict) else {}
++    models, audit_cache, parsed_rows = {}, {}, {}
++
++    def model_for(method):
++        key = "FULL_INTERVAL" if method in ("HAIRCUT", "NO_CROSS_TARGET_COUPLING") else method
++        if key not in models:
++            from stage1c_intervals import build_variant
++            models[key] = build_variant(doc, key)
++        return models[key]
++
++    def audit(values, method, path):
++        try:
++            model, _ = model_for(method)
++            signature = ("FULL_INTERVAL" if method in ("HAIRCUT", "NO_CROSS_TARGET_COUPLING") else method, tuple(sorted((k, str(exact(v))) for k, v in values.items())))
++            if signature not in audit_cache:
++                audit_cache[signature] = model.audit_vector(model.lift_hidden_allocation_for_audit(values))
++            receipt = audit_cache[signature]
++            check(receipt.get("exact_feasible") is True, "ALLOCATION_INFEASIBLE", method, path, receipt)
++            return receipt
++        except Exception as exc:
++            fail("ALLOCATION_AUDIT_ERROR", method, path, type(exc).__name__ + ": " + str(exc))
++            return {"exact_feasible": False}
++
++    def interval_row(row, method, path, asset, entries, *, product_joint=False):
++        if not check(isinstance(row, dict), "FIELD_TYPE", method, path, "Expected interval object"):
++            return None
++        check(row.get("status") == "OPTIMAL_EXACT_CERTIFIED", "INTERVAL_STATUS", method, path + ".status", "Successful interval must be exactly certified")
++        check(row.get("asset") == asset, "ASSET_IDENTITY", method, path + ".asset", "Expected " + asset)
++        lower = number(row.get("lower_raw"), method, path + ".lower_raw")
++        upper = number(row.get("upper_raw"), method, path + ".upper_raw")
++        if lower is not None and upper is not None:
++            check(lower <= upper, "INTERVAL_ORDER", method, path, "Require lower <= upper")
++            capacity = sum((F(domains["port_facts"][e]["amount_raw"]) for e in entries), F(0))
++            check(upper <= capacity, "PHYSICAL_CAPACITY", method, path, "Interval exceeds frozen objective physical capacity")
++            if "positive_support" in row:
++                check(row["positive_support"] == ("CERTIFIED_POSITIVE" if upper > 0 else "CERTIFIED_ZERO"),
++                      "OUTPUT_SUPPORT", method, path + ".positive_support", "Support must agree with its certified upper endpoint")
++        no_amount(row, ("point_raw", "nominal_raw"), method, path)
++        if product_joint and entries:
++            check(isinstance(row.get("copy_count"), int) and not isinstance(row.get("copy_count"), bool)
++                  and row["copy_count"] == sum(g.rsplit("|", 1)[1] == asset for g in domains["addresses"]),
++                  "COPY_COUNT", method, path + ".copy_count", "Address-asset copy count mismatch")
++        else:
++            members(row.get("objective_events"), entries, method, path + ".objective_events")
++            if not entries:
++                check(lower == 0 and upper == 0 and row.get("proof") == "EMPTY_FIXED_TARGET_UNION_AFTER_FEASIBILITY_CHECK",
++                      "EMPTY_TARGET_INTERVAL", method, path, "Legal empty union requires explicit feasible [0,0]")
++            else:
++                endpoints = mapping(row.get("endpoints"), ("lower", "upper"), method, path + ".endpoints")
++                for label, value in (("lower", lower), ("upper", upper)):
++                    endpoint = endpoints.get(label)
++                    if not check(isinstance(endpoint, dict), "FIELD_TYPE", method, path + ".endpoints." + label, "Expected endpoint object"):
++                        continue
++                    ep_path = path + ".endpoints." + label
++                    check(endpoint.get("status") == "OPTIMAL_EXACT_CERTIFIED", "INTERVAL_STATUS", method, ep_path, "Uncertified endpoint")
++                    parsed = number(endpoint.get("raw"), method, ep_path + ".raw")
++                    check(value is not None and parsed == value, "ENDPOINT_VALUE_MISMATCH", method, ep_path, "Endpoint must equal reported interval")
++                    certificate = endpoint.get("certificate")
++                    check(isinstance(certificate, dict) and all(certificate.get(k) is True for k in ("certified", "exact_primal_feasible", "exact_dual_feasible")),
++                          "ENDPOINT_CERTIFICATE", method, ep_path + ".certificate", "Exact certification flags required")
++                    values = mapping(endpoint.get("witness_event_source_raw"), domains["allocation_ports"], method, ep_path + ".witness_event_source_raw")
++                    vv = {e: number(v, method, ep_path + ".witness_event_source_raw." + str(e)) for e, v in values.items()}
++                    if set(vv) == set(domains["allocation_ports"]) and all(v is not None for v in vv.values()):
++                        check(sum((vv[e] for e in entries), F(0)) == value, "WITNESS_OBJECTIVE_MISMATCH", method, ep_path, "Witness objective differs from endpoint")
++                        audit(values, method, ep_path)
++        return (lower, upper) if lower is not None and upper is not None else None
++
++    if domains.get("passed"):
++        for method in METHODS:
++            beginning = len(errors)
++            result = supplied.get(method)
++            record = {"passed": False, "business_status": result.get("status") if isinstance(result, dict) else None}
++            method_checks[method] = record
++            try:
++                if not check(isinstance(result, dict), "METHOD_MISSING_OR_TYPE", method, "$results." + method, "Required method result must be a dictionary"):
++                    continue
++                for key in ("sample_id", "query_id", "input_fact_hash", "scope_hash", "label_version"):
++                    check(key in result and result[key] == identity.get(key), "RESULT_IDENTITY", method, key, "Expected trusted " + key)
++                check(result.get("method_id") == method, "METHOD_IDENTITY", method, "method_id", "Dictionary method key and method_id disagree")
++                check(isinstance(result.get("method_version"), str) and bool(result["method_version"]), "METHOD_VERSION", method, "method_version", "Version must be explicit")
++                if isinstance(identity.get("method_versions"), dict):
++                    check(result.get("method_version") == identity["method_versions"].get(method), "METHOD_VERSION", method, "method_version", "Frozen method version mismatch")
++                if "query_or_sample_id" in result:
++                    check(result["query_or_sample_id"] == identity.get("query_id"), "RESULT_IDENTITY", method, "query_or_sample_id", "Native query identity mismatch")
++                check(result.get("output_kind") == KINDS[method], "OUTPUT_KIND", method, "output_kind", "Expected " + KINDS[method])
++                status = result.get("status")
++                if status == "NOT_APPLICABLE":
++                    basis = domains["haircut_not_applicable_basis"]
++                    valid = method == "HAIRCUT" and basis is not None
++                    check(valid, "UNJUSTIFIED_NOT_APPLICABLE", method, "status", "Only the input-proven unknown actual Haircut withdrawal is supported as NA")
++                    check(result.get("applicability") == "NOT_APPLICABLE", "APPLICABILITY", method, "applicability", "NA applicability must be explicit")
++                    reason = result.get("failure_reason")
++                    check(isinstance(reason, str) and bool(reason) and (not valid or all(str(basis[k]) in reason for k in ("code", "account_asset", "event_id"))),
++                          "NOT_APPLICABLE_REASON", method, "failure_reason", "NA reason must identify the actual input obstruction")
++                    for key in ("addresses", "events", "joint_by_asset", "allocation_raw", "positive_addresses", "output_address_ids", "output_event_ids"):
++                        check(key in result and result[key] is None, "NOT_APPLICABLE_NULL", method, key, "NA is null, never an empty/zero successful result")
++                    record["not_applicable_basis"] = basis
++                    continue
++                if not check(status == "COMPLETED", "METHOD_STATUS", method, "status", "A failed, unresolved or unrun method is not accepted"):
++                    continue
++                expected_app = "SUPPORTED" if method in INTERVAL_METHODS else "APPLICABLE_WITH_EXPLICIT_BOUNDARY_ASSUMPTION" if method == "HAIRCUT" and domains["boundary_completion_expected"]["adopted"] else "APPLICABLE"
++                check(result.get("applicability") == expected_app, "APPLICABILITY", method, "applicability", "Expected " + expected_app)
++                if method == "HAIRCUT":
++                    check(domains["haircut_not_applicable_basis"] is None, "UNSUPPORTED_SUCCESS", method, "status", "Cannot produce a supported proportional point at unknown required actual balance")
++                addr = mapping(result.get("addresses"), domains["addresses"], method, "addresses")
++                event_keys = domains["interval_events"] if method in INTERVAL_METHODS else domains["baseline_events"]
++                events = mapping(result.get("events"), event_keys, method, "events")
++                assets = domains["interval_joint_assets"] if method in INTERVAL_METHODS else domains["baseline_joint_assets"]
++                joint = mapping(result.get("joint_by_asset"), assets, method, "joint_by_asset")
++                parsed_rows[method] = {"addresses": {}, "events": {}, "joint_by_asset": {}}
++                if method in INTERVAL_METHODS:
++                    for category, rows, expected_keys in (("addresses", addr, domains["addresses"]), ("events", events, event_keys), ("joint_by_asset", joint, assets)):
++                        for key in expected_keys:
++                            if key not in rows:
++                                continue
++                            entries = domains["addresses"][key] if category == "addresses" else [key] if category == "events" else domains["service_entries_by_asset"][key]
++                            asset = key.rsplit("|", 1)[1] if category == "addresses" else domains["port_facts"][key]["asset"] if category == "events" else key
++                            parsed_rows[method][category][key] = interval_row(rows[key], method, category + "." + key, asset, entries,
++                                                                             product_joint=method == "NO_CROSS_TARGET_COUPLING" and category == "joint_by_asset")
++                    positives = [g for g, bounds in parsed_rows[method]["addresses"].items() if bounds is not None and bounds[1] > 0]
++                    members(result.get("positive_addresses"), positives, method, "positive_addresses")
++                    for alias in ("output_address_ids",):
++                        if alias in result:
++                            members(result[alias], positives, method, alias)
++                    if "output_event_ids" in result:
++                        members(result["output_event_ids"], [e for e, b in parsed_rows[method]["events"].items() if b is not None and b[1] > 0], method, "output_event_ids")
++                    if domains["empty_target_domain"]:
++                        proof = result.get("modifications", {}).get("empty_target_feasibility")
++                        seed = next(e for e, f in domains["port_facts"].items() if f["role"] == "SEED")
++                        interval_row(proof, method, "modifications.empty_target_feasibility", domains["port_facts"][seed]["asset"], [seed])
++                else:
++                    allocations = {}
++                    if method == "HAIRCUT":
++                        raw_alloc = mapping(result.get("allocation_raw"), domains["allocation_ports"], method, "allocation_raw")
++                        allocations = {e: number(v, method, "allocation_raw." + str(e)) for e, v in raw_alloc.items()}
++                        if set(allocations) == set(domains["allocation_ports"]) and all(v is not None for v in allocations.values()):
++                            record["full_allocation_audit"] = audit(raw_alloc, method, "allocation_raw")
++                        expected_boundary = domains["boundary_completion_expected"]
++                        boundary = result.get("boundary_completion")
++                        if check(isinstance(boundary, dict), "BOUNDARY_COMPLETION", method, "boundary_completion", "Explicit input-derived B_min convention required"):
++                            for field in ("convention", "adopted", "is_observed_fact", "asset"):
++                                check(type(boundary.get(field)) is type(expected_boundary[field]) and boundary.get(field) == expected_boundary[field],
++                                      "BOUNDARY_COMPLETION", method, "boundary_completion." + field, "Boundary identity/assumption mismatch")
++                            for field in ("B0_out_raw", "S0_out_raw"):
++                                check(number(boundary.get(field), method, "boundary_completion." + field) == F(expected_boundary[field]),
++                                      "BOUNDARY_COMPLETION", method, "boundary_completion." + field, "Exact boundary completion amount mismatch")
++                            sequence = boundary.get("sequence")
++                            if check(isinstance(sequence, list) and len(sequence) == len(expected_boundary["sequence"]), "BOUNDARY_COMPLETION", method, "boundary_completion.sequence", "Complete observed boundary sequence required"):
++                                for index, (given, expected) in enumerate(zip(sequence, expected_boundary["sequence"])):
++                                    path = "boundary_completion.sequence." + str(index)
++                                    if not check(isinstance(given, dict), "BOUNDARY_COMPLETION", method, path, "Expected sequence item"):
++                                        continue
++                                    for field in ("event_id", "direction"):
++                                        check(given.get(field) == expected[field], "BOUNDARY_COMPLETION", method, path + "." + field, "Boundary event order/identity mismatch")
++                                    for field in ("actual_raw", "cumulative_incoming_raw", "cumulative_outgoing_raw", "prefix_deficit_raw"):
++                                        check(number(given.get(field), method, path + "." + field, nonnegative=field != "prefix_deficit_raw") == F(expected[field]),
++                                              "BOUNDARY_COMPLETION", method, path + "." + field, "Exact observed boundary sequence mismatch")
++                    else:
++                        check(result.get("allocation_raw") is None, "AMOUNT_KIND", method, "allocation_raw", "Set/nominal baselines do not claim a feasible allocation")
++                    event_values, event_support = {}, {}
++                    for eid in event_keys:
++                        row = events.get(eid); path = "events." + eid; fact = domains["port_facts"][eid]
++                        if not check(isinstance(row, dict), "FIELD_TYPE", method, path, "Expected visited port object"):
++                            continue
++                        check(row.get("asset") == fact["asset"] and row.get("recipient") == fact["recipient"] and row.get("role") == fact["role"], "PORT_IDENTITY", method, path, "Port asset/recipient/role differs from observations")
++                        check(number(row.get("actual_raw"), method, path + ".actual_raw") == F(fact["amount_raw"]), "PHYSICAL_CAPACITY", method, path + ".actual_raw", "Observed port capacity mismatch")
++                        check(isinstance(row.get("supported"), bool), "FIELD_TYPE", method, path + ".supported", "Support flag must be boolean")
++                        if method == "HAIRCUT":
++                            value = number(row.get("point_raw"), method, path + ".point_raw")
++                            check(eid in allocations and allocations.get(eid) is not None and value == allocations[eid], "POINT_ALLOCATION_MISMATCH", method, path, "Event point differs from complete allocation")
++                            support = value is not None and value > 0
++                            no_amount(row, ("nominal_raw", "lower_raw", "upper_raw"), method, path)
++                        else:
++                            support = domains["temporal_marking_expected"][eid]
++                            value = F(fact["amount_raw"]) if support else F(0)
++                            no_amount(row, ("point_raw", "lower_raw", "upper_raw", "source_amount_raw"), method, path)
++                            if method == "POISON":
++                                check(number(row.get("nominal_raw"), method, path + ".nominal_raw") == value, "NOMINAL_CAPACITY_MISMATCH", method, path, "Poison nominal is the marked physical capacity")
++                            else:
++                                no_amount(row, ("nominal_raw",), method, path)
++                            witness = row.get("witness")
++                            valid_witness = isinstance(witness, list) and bool(witness) and all(isinstance(e, str) and e in domains["port_facts"] for e in witness) and witness[-1] == eid
++                            if valid_witness:
++                                facts = [domains["port_facts"][e] for e in witness]
++                                valid_witness = facts[0]["role"] == "SEED" and all(a["recipient"] == b["sender"] and a["operation_ordinal"] < b["operation_ordinal"] for a, b in zip(facts, facts[1:]))
++                            check(valid_witness if support else witness is None,
++                                  "MARKING_WITNESS", method, path + ".witness", "Marked event needs a physical witness ending at this port; unmarked is null")
++                        if method == "HAIRCUT" and "source_amount_raw" in row:
++                            check(number(row["source_amount_raw"], method, path + ".source_amount_raw") == value, "POINT_ALIAS_MISMATCH", method, path, "Point alias mismatch")
++                        check(row.get("supported") is support, "OUTPUT_SUPPORT", method, path + ".supported", "Flag disagrees with this method's own verified output")
++                        event_values[eid], event_support[eid] = value, support
++                    address_support = {}
++                    for category, rows, keys in (("addresses", addr, domains["addresses"]), ("joint_by_asset", joint, assets)):
++                        for key in keys:
++                            row = rows.get(key); path = category + "." + key
++                            if not check(isinstance(row, dict), "FIELD_TYPE", method, path, "Expected aggregate object"):
++                                continue
++                            entries = domains["addresses"][key] if category == "addresses" else domains["service_entries_by_asset"][key]
++                            asset = key.rsplit("|", 1)[1] if category == "addresses" else key
++                            members(row.get("events"), entries, method, path + ".events")
++                            if category == "addresses":
++                                check(row.get("asset") == asset, "ASSET_IDENTITY", method, path + ".asset", "Wrong address asset")
++                            else:
++                                members(row.get("addresses"), [g for g in domains["addresses"] if g.rsplit("|", 1)[1] == asset], method, path + ".addresses")
++                                if "asset" in row:
++                                    check(row["asset"] == asset, "ASSET_IDENTITY", method, path + ".asset", "Wrong joint asset")
++                            valid = all(e in event_values and event_values[e] is not None for e in entries)
++                            total = sum((event_values[e] for e in entries), F(0)) if valid else None
++                            if method == "HAIRCUT":
++                                check(number(row.get("point_raw"), method, path + ".point_raw") == total and total is not None, "POINT_AGGREGATE_MISMATCH", method, path, "Aggregate differs from frozen service-entry allocation sum")
++                                if "source_amount_raw" in row:
++                                    check(number(row["source_amount_raw"], method, path + ".source_amount_raw") == total and total is not None, "POINT_ALIAS_MISMATCH", method, path, "Point alias mismatch")
++                                no_amount(row, ("nominal_raw", "lower_raw", "upper_raw"), method, path)
++                            elif method == "POISON":
++                                check(number(row.get("nominal_raw"), method, path + ".nominal_raw") == total and total is not None, "NOMINAL_AGGREGATE_MISMATCH", method, path, "Nominal aggregate differs from its marked service entries")
++                                no_amount(row, ("point_raw", "source_amount_raw", "lower_raw", "upper_raw"), method, path)
++                            else:
++                                no_amount(row, ("point_raw", "nominal_raw", "source_amount_raw", "lower_raw", "upper_raw"), method, path)
++                            if category == "addresses":
++                                support = any(event_support.get(e) is True for e in entries)
++                                check(row.get("supported") is support, "OUTPUT_SUPPORT", method, path + ".supported", "Aggregate support mismatch")
++                                address_support[key] = support
++                    positive = [g for g, supported in address_support.items() if supported]
++                    members(result.get("positive_addresses"), positive, method, "positive_addresses")
++                    members(result.get("output_address_ids"), positive, method, "output_address_ids")
++                    members(result.get("output_event_ids"), [e for e in domains["interval_events"] if event_support.get(e)], method, "output_event_ids")
++            except Exception as exc:
++                fail("METHOD_CONTRACT_EXCEPTION", method, "$results." + method, type(exc).__name__ + ": " + str(exc))
++            finally:
++                record["passed"] = len(errors) == beginning
++                record["errors"] = errors[beginning:]
++
++        def invariant(code, method, path, condition, detail):
++            hard.append({"code": code, "method": method, "path": path, "passed": bool(condition), "detail": detail})
++            check(condition, code, method, path, detail)
++
++        def bounds(method, category, key):
++            return parsed_rows.get(method, {}).get(category, {}).get(key)
++
++        try:
++            for method in INTERVAL_METHODS:
++                if not isinstance(supplied.get(method), dict) or supplied[method].get("status") != "COMPLETED":
++                    continue
++                actual_mod = supplied[method].get("modifications")
++                model, expected_mod = model_for(method)
++                if not isinstance(actual_mod, dict):
++                    fail("STRUCTURAL_MODIFICATIONS", method, "modifications", "Structural provenance required")
++                    continue
++                invariant("RAW_GRAPH_PRESERVED", method, "modifications.raw_graph_unchanged", actual_mod.get("raw_graph_unchanged") is True, "Observed graph unchanged")
++                if method == "BALANCE_INFORMATION_REMOVED":
++                    invariant("BALANCE_STRUCTURAL_NESTING", method, "modifications.nesting", expected_mod.get("nesting", {}).get("nested") is True and actual_mod.get("nesting", {}).get("nested") is True,
++                              "Independent unchanged-model reconstruction confirms same variables/equalities and relaxed balance caps")
++                    members(actual_mod.get("removed_bound_variables"), expected_mod["removed_bound_variables"], method, "modifications.removed_bound_variables")
++                if method == "NO_PROTOCOL_CONTINUATION":
++                    for field in ("connected_protocol_count", "feature_status", "gross_and_refund_conservation_preserved"):
++                        invariant("PROTOCOL_BOUNDARY_STRUCTURE", method, "modifications." + field, type(actual_mod.get(field)) is type(expected_mod[field]) and actual_mod.get(field) == expected_mod[field], "Input-derived continuation boundary field must agree")
++                    for field in ("unlinked_source_ratio_equalities", "boundary_source_variables", "physical_outputs_retained_as_source_zero"):
++                        members(actual_mod.get(field), expected_mod[field], method, "modifications." + field)
++                if method == "NO_CROSS_TARGET_COUPLING":
++                    copies = actual_mod.get("product_copies")
++                    valid = isinstance(copies, list) and len(copies) == len(domains["addresses"]) and all(isinstance(c, dict) for c in copies)
++                    if valid:
++                        valid = {c.get("address_asset") for c in copies} == set(domains["addresses"]) and len({c.get("copy_id") for c in copies}) == len(copies) and len({c.get("physical_identity_namespace") for c in copies}) == len(copies)
++                        valid = valid and all(c.get("variables") == len(model.variables) and c.get("equalities") == len(model.eq) and c.get("cross_copy_identity_equalities_present") is False for c in copies)
++                    invariant("TARGET_COPY_STRUCTURE", method, "modifications.product_copies", valid and actual_mod.get("global_common_source_budget") is False and actual_mod.get("within_each_copy_common_source_budget") is True and actual_mod.get("unbound_all_state_variables_count") == len(model.variables),
++                              "One full-constraint independent namespace per address-asset; internal budget retained; cross-copy shared identity removed")
++                    members(actual_mod.get("unbound_identical_physical_variables"), domains["allocation_ports"], method, "modifications.unbound_identical_physical_variables")
++            for category, keys in (("addresses", domains["addresses"]), ("events", domains["interval_events"]), ("joint_by_asset", domains["interval_joint_assets"])):
++                for key in keys:
++                    full = bounds("FULL_INTERVAL", category, key)
++                    relaxed = bounds("BALANCE_INFORMATION_REMOVED", category, key)
++                    independent = bounds("NO_CROSS_TARGET_COUPLING", category, key)
++                    protocol = bounds("NO_PROTOCOL_CONTINUATION", category, key)
++                    if full is not None and relaxed is not None:
++                        invariant("BALANCE_ENDPOINT_NESTING", "BALANCE_INFORMATION_REMOVED", category + "." + key, relaxed[0] <= full[0] <= full[1] <= relaxed[1], "Same-input relaxed interval must contain FULL")
++                    if full is not None and independent is not None:
++                        invariant("TARGET_COPY_SINGLETON_EQUALITY" if category != "joint_by_asset" else "TARGET_COPY_JOINT_CONTAINS_FULL", "NO_CROSS_TARGET_COUPLING", category + "." + key,
++                                  independent == full if category != "joint_by_asset" else independent[0] <= full[0] <= full[1] <= independent[1], "Independent copies preserve singleton intervals and contain original joint range")
++                    if not domains["connected_protocol_ids"] and full is not None and protocol is not None:
++                        invariant("NO_PROTOCOL_FEATURE_EQUALITY", "NO_PROTOCOL_CONTINUATION", category + "." + key, protocol == full, "No connected conversion implies no endpoint change")
++            for asset in domains["interval_joint_assets"]:
++                joint = bounds("NO_CROSS_TARGET_COUPLING", "joint_by_asset", asset)
++                values = [bounds("NO_CROSS_TARGET_COUPLING", "addresses", g) for g in domains["addresses"] if g.rsplit("|", 1)[1] == asset]
++                if joint is not None and all(v is not None for v in values):
++                    summed = tuple(sum((v[i] for v in values), F(0)) for i in (0, 1))
++                    invariant("TARGET_COPY_EXACT_DECOMPOSITION", "NO_CROSS_TARGET_COUPLING", "joint_by_asset." + asset, joint == summed, "Independent joint is the exact sum of target-copy extrema, not a one-seed feasible total")
++        except Exception as exc:
++            fail("HARD_INVARIANT_EXCEPTION", None, "$invariants", type(exc).__name__ + ": " + str(exc))
++    # Hard failures belong to method check status as well as the query receipt.
++    for method, record in method_checks.items():
++        record["errors"] = [e for e in errors if e["method"] == method]
++        record["passed"] = not record["errors"]
++    return {"schema_version": CONTRACT_VERSION, "contract_version": CONTRACT_VERSION,
++            "passed": not errors, "status": "PASS" if not errors else "FAIL", "errors": errors,
++            "method_checks": method_checks, "hard_invariants": hard, "expected_domains": domains,
++            "counts": {"required_methods": len(METHODS), "received_methods": len(supplied),
++                       "required_addresses": len(domains.get("addresses", {})),
++                       "required_interval_events": len(domains.get("interval_events", [])),
++                       "required_baseline_ports": len(domains.get("baseline_events", [])),
++                       "post_generation_unique_allocation_audits": len(audit_cache)},
++            "bindings": {"input_document_sha256": _hash(doc), "method_results_sha256": _hash(results),
++                         "expected_identity_sha256": _hash(expected_identity),
++                         "contract_module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
++            "no_solver_or_oracle_called": True, "hidden_or_reference_read": False}
+--- accepted-stage1c/src/stage1c_reports.py
++++ stage1c-r1/src/stage1c_reports.py
+@@ -16,7 +16,7 @@
+ import statistics
+ 
+ METHODS = ("FULL_INTERVAL", "BOUNDED_REACHABILITY", "POISON", "HAIRCUT", "NO_CROSS_TARGET_COUPLING", "NO_PROTOCOL_CONTINUATION", "BALANCE_INFORMATION_REMOVED")
+-REPORT_VERSION = "STAGE1C_POST_RESULT_REPORTS_V1"
++REPORT_VERSION = "STAGE1C_R1_VERIFIED_POST_RESULT_REPORTS_V1"
+ 
+ 
+ def read(path):
+@@ -234,6 +234,7 @@
+                     "fixed_graph_end_to_end_median_seconds": profile["median_seconds"] + statistics.median(preprocessing),
+                     "python_warmup_peak_bytes": profile["warmup_python_peak_bytes"],
+                     "task_counts": item["methods"][method].get("task_counts"),
++                    "post_method_validation_seconds": efficiency.get("post_method_validation"),
+                     "median_model_build_seconds": statistics.median(r["parts"]["model_build_seconds"] for r in profile["repetitions"][1:]) if all(r.get("parts") and "model_build_seconds" in r["parts"] for r in profile["repetitions"][1:]) else None,
+                     "median_solve_and_certification_seconds": statistics.median(r["parts"]["solve_and_certification_seconds"] for r in profile["repetitions"][1:]) if all(r.get("parts") and "solve_and_certification_seconds" in r["parts"] for r in profile["repetitions"][1:]) else None})
+             supported = [r for r in rows if r["method_status"] == "COMPLETED"]
+@@ -272,7 +273,7 @@
+ def markdown_reports(stats):
+     c, real, efficiency = stats["controlled"], stats["real"], stats["efficiency"]
+     status_rows = [(m, c["method_status_counts"][m].get("COMPLETED", 0), c["method_status_counts"][m].get("NOT_APPLICABLE", 0), c["method_status_counts"][m].get("ERROR", 0)) for m in METHODS]
+-    overall = "# Stage1C first paired experiment results\n\nExternal acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_REACHED`.\n\n"
++    overall = "# Stage1C-R1 same-input paired experiment regression\n\nExternal acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_R1_REACHED`.\n\n"
+     overall += f"Actual batch status: {stats['batch_status']}; {c['query_count']} controlled queries and {real['query_count']} real development queries. Controlled evaluations passed: {c['evaluation_passed']}/{c['query_count']}. These are first development validations, not unseen holdout or full-population evidence.\n\n"
+     overall += table(["Method", "Completed controls", "Not applicable", "Errors"], status_rows) + "\n\n"
+     overall += f"Maximum FULL/independent-Oracle endpoint error by asset: {json.dumps(c['maximum_endpoint_error_raw_by_asset'])}. Joint hidden coverage: {c['joint_hidden_covered_count']}/{c['resolved_query_asset_union_count']}. Haircut exact feasible assignments: {c['haircut_exact_feasible_query_count']}; all unsupported cases remain listed.\n\n"
+@@ -322,6 +323,25 @@
+ 
+ def generate_reports(tree, results, output, public_output=None):
+     tree, results, output = Path(tree), Path(results), Path(output)
++    for destination in [output]+([Path(public_output)] if public_output is not None else []):
++        if destination.exists() and any(destination.iterdir()):
++            raise ValueError('Report output must be fresh; prior reports and failures are retained')
++    from stage1c_result_gate import validate_saved_batch
++    gate=validate_saved_batch(tree,results)
++    output.mkdir(parents=True,exist_ok=True)
++    write(output/'REPORT_ACCEPTANCE.json',gate)
++    if not gate['passed']:
++        failed={'schema_version':REPORT_VERSION,'passed':False,'batch_status':'FAILED_OUTPUT_ACCEPTANCE',
++                'controlled':{'query_count':None},'real':{'query_count':None},'query_count':gate['sample_count'],
++                'failed_queries':gate['failed_queries'],'certified_statistics_generated':False,
++                'external_acceptance':'PENDING_REVIEW','checkpoint':'CHECKPOINT_1C_R1_REACHED'}
++        write(output/'STATISTICS.json',failed)
++        (output/'01_CHECKPOINT_1C_REPORT.md').write_text('# FAILED: Stage1C-R1 result acceptance\n\nNo certified experiment metrics were generated. Inspect REPORT_ACCEPTANCE.json for every retained failure.\n',encoding='utf-8')
++        if public_output is not None:
++            public=Path(public_output);public.mkdir(parents=True,exist_ok=True)
++            write(public/'STATISTICS.json',failed)
++            write(public/'REPORT_ACCEPTANCE.json',{'passed':False,'status':'FAIL','sample_count':gate['sample_count'],'failed_queries':gate['failed_queries'],'details':'Private diagnostic receipt retains exact failing targets; no real identities are published.'})
++        return failed
+     index = read(results / "RESULTS_INDEX.json")
+     records = []
+     for row in index["method_results_index"]:
+@@ -332,11 +352,12 @@
+     references = {q["name"]: q for q in read(reference_path).get("queries", [])} if reference_path.exists() else {}
+     meta_path = tree / "private/REAL_EXPERIMENT_INPUTS.json"
+     metadata = {q["sample_id"]: q for q in read(meta_path)} if meta_path.exists() else {}
+-    stats = {"schema_version": REPORT_VERSION, "batch_status": index["status"], "runtime": index["runtime"],
++    stats = {"schema_version": REPORT_VERSION, "passed":True,"batch_status": index["status"], "runtime": index["runtime"],
++             "result_acceptance_recomputed":True,"report_validation_seconds":gate['elapsed_validation_seconds'],
+              "results_index_sha256": hashlib.sha256((results / "RESULTS_INDEX.json").read_bytes()).hexdigest(),
+              "controlled": controlled_summary([r for r in records if r["index"]["kind"] == "controlled"]),
+              "real": real_summary([r for r in records if r["index"]["kind"] == "real"], references, metadata),
+-             "efficiency": efficiency_summary(records), "external_acceptance": "PENDING_REVIEW", "checkpoint": "CHECKPOINT_1C_REACHED",
++             "efficiency": efficiency_summary(records), "external_acceptance": "PENDING_REVIEW", "checkpoint": "CHECKPOINT_1C_R1_REACHED",
+              "new_research_platform_requests": index.get("research_platform_requests"), "new_research_cost": index.get("new_research_cost"),
+              "public_safety": "ALLOWLISTED_AGGREGATES_NO_REAL_ADDRESSES_EVENTS_REFERENCE_ROWS_OR_ACCOUNT_LEDGER"}
+     documents = markdown_reports(stats)
+@@ -363,8 +384,8 @@
+     parser.add_argument("--public-output", type=Path)
+     args = parser.parse_args()
+     stats = generate_reports(args.tree, args.results, args.output, args.public_output)
+-    print(json.dumps({"status": "GENERATED", "controlled": stats["controlled"]["query_count"], "real": stats["real"]["query_count"]}))
+-    return 0
++    print(json.dumps({"status": "GENERATED" if stats.get('passed') else "FAILED_OUTPUT_ACCEPTANCE", "controlled": stats["controlled"]["query_count"], "real": stats["real"]["query_count"]}))
++    return 0 if stats.get('passed') is True else 1
+ 
+ 
+ if __name__ == "__main__":
+--- accepted-stage1c/src/stage1c_result_gate.py
++++ stage1c-r1/src/stage1c_result_gate.py
+@@ -0,0 +1,83 @@
++"""Revalidate saved outputs against frozen inputs before reports or package acceptance."""
++from pathlib import Path
++import argparse,copy,json,time
++
++def scientific_receipt_projection(value):
++    """Objective-labeled comparison rows are unordered; preserve every row/value.
++
++    JSON sorts method dictionaries during persistence. Iterating those dictionaries
++    may change only this diagnostic row order after reload. Sorting full rows keeps
++    duplicates and every scientific field, unlike a set or key-to-row overwrite.
++    """
++    value=copy.deepcopy(value)
++    if isinstance(value,dict) and isinstance(value.get('comparisons'),list):
++        value['comparisons']=sorted(value['comparisons'],key=lambda row:json.dumps(row,sort_keys=True,separators=(',',':')))
++    return value
++
++def validate_saved_batch(tree,results,kind=None,selection=None):
++    import run_stage1c as runner
++    tree=Path(tree).resolve();results=Path(results).resolve()
++    errors=[];queries=[];start=time.perf_counter()
++    def fail(code,**detail):errors.append({'code':code,**detail})
++    try:
++        index=runner.read(results/'RESULTS_INDEX.json')
++        actual_kind=index.get('scope');actual_selection=index.get('selection')
++        if actual_kind not in ('public','min'):raise ValueError('Invalid batch scope')
++        if kind is not None and actual_kind!=kind:fail('BATCH_SCOPE_MISMATCH',expected=kind,actual=actual_kind)
++        if selection is not None and actual_selection!=selection:fail('BATCH_SELECTION_MISMATCH',expected=selection,actual=actual_selection)
++        frozen,rows=runner.verify_freeze(tree,actual_kind)
++        rows=runner.select_rows(rows,actual_selection)
++        if not rows:raise ValueError('Empty or unknown frozen selection')
++        if index.get('freeze_sha256')!=runner.file_hash(tree/'EXPERIMENT_FREEZE.json'):fail('PARENT_FREEZE_BINDING_MISMATCH')
++        if index.get('execution_revision')!=frozen.get('execution_revision'):fail('EXECUTION_REVISION_BINDING_MISMATCH')
++        selected={r['sample_id']:r for r in rows}
++        listed=index.get('method_results_index')
++        if not isinstance(listed,list):raise ValueError('Invalid sample index')
++        ids=[r.get('sample_id') if isinstance(r,dict) else None for r in listed]
++        if len(ids)!=len(set(ids)) or set(ids)!=set(selected):fail('FROZEN_QUERY_DOMAIN_MISMATCH',expected_count=len(selected),actual_count=len(ids))
++        if index.get('sample_count')!=len(rows) or index.get('controlled_count')!=sum(r['kind']=='controlled' for r in rows) or index.get('real_count')!=sum(r['kind']=='real' for r in rows):fail('BATCH_COUNTS_MISMATCH')
++        for entry in listed:
++            query_errors=[]
++            if not isinstance(entry,dict) or entry.get('sample_id') not in selected:
++                fail('UNKNOWN_QUERY_ENTRY');continue
++            sid=entry['sample_id'];row=selected[sid]
++            def qfail(code,**detail):query_errors.append({'code':code,**detail})
++            try:
++                if entry.get('kind')!=row['kind'] or entry.get('input_fact_hash')!=row['input_fact_hash']:qfail('QUERY_INDEX_IDENTITY_MISMATCH')
++                expected_path='samples/'+sid.replace(':','_').replace('/','_')
++                if entry.get('path')!=expected_path:qfail('QUERY_RESULT_PATH_MISMATCH')
++                folder=runner.safe_path(results,expected_path)
++                methods=runner.read(folder/'METHOD_RESULTS.json')
++                if entry.get('method_statuses')!={m:v.get('status','MISSING') for m,v in methods.items()}:qfail('QUERY_INDEX_METHOD_STATUS_MISMATCH')
++                doc=runner.read(runner.safe_path(tree,row['observed_path']))
++                contract,evaluation,ablations,_=runner.evaluate_query(tree,row,frozen,doc,methods)
++                if contract.get('passed') is not True:qfail('RECOMPUTED_OUTPUT_CONTRACT_FAILED',errors=contract.get('errors'))
++                if evaluation.get('passed') is not True:qfail('RECOMPUTED_SCIENTIFIC_CHECK_FAILED',errors=evaluation.get('errors'))
++                saved_contract=runner.read(folder/'OUTPUT_CONTRACT.json')
++                if saved_contract!=contract:qfail('CONTRACT_RECEIPT_RECOMPUTATION_MISMATCH')
++                if scientific_receipt_projection(runner.read(folder/'EVALUATION.json'))!=scientific_receipt_projection(evaluation):qfail('SCIENTIFIC_RECEIPT_RECOMPUTATION_MISMATCH')
++                if runner.read(folder/'ABLATIONS.json')!=ablations:qfail('ABLATION_RECEIPT_RECOMPUTATION_MISMATCH')
++                receipt=runner.read(folder/'QUERY_ACCEPTANCE.json')
++                if receipt.get('binding')!=runner.query_binding(tree,folder,row,frozen):qfail('QUERY_RECEIPT_BINDING_MISMATCH')
++                if entry.get('query_acceptance_sha256')!=runner.file_hash(folder/'QUERY_ACCEPTANCE.json'):qfail('QUERY_RECEIPT_HASH_MISMATCH')
++                if receipt.get('passed') is not True or receipt.get('contract_passed') is not True or receipt.get('scientific_checks_passed') is not True:qfail('QUERY_RECEIPT_FAILED')
++                if entry.get('passed') is not True or entry.get('contract_passed') is not True or entry.get('evaluation_passed') is not True:qfail('QUERY_INDEX_FAILED')
++            except Exception as exc:qfail('QUERY_REVALIDATION_EXCEPTION',detail=type(exc).__name__+': '+str(exc))
++            queries.append({'sample_id':sid,'passed':not query_errors,'errors':query_errors})
++        if index.get('passed') is not True or index.get('status')!='COMPLETED' or index.get('input_unchanged') is not True:fail('BATCH_RECEIPT_FAILED')
++        if len(queries)!=len(rows):fail('REVALIDATION_COVERAGE_MISMATCH')
++    except Exception as exc:fail('BATCH_REVALIDATION_EXCEPTION',detail=type(exc).__name__+': '+str(exc))
++    passed=not errors and bool(queries) and all(q['passed'] for q in queries)
++    return {'schema_version':'stage1c-r1-saved-result-gate-1.0','passed':passed,'status':'PASS' if passed else 'FAIL',
++        'sample_count':len(queries),'failed_queries':sum(not q['passed'] for q in queries),'queries':queries,'errors':errors,
++        'recomputed_common_contract_and_scientific_checks':True,'elapsed_validation_seconds':time.perf_counter()-start,
++        'timing_scope':'Result acceptance verification; not algorithm execution timing'}
++
++def main():
++    parser=argparse.ArgumentParser();parser.add_argument('--tree',type=Path,required=True);parser.add_argument('--results',type=Path,required=True)
++    parser.add_argument('--output',type=Path,required=True);parser.add_argument('--kind',choices=('min','public'));parser.add_argument('--selection')
++    args=parser.parse_args();receipt=validate_saved_batch(args.tree,args.results,args.kind,args.selection)
++    from run_stage1c import write
++    write(args.output,receipt);print(json.dumps({'status':receipt['status'],'samples':receipt['sample_count'],'failed_queries':receipt['failed_queries']}))
++    return 0 if receipt['passed'] else 1
++if __name__=='__main__':raise SystemExit(main())
+--- accepted-stage1c/src/stage1c_revision.py
++++ stage1c-r1/src/stage1c_revision.py
+@@ -0,0 +1,76 @@
++"""Append-only execution identity; the Stage1C scientific freeze is immutable."""
++from pathlib import Path
++from datetime import datetime,timezone
++import hashlib,json,re
++
++PARENT_COMMIT='d88b839361b8fa93308430641baf7af423d76ae8'
++PARENT_TREE='cef2f09aaa6033e9cb7393d6dc5cad6119a4f450'
++PARENT_FREEZE_SHA256='e22250a3689e0cbb5837c000bd332fcb74171fc58f3bc013a6a340a0ec4d6e06'
++ALLOWED_CHANGED_SOURCE={'src/run_stage1c.py','src/stage1c_reports.py','src/validate_stage1c.py'}
++EXECUTION_POLICY_KEYS=('schema_version','stage','checkpoint','authorization_id','baseline_commit','baseline_tree',
++    'baseline_run','external_acceptance','repairs','integration_review','validation_contract','experiments',
++    'required_faults','required_positive_controls','required_additional_integration_controls','network',
++    'next_batch','publication','delivery')
++def file_hash(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++def read(path):return json.loads(Path(path).read_text(encoding='utf-8'))
++def inventory(tree):
++    return [{'path':p.relative_to(tree).as_posix(),'sha256':file_hash(p)} for folder in ('src','tests')
++            for p in sorted((tree/folder).rglob('*.py')) if '__pycache__' not in p.parts]
++def _parent_unchanged(tree,parent):
++    if file_hash(tree/'EXPERIMENT_FREEZE.json')!=PARENT_FREEZE_SHA256:raise ValueError('Accepted parent freeze identity changed')
++    current={r['path']:r['sha256'] for r in inventory(tree)}
++    changes=[]
++    for row in parent['source_inventory']:
++        name=row['path']
++        if name not in current:raise ValueError('Inherited source/test removed: '+name)
++        if current[name]!=row['sha256']:
++            if name not in ALLOWED_CHANGED_SOURCE:raise ValueError('Unapproved inherited implementation/test change: '+name)
++            changes.append(name)
++    return changes
++def verify_revision(tree,parent):
++    path=tree/'REVISION_FREEZE.json';rev=read(path)
++    if rev.get('schema_version')!='stage1c-r1-execution-freeze-1.0':raise ValueError('Unknown revision freeze schema')
++    if rev.get('parent_commit')!=PARENT_COMMIT or rev.get('parent_tree')!=PARENT_TREE:raise ValueError('Wrong revision parent')
++    if rev.get('parent_freeze_sha256')!=file_hash(tree/'EXPERIMENT_FREEZE.json'):raise ValueError('Parent scientific freeze changed')
++    if rev.get('source_inventory')!=inventory(tree):raise ValueError('Revision source/test identity changed')
++    if rev.get('changed_inherited_source')!=_parent_unchanged(tree,parent):raise ValueError('Inherited change inventory mismatch')
++    private_policy=tree/'configs/STAGE1C_R1_POLICY.json'
++    if private_policy.exists() and file_hash(private_policy)!=rev.get('private_authorization_policy_sha256'):raise ValueError('Private authorization policy changed')
++    for row in rev['additional_execution_inputs']:
++        p=tree/row['path']
++        if not p.resolve().is_relative_to(tree.resolve()) or file_hash(p)!=row['sha256']:raise ValueError('Revision execution policy changed')
++    return {'version':rev['version'],'freeze_sha256':file_hash(path),'parent_freeze_sha256':rev['parent_freeze_sha256'],
++            'source_inventory_sha256':hashlib.sha256(json.dumps(rev['source_inventory'],sort_keys=True,separators=(',',':')).encode()).hexdigest()}
++def freeze_revision(tree,version):
++    tree=Path(tree);parent=read(tree/'EXPERIMENT_FREEZE.json')
++    changed=_parent_unchanged(tree,parent)
++    if not re.fullmatch(r'stage1c-r1-[A-Za-z0-9][A-Za-z0-9._-]*',version):raise ValueError('Explicit safe stage1c-r1 version required')
++    policy=tree/'configs/STAGE1C_R1_POLICY.json'
++    policy_value=read(policy)
++    if policy_value.get('authorization_id')!='STAGE1C_R1_OUTPUT_CONTRACT_AND_INTEGRATION_V1':raise ValueError('Wrong revision authorization')
++    # The authoritative full policy remains private and unchanged. Public replay
++    # needs the exact execution contract, not historical account billing figures.
++    effective=tree/'configs/STAGE1C_R1_EXECUTION_POLICY.json'
++    policy_bytes=(json.dumps({k:policy_value[k] for k in EXECUTION_POLICY_KEYS},sort_keys=True,indent=2)+'\n').encode()
++    if effective.exists() and effective.read_bytes()!=policy_bytes:raise ValueError('Existing execution policy cannot be replaced')
++    if not effective.exists():effective.write_bytes(policy_bytes)
++    # Verify immutable scientific identities before allowing an execution freeze.
++    for name,key in [('EXPERIMENT_INPUTS.json','inputs_manifest_sha256'),('configs/STAGE1C_EFFECTIVE_POLICY.json','effective_policy_sha256'),('METHOD_SPEC_EFFECTIVE.md','method_spec_sha256'),('controlled_v1/MANIFEST.json','controlled_manifest_sha256')]:
++        if file_hash(tree/name)!=parent[key]:raise ValueError('Scientific identity changed: '+name)
++    value={'schema_version':'stage1c-r1-execution-freeze-1.0','version':version,'stage':'Stage1C-R1',
++           'frozen_at_utc':datetime.now(timezone.utc).isoformat(),'parent_commit':PARENT_COMMIT,'parent_tree':PARENT_TREE,
++           'parent_freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),'source_inventory':inventory(tree),
++           'changed_inherited_source':changed,'additional_execution_inputs':[{'path':'configs/STAGE1C_R1_EXECUTION_POLICY.json','sha256':file_hash(effective)}],
++           'private_authorization_policy_sha256':file_hash(policy),
++           'scientific_methods_and_inputs_changed':False,'warmups':parent['warmups'],'timed_repetitions':parent['timed_repetitions'],
++           'method_versions_inherited':parent['method_versions'],'checkpoint':'CHECKPOINT_1C_R1_REACHED'}
++    path=tree/'REVISION_FREEZE.json'
++    if path.exists():
++        prior=read(path)
++        if not re.fullmatch(r'stage1c-r1-[A-Za-z0-9][A-Za-z0-9._-]*',prior['version']):raise ValueError('Unsafe prior revision version')
++        if prior['version']==version:raise ValueError('Revision version exists; use a new execution version')
++        history=tree/'revision_freeze_history'/f"{prior['version']}.json"
++        history.parent.mkdir(exist_ok=True)
++        with history.open('xb') as out:out.write(path.read_bytes())
++    path.write_text(json.dumps(value,sort_keys=True,indent=2)+'\n',encoding='utf-8')
++    return value
+--- accepted-stage1c/src/validate_stage1c.py
++++ stage1c-r1/src/validate_stage1c.py
+@@ -5,6 +5,7 @@
+ from validate_review_bundle_r1 import Validator, input_path, read, write, tree_hashes
+ from archive_safety import verify_manifest
+ from run_stage1c import verify_freeze
++from stage1c_result_gate import validate_saved_batch
+ 
+ def result_projection(data):
+     result={}
+@@ -20,21 +21,33 @@
+         super().__init__(tree,output,kind)
+         if (self.tree/'controlled_v1').exists():shutil.copytree(self.tree/'controlled_v1',self.mirror/'controlled_v1')
+ 
++    def verify_saved_results(self,folder,selection,label):
++        receipt_path=self.out/(label+'_acceptance.json')
++        ok=self.command(label+'_acceptance_execution','src/stage1c_result_gate.py',
++            ['--tree',self.tree,'--results',folder,'--kind',self.kind,'--selection',selection,'--output',receipt_path])
++        receipt=read(receipt_path) if receipt_path.exists() else {}
++        self.check(label+'_acceptance_receipt',ok and receipt.get('passed') is True and receipt.get('recomputed_common_contract_and_scientific_checks') is True,
++            samples=receipt.get('sample_count'),failed_queries=receipt.get('failed_queries'),receipt=receipt_path.name)
++        return ok and receipt.get('passed') is True
++
+     def batch(self,selection):
+         folder=self.out/('stage1c_'+selection)
+-        if self.command('stage1c_'+selection,'src/run_stage1c.py',
+-            ['--tree',self.tree,'--kind',self.kind,'--selection',selection,'--output',folder]):
++        executed=self.command('stage1c_'+selection,'src/run_stage1c.py',
++            ['--tree',self.tree,'--kind',self.kind,'--selection',selection,'--output',folder])
++        if (folder/'RESULTS_INDEX.json').exists():
+             result=read(folder/'RESULTS_INDEX.json')
+             expected_count=60 if selection=='controlled' else 2
+-            self.check(selection+'_result_receipt',result.get('passed') is True and result.get('sample_count')==expected_count and result.get('input_unchanged') is True,
++            self.check(selection+'_result_receipt',executed and result.get('passed') is True and result.get('sample_count')==expected_count and result.get('input_unchanged') is True,
+                 samples=result.get('sample_count'),success=result.get('passed'))
+             saved=self.tree/'results'/selection
++            current_accepted=self.verify_saved_results(folder,selection,selection+'_reexecuted')
++            saved_accepted=self.verify_saved_results(saved,selection,selection+'_saved')
+             checks=[]
+             for row in result['method_results_index']:
+                 name=row['path'];prior=input_path(saved,name+'/METHOD_RESULTS.json')
+                 current=folder/name/'METHOD_RESULTS.json'
+                 checks.append(result_projection(read(prior))==result_projection(read(current)))
+-            self.check(selection+'_fixed_result_reproduction',all(checks) and len(checks)==expected_count,samples_compared=len(checks),
++            self.check(selection+'_fixed_result_reproduction',current_accepted and saved_accepted and all(checks) and len(checks)==expected_count,samples_compared=len(checks),
+                 comparison='Exact typed intervals/point/nominal/sets/input identities; nonunique LP witnesses and host timings excluded, independently re-audited in runner')
+ 
+     def run_stage1c(self):
+@@ -50,8 +63,10 @@
+                 self.check('real_evidence_replay_receipt',receipt.get('passed') is True,receipt=receipt)
+         else:self.skipped('private_real_models','Public package intentionally excludes private original evidence and two-real replay',required=False)
+         self.check('frozen_tree_unchanged',tree_hashes(self.tree)==self.before)
+-        failures=self.validation_failures(['payload_manifest_verified','frozen_source_and_inputs_verified','unit_test_receipt','controlled_oracle_receipt','controlled_result_receipt','controlled_fixed_result_reproduction','frozen_tree_unchanged']+(['real_result_receipt','real_fixed_result_reproduction','real_evidence_replay_receipt'] if self.kind=='min' else []))
+-        result={'schema_version':'stage1c-extracted-validation-1.0','passed':not failures,'status':'PASS' if not failures else 'FAIL',
++        required=['payload_manifest_verified','frozen_source_and_inputs_verified','unit_test_receipt','controlled_oracle_receipt','controlled_result_receipt','controlled_fixed_result_reproduction','frozen_tree_unchanged']
++        required += [s+'_'+label+'_acceptance_receipt' for s in (('controlled','real') if self.kind=='min' else ('controlled',)) for label in ('saved','reexecuted')]
++        failures=self.validation_failures(required+(['real_result_receipt','real_fixed_result_reproduction','real_evidence_replay_receipt'] if self.kind=='min' else []))
++        result={'schema_version':'stage1c-r1-extracted-validation-1.0','passed':not failures,'status':'PASS' if not failures else 'FAIL',
+             'kind':self.kind,'runtime':platform.platform(),'python':platform.python_version(),
+             'utc':datetime.now(timezone.utc).isoformat(),'checks':self.commands,'failures':failures,
+             'guard':'Unmodified Stage1B-R1/R4 inherited OFFLINE_SITE/GUARDED_LAUNCH; sanitized child environment; sockets/DNS blocked; only guarded Python subprocesses; writes confined to new output.',
+--- accepted-stage1c/tests/test_stage1c_output_contract.py
++++ stage1c-r1/tests/test_stage1c_output_contract.py
+@@ -0,0 +1,356 @@
++"""Input-defined result acceptance; small local controls, no full batch run."""
++import copy
++from fractions import Fraction as F
++import hashlib
++import json
++from pathlib import Path
++import sys
++import unittest
++from unittest.mock import patch
++
++BASE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(BASE / "src"))
++from stage1c_baselines import run_baseline
++from stage1c_intervals import run_interval
++from stage1c_output_contract import METHODS, INTERVAL_METHODS, accept_method_results, expected_domains, exact
++
++
++def load(path):
++    return json.loads(Path(path).read_text(encoding="utf-8"))
++
++
++def toy():
++    return {"scenario_id": "contract-unit", "query_id": "contract-unit", "index": 9,
++            "initial_balances": {"A|ETH": "2", "T|ETH": "0"}, "target_accounts": ["T"],
++            "objective_groups": {"T|ETH": ["enter"]},
++            "events": [{"id": "seed", "kind": "seed", "order": 1, "to": "A", "asset": "ETH", "amount_raw": "2"},
++                       {"id": "enter", "kind": "transfer", "order": 2, "from": "A", "to": "T", "asset": "ETH", "amount_raw": "3"}]}
++
++
++def identity(doc):
++    return {"sample_id": doc.get("scenario_id", doc.get("name")), "query_id": doc["query_id"],
++            "input_fact_hash": hashlib.sha256(json.dumps(doc, sort_keys=True).encode()).hexdigest(),
++            "scope_hash": "f" * 64, "label_version": "CONTRACT_UNIT_LABELS", "method_versions": {m: "frozen-unit-v1" for m in METHODS}}
++
++
++def execute(doc):
++    expected = identity(doc)
++    results = {}
++    for method in METHODS:
++        value = run_interval(doc, method) if method in INTERVAL_METHODS else run_baseline(doc, method)
++        if value.get("status") == "OK":
++            value["status"] = "COMPLETED"
++        value.setdefault("positive_addresses", value.get("output_address_ids"))
++        value.update({k: expected[k] for k in ("sample_id", "query_id", "input_fact_hash", "scope_hash", "label_version")})
++        value.update(method_id=method, method_version=expected["method_versions"][method])
++        results[method] = value
++    return results
++
++
++def context_toy():
++    flows = [{"event_id": "seed", "role": "SEED", "from_account": "outside|ETH", "to_account": "A|ETH", "amount_raw": "2"},
++             {"event_id": "normal", "role": "BACKGROUND_NORMAL", "from_account": "normal|ETH", "to_account": "A|ETH", "amount_raw": "2", "source_zero_basis": "synthetic normal origin"},
++             {"event_id": "enter", "role": "CANDIDATE", "from_account": "A|ETH", "to_account": "T|ETH", "amount_raw": "3"}]
++    return {"schema_version": "stage1b-r3-context-model-v1", "query_id": "contract-context-unit", "name": "contract-context-unit",
++            "accounts": [{"account_id": "A|ETH", "initial_actual_balance_raw": "0", "initial_source_raw": "0",
++                          "initial_source_basis": "synthetic causal scope", "initial_position": {"block_number": 0, "phase": "BLOCK_END"}}],
++            "transactions": [{"tx_id": "tx" + str(i), "block_number": i + 1, "tx_index": 0, "flows": [flow], "fees": []} for i, flow in enumerate(flows)],
++            "objective_groups": {"T|ETH": ["enter"]}, "all_service_entries": ["enter"]}
++
++
++class Stage1COutputContractTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.doc = toy()
++        cls.results = execute(cls.doc)
++        cls.context = context_toy()
++        cls.context_results = execute(cls.context)
++
++    def receipt(self, results=..., doc=None):
++        doc = self.doc if doc is None else doc
++        return accept_method_results(doc, self.results if results is ... else results, expected_identity=identity(doc))
++
++    def rejects(self, results, code, *, doc=None):
++        receipt = self.receipt(results, doc)
++        self.assertFalse(receipt["passed"])
++        self.assertIn(code, {e["code"] for e in receipt["errors"]}, receipt["errors"])
++        self.assertTrue(all({"code", "method", "path", "detail"} <= set(error) for error in receipt["errors"]))
++        return receipt
++
++    def test_genuine_result_passes_and_receipt_is_deterministic(self):
++        a = self.receipt()
++        self.assertTrue(a["passed"], a["errors"])
++        self.assertEqual(a, self.receipt())
++        self.assertEqual(a["counts"]["required_methods"], 7)
++        self.assertEqual(a["counts"]["required_interval_events"], 1)
++        self.assertEqual(a["counts"]["required_baseline_ports"], 2)
++
++    def test_domains_differ_by_method_and_never_follow_returned_keys(self):
++        domain = expected_domains(self.doc)
++        self.assertEqual(domain["interval_events"], ["enter"])
++        self.assertEqual(domain["baseline_events"], ["enter", "seed"])
++        self.assertEqual(domain["allocation_ports"], ["enter", "seed"])
++        values = copy.deepcopy(self.results)
++        for category in ("addresses", "events", "joint_by_asset"):
++            values["FULL_INTERVAL"][category] = {}
++        values["FULL_INTERVAL"]["positive_addresses"] = []
++        receipt = self.rejects(values, "OUTPUT_DOMAIN")
++        self.assertEqual(receipt["expected_domains"], domain)
++
++    def test_missing_haircut_allocation_with_bad_points_fails(self):
++        values = copy.deepcopy(self.results)
++        values["HAIRCUT"]["allocation_raw"] = None
++        values["HAIRCUT"]["addresses"]["T|ETH"]["point_raw"] = "999"
++        values["HAIRCUT"]["joint_by_asset"]["ETH"]["point_raw"] = "999"
++        self.rejects(values, "POINT_AGGREGATE_MISMATCH")
++
++    def test_legal_allocation_beside_bad_reported_points_fails(self):
++        values = copy.deepcopy(self.results)
++        values["HAIRCUT"]["addresses"]["T|ETH"]["point_raw"] = "999"
++        values["HAIRCUT"]["joint_by_asset"]["ETH"]["point_raw"] = "999"
++        receipt = self.rejects(values, "POINT_AGGREGATE_MISMATCH")
++        self.assertTrue(receipt["method_checks"]["HAIRCUT"]["full_allocation_audit"]["exact_feasible"])
++
++    def test_haircut_event_point_and_alias_must_equal_allocation(self):
++        for field in ("point_raw", "source_amount_raw"):
++            with self.subTest(field=field):
++                values = copy.deepcopy(self.results)
++                values["HAIRCUT"]["events"]["enter"][field] = "1"
++                self.rejects(values, "POINT_ALLOCATION_MISMATCH" if field == "point_raw" else "POINT_ALIAS_MISMATCH")
++
++    def test_allocation_must_include_nontarget_seed(self):
++        values = copy.deepcopy(self.results)
++        del values["HAIRCUT"]["allocation_raw"]["seed"]
++        self.rejects(values, "OUTPUT_DOMAIN")
++
++    def test_point_consistency_does_not_replace_global_feasibility(self):
++        values = copy.deepcopy(self.results)
++        h = values["HAIRCUT"]
++        h["allocation_raw"]["seed"] = "1"
++        h["events"]["seed"]["point_raw"] = h["events"]["seed"]["source_amount_raw"] = "1"
++        self.rejects(values, "ALLOCATION_INFEASIBLE")
++
++    def test_missing_whole_method_and_extra_method_fail(self):
++        for missing in (True, False):
++            with self.subTest(missing=missing):
++                values = copy.deepcopy(self.results)
++                if missing:
++                    del values["POISON"]
++                else:
++                    values["UNKNOWN_METHOD"] = {}
++                self.rejects(values, "OUTPUT_DOMAIN")
++
++    def test_missing_target_extra_target_and_wrong_asset_fail(self):
++        for mutation in ("missing", "extra", "asset"):
++            with self.subTest(mutation=mutation):
++                values = copy.deepcopy(self.results)
++                if mutation == "missing":
++                    del values["FULL_INTERVAL"]["events"]["enter"]
++                elif mutation == "extra":
++                    values["FULL_INTERVAL"]["addresses"]["U|ETH"] = copy.deepcopy(values["FULL_INTERVAL"]["addresses"]["T|ETH"])
++                else:
++                    values["FULL_INTERVAL"]["addresses"]["T|ETH"]["asset"] = "WETH"
++                self.rejects(values, "ASSET_IDENTITY" if mutation == "asset" else "OUTPUT_DOMAIN")
++
++    def test_each_envelope_identity_is_checked_against_manifest(self):
++        for field in ("method_id", "sample_id", "query_id", "input_fact_hash", "scope_hash", "label_version", "method_version"):
++            with self.subTest(field=field):
++                values = copy.deepcopy(self.results)
++                values["POISON"][field] = "incorrect"
++                self.rejects(values, "METHOD_IDENTITY" if field == "method_id" else "METHOD_VERSION" if field == "method_version" else "RESULT_IDENTITY")
++
++    def test_trusted_identity_is_mandatory(self):
++        receipt = accept_method_results(self.doc, self.results)
++        self.assertFalse(receipt["passed"])
++        self.assertIn("EXPECTED_IDENTITY_MISSING", {e["code"] for e in receipt["errors"]})
++
++    def test_invalid_exact_numbers_fail_without_throwing(self):
++        for value in (None, True, False, float("nan"), float("inf"), 1.0, "NaN", "Infinity", "1/0", "-1", [], {}):
++            with self.subTest(value=value):
++                values = copy.deepcopy(self.results)
++                values["FULL_INTERVAL"]["addresses"]["T|ETH"]["lower_raw"] = value
++                self.rejects(values, "EXACT_NUMBER")
++
++    def test_legal_equivalent_exact_representations_are_accepted(self):
++        values = copy.deepcopy(self.results)
++        h = values["HAIRCUT"]
++        h["allocation_raw"]["seed"] = 2
++        h["events"]["enter"]["point_raw"] = "1.50"
++        h["addresses"]["T|ETH"]["point_raw"] = "3/2"
++        h["joint_by_asset"]["ETH"]["point_raw"] = "1.5e0"
++        h["boundary_completion"]["B0_out_raw"] = 0
++        h["boundary_completion"]["S0_out_raw"] = "0.0"
++        self.assertTrue(self.receipt(values)["passed"], self.receipt(values)["errors"])
++        self.assertEqual(exact("3/2"), F(3, 2))
++
++    def test_invalid_business_status_and_type_do_not_masquerade_as_success(self):
++        for field, value, code in (("status", "OK", "METHOD_STATUS"), ("status", "UNRESOLVED", "METHOD_STATUS"),
++                                  ("output_kind", "feasible_interval", "OUTPUT_KIND")):
++            values = copy.deepcopy(self.results); values["POISON"][field] = value
++            self.rejects(values, code)
++
++    def test_all_shapes_are_diagnostic_not_exceptions(self):
++        for bad in (None, [], "COMPLETED", 0):
++            with self.subTest(bad=bad):
++                self.rejects(bad, "FIELD_TYPE")
++        values = copy.deepcopy(self.results); values["FULL_INTERVAL"] = ["invalid"]
++        self.rejects(values, "METHOD_MISSING_OR_TYPE")
++
++    def test_duplicate_and_wrong_positive_output_members_fail(self):
++        for bad in (["T|ETH", "T|ETH"], [], ["U|ETH"], None):
++            values = copy.deepcopy(self.results); values["BOUNDED_REACHABILITY"]["positive_addresses"] = bad
++            self.rejects(values, "FIELD_TYPE" if bad is None else "OUTPUT_MEMBERS")
++
++    def test_wrong_membership_and_baseline_port_asset_fail(self):
++        values = copy.deepcopy(self.results)
++        values["HAIRCUT"]["addresses"]["T|ETH"]["events"] = ["seed"]
++        self.rejects(values, "OUTPUT_MEMBERS")
++        values = copy.deepcopy(self.results); values["POISON"]["events"]["seed"]["asset"] = "WETH"
++        self.rejects(values, "PORT_IDENTITY")
++
++    def test_false_na_in_supported_graph_fails(self):
++        values = copy.deepcopy(self.results); values["HAIRCUT"]["status"] = "NOT_APPLICABLE"
++        self.rejects(values, "UNJUSTIFIED_NOT_APPLICABLE")
++
++    def test_six_frozen_haircut_unknown_balance_cases_are_valid_na(self):
++        # The validator's unit mirror supplies controlled_v1, not saved results
++        # or root experiment manifests. Generate genuine method returns from
++        # the six frozen observations and use the same trusted fixture envelope
++        # as the other contract tests; no hidden or stored answer is consumed.
++        manifest = load(BASE / "controlled_v1/MANIFEST.json")
++        rows = [r for r in manifest["samples"] if r["family"] == "missing_information_and_boundary_controls" and r["index"] >= 4]
++        self.assertEqual(len(rows), 6)
++        self.assertEqual({r["index"] for r in rows}, set(range(4, 10)))
++        for row in rows:
++            with self.subTest(sample=row["sample_id"]):
++                observed = BASE / row["observed_path"]
++                self.assertEqual(hashlib.sha256(observed.read_bytes()).hexdigest(), row["observed_sha256"])
++                doc = load(observed)
++                self.assertEqual(doc["scenario_id"], row["sample_id"])
++                results = execute(doc)
++                receipt = accept_method_results(doc, results, expected_identity=identity(doc))
++                self.assertTrue(receipt["passed"], receipt["errors"])
++                self.assertEqual(results["HAIRCUT"]["status"], "NOT_APPLICABLE")
++                self.assertIsNotNone(receipt["expected_domains"]["haircut_not_applicable_basis"])
++                for field in ("addresses", "events", "joint_by_asset", "allocation_raw", "positive_addresses", "output_address_ids", "output_event_ids"):
++                    self.assertIsNone(results["HAIRCUT"][field])
++
++    def test_unrelated_unknown_balance_does_not_justify_abstention(self):
++        doc = toy(); doc["initial_balances"]["UNUSED|ETH"] = None
++        self.assertIsNone(expected_domains(doc)["haircut_not_applicable_basis"])
++
++    def test_balance_nesting_is_hard_failure_at_joint_and_address(self):
++        for category, key in (("addresses", "T|ETH"), ("joint_by_asset", "ETH")):
++            values = copy.deepcopy(self.results)
++            values["BALANCE_INFORMATION_REMOVED"][category][key]["lower_raw"] = "2"
++            receipt = self.rejects(values, "BALANCE_ENDPOINT_NESTING")
++            self.assertTrue(any(not r["passed"] and r["code"] == "BALANCE_ENDPOINT_NESTING" for r in receipt["hard_invariants"]))
++
++    def test_structural_nesting_flag_is_not_optional(self):
++        values = copy.deepcopy(self.results)
++        values["BALANCE_INFORMATION_REMOVED"]["modifications"]["nesting"]["nested"] = False
++        self.rejects(values, "BALANCE_STRUCTURAL_NESTING")
++
++    def test_copy_joint_exact_sum_is_required_without_one_seed_cap(self):
++        doc = toy(); doc["events"][1]["amount_raw"] = "2"
++        doc["events"].append({"id": "enter_u", "kind": "transfer", "order": 3, "from": "A", "to": "U", "asset": "ETH", "amount_raw": "2"})
++        doc["initial_balances"]["U|ETH"] = "0"; doc["target_accounts"].append("U"); doc["objective_groups"]["U|ETH"] = ["enter_u"]
++        values = execute(doc)
++        self.assertEqual(values["NO_CROSS_TARGET_COUPLING"]["joint_by_asset"]["ETH"]["upper_raw"], "4")
++        self.assertTrue(self.receipt(values, doc)["passed"], self.receipt(values, doc)["errors"])
++        values["NO_CROSS_TARGET_COUPLING"]["joint_by_asset"]["ETH"]["upper_raw"] = "3"
++        self.rejects(values, "TARGET_COPY_EXACT_DECOMPOSITION", doc=doc)
++
++    def test_copy_internal_full_constraints_and_namespaces_required(self):
++        values = copy.deepcopy(self.results)
++        values["NO_CROSS_TARGET_COUPLING"]["modifications"]["product_copies"][0]["cross_copy_identity_equalities_present"] = True
++        self.rejects(values, "TARGET_COPY_STRUCTURE")
++
++    def test_protocol_absence_means_all_output_intervals_are_equal(self):
++        values = copy.deepcopy(self.results)
++        values["NO_PROTOCOL_CONTINUATION"]["events"]["enter"]["lower_raw"] = "0"
++        self.rejects(values, "NO_PROTOCOL_FEATURE_EQUALITY")
++
++    def test_protocol_boundary_metadata_is_checked_against_input(self):
++        values = copy.deepcopy(self.results)
++        values["NO_PROTOCOL_CONTINUATION"]["modifications"]["connected_protocol_count"] = 1
++        self.rejects(values, "PROTOCOL_BOUNDARY_STRUCTURE")
++
++    def test_poison_above_full_upper_and_haircut_not_equal_hidden_are_legal(self):
++        self.assertGreater(F(self.results["POISON"]["joint_by_asset"]["ETH"]["nominal_raw"]), F(self.results["FULL_INTERVAL"]["joint_by_asset"]["ETH"]["upper_raw"]))
++        self.assertEqual(self.results["HAIRCUT"]["joint_by_asset"]["ETH"]["point_raw"], "3/2")
++        self.assertTrue(self.receipt()["passed"])
++
++    def test_reachability_cannot_report_amount_and_poison_cannot_report_point(self):
++        for method, field in (("BOUNDED_REACHABILITY", "source_amount_raw"), ("POISON", "point_raw")):
++            values = copy.deepcopy(self.results); values[method]["events"]["enter"][field] = "3"
++            self.rejects(values, "AMOUNT_KIND")
++
++    def test_marking_flags_and_witness_cannot_invent_an_output_set(self):
++        values = copy.deepcopy(self.results); values["POISON"]["events"]["enter"]["supported"] = False
++        self.rejects(values, "OUTPUT_SUPPORT")
++        values = copy.deepcopy(self.results); values["BOUNDED_REACHABILITY"]["events"]["enter"]["witness"] = ["enter", "enter"]
++        self.rejects(values, "MARKING_WITNESS")
++
++    def test_legal_empty_target_preserves_method_specific_union_rules(self):
++        doc = toy(); doc["target_accounts"] = []; doc["objective_groups"] = {}
++        values = execute(doc)
++        self.assertEqual(values["HAIRCUT"]["joint_by_asset"], {})
++        self.assertEqual(values["FULL_INTERVAL"]["joint_by_asset"]["ETH"]["upper_raw"], "0")
++        self.assertTrue(self.receipt(values, doc)["passed"], self.receipt(values, doc)["errors"])
++        values["FULL_INTERVAL"]["joint_by_asset"] = {}
++        self.rejects(values, "OUTPUT_DOMAIN", doc=doc)
++
++    def test_zero_hop_and_explicit_zero_upper_are_accepted(self):
++        for mode in ("zero_hop", "zero_upper"):
++            doc = toy()
++            if mode == "zero_hop":
++                doc["initial_balances"] = {"T|ETH": "0"}
++                doc["events"] = [dict(doc["events"][0], to="T")]
++                doc["objective_groups"] = {"T|ETH": ["seed"]}
++            else:
++                doc["events"][1]["amount_raw"] = "0"
++            values = execute(doc)
++            self.assertTrue(self.receipt(values, doc)["passed"], self.receipt(values, doc)["errors"])
++
++    def test_context_format_shares_contract_without_any_amount_truth(self):
++        receipt = self.receipt(self.context_results, self.context)
++        self.assertTrue(receipt["passed"], receipt["errors"])
++        values = copy.deepcopy(self.context_results)
++        values["HAIRCUT"]["joint_by_asset"]["ETH"]["point_raw"] = "999"
++        self.rejects(values, "POINT_AGGREGATE_MISMATCH", doc=self.context)
++        values = copy.deepcopy(self.context_results); values["FULL_INTERVAL"]["addresses"] = {}
++        self.rejects(values, "OUTPUT_DOMAIN", doc=self.context)
++
++    def test_canonical_weth_ports_and_boundary_ablation_acceptance(self):
++        doc = load(BASE / "controlled_v1/canonical_weth_1to1/01/observed.json")
++        values = execute(doc)
++        domain = expected_domains(doc)
++        self.assertTrue(any(name.endswith(":refund") for name in domain["allocation_ports"]))
++        self.assertTrue(any(name.endswith(":output0") for name in domain["allocation_ports"]))
++        self.assertTrue(self.receipt(values, doc)["passed"], self.receipt(values, doc)["errors"])
++        port = next(name for name in domain["allocation_ports"] if name.endswith(":refund"))
++        del values["HAIRCUT"]["allocation_raw"][port]
++        self.rejects(values, "OUTPUT_DOMAIN", doc=doc)
++
++    def test_no_solver_or_oracle_is_used_for_acceptance(self):
++        with patch("stage1c_intervals.solve_interval", side_effect=AssertionError("Cannot solve a new answer during acceptance")), \
++             patch("stage1c_intervals.solve_context_interval", side_effect=AssertionError("Cannot solve a new context answer")), \
++             patch("stage1c_oracle.oracle_intervals", side_effect=AssertionError("No Oracle in common contract")):
++            self.assertTrue(self.receipt()["passed"])
++
++    def test_malformed_input_domain_is_structured_failure(self):
++        doc = toy(); doc["objective_groups"] = {}
++        receipt = self.receipt(self.results, doc)
++        self.assertFalse(receipt["passed"])
++        self.assertIn("INPUT_DOMAIN_INVALID", {e["code"] for e in receipt["errors"]})
++
++    def test_receipt_does_not_mutate_observations_or_returned_results(self):
++        before_doc, before_results = copy.deepcopy(self.doc), copy.deepcopy(self.results)
++        self.receipt()
++        self.assertEqual(before_doc, self.doc)
++        self.assertEqual(before_results, self.results)
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- accepted-stage1c/tests/test_stage1c_r1_faults.py
++++ stage1c-r1/tests/test_stage1c_r1_faults.py
+@@ -0,0 +1,312 @@
++"""Output-boundary faults; immutable facts and scientific methods are unchanged.
++
++The same mutation functions are used by direct acceptance tests and subprocess
++runner-main probes. ``--fault-child`` invokes actual runner.main, preserving its
++real freeze verifier and using its explicit frozen-query selection interface.
++"""
++from __future__ import annotations
++import argparse
++from contextlib import redirect_stdout, redirect_stderr
++import copy
++import io
++import json
++from pathlib import Path
++import socket
++import sys
++import unittest
++from unittest.mock import patch
++
++BASE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(BASE / "src"))
++
++FOUR = ("full_missing_output", "haircut_missing_witness_bad_point", "haircut_bad_point_with_valid_witness", "balance_ablation_non_nested")
++ADDITIONAL = ("partial_missing_target", "extra_target", "wrong_asset_target", "missing_whole_method", "wrong_input_identity",
++              "wrong_sample_identity", "wrong_method_identity", "wrong_scope_identity", "wrong_label_identity",
++              "missing_nontarget_allocation", "event_point_inconsistent", "invalid_nan", "invalid_bool", "invalid_null",
++              "invalid_fraction", "invalid_status", "invalid_na_on_supported_input", "reversed_interval", "duplicate_group_member",
++              "positive_set_inconsistent", "wrong_event_asset", "product_union_wrong_sum", "protocol_absent_changed", "balance_address_non_nested", "real_full_missing_output", "real_haircut_bad_point_with_valid_witness",
++              "real_wrong_input_identity", "mixed_bad_then_good")
++POSITIVE = ("normal_positive_control", "explicit_zero_control", "zero_hop_control", "six_haircut_na_control",
++            "poison_and_product_scope_control", "real_no_protocol_control")
++ALL_CASES = POSITIVE + FOUR + ADDITIONAL
++
++
++def read(path):
++    return json.loads(Path(path).read_text(encoding="utf-8"))
++
++
++def write(path, value):
++    path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_text(json.dumps(value, sort_keys=True, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
++
++
++def selected_samples(case):
++    if case.startswith("real_"):
++        return ["atomic_simple_transfer"]
++    if case == "mixed_bad_then_good":
++        return ["controlled-v1/normal_mixing/00", "controlled-v1/normal_mixing/01"]
++    if case == "six_haircut_na_control":
++        return [f"controlled-v1/missing_information_and_boundary_controls/{i:02d}" for i in range(4, 10)]
++    if case == "zero_hop_control":
++        return ["controlled-v1/missing_information_and_boundary_controls/00"]
++    if case == "explicit_zero_control":
++        return ["controlled-v1/missing_information_and_boundary_controls/02"]
++    if case in {"partial_missing_target", "extra_target", "wrong_asset_target", "poison_and_product_scope_control"}:
++        return ["controlled-v1/split_merge_shared_targets/00"]
++    return ["controlled-v1/normal_mixing/00"]
++
++
++def mutate_return(case, doc, method, returned):
++    value = copy.deepcopy(returned)
++    if case in POSITIVE:
++        return value
++    if case.startswith("real_"):
++        case = case.removeprefix("real_")
++    if case == "mixed_bad_then_good":
++        if doc.get("scenario_id") != "controlled-v1/normal_mixing/00":
++            return value
++        case = "full_missing_output"
++    if case == "full_missing_output" and method == "FULL_INTERVAL":
++        value.update(addresses={}, events={}, joint_by_asset={}, positive_addresses=[])
++    elif case in {"haircut_missing_witness_bad_point", "haircut_bad_point_with_valid_witness"} and method == "HAIRCUT":
++        if case == "haircut_missing_witness_bad_point":
++            value["allocation_raw"] = None
++        for section in ("addresses", "joint_by_asset"):
++            for row in value[section].values():
++                row["point_raw"] = row["source_amount_raw"] = "999"
++    elif case == "balance_ablation_non_nested" and method == "BALANCE_INFORMATION_REMOVED":
++        for row in value["joint_by_asset"].values():
++            row["lower_raw"] = row["upper_raw"] = "2"
++    elif case == "partial_missing_target" and method == "FULL_INTERVAL":
++        value["addresses"].pop(sorted(value["addresses"])[0])
++    elif case == "extra_target" and method == "FULL_INTERVAL":
++        value["addresses"]["UNOBSERVED|ETH"] = copy.deepcopy(next(iter(value["addresses"].values())))
++    elif case == "wrong_asset_target" and method == "FULL_INTERVAL":
++        name = sorted(value["addresses"])[0]
++        row = value["addresses"].pop(name); row["asset"] = "TOK"
++        value["addresses"][name.rsplit("|", 1)[0] + "|TOK"] = row
++    elif case == "wrong_input_identity" and method == "HAIRCUT":
++        value["input_fact_hash"] = "0" * 64
++    elif case == "wrong_sample_identity" and method == "HAIRCUT":
++        value["query_or_sample_id"] = "WRONG_SAMPLE"
++        value["sample_id"] = "WRONG_SAMPLE"
++    elif case == "wrong_method_identity" and method == "HAIRCUT":
++        value["method_id"] = "FULL_INTERVAL"
++    elif case == "wrong_scope_identity" and method == "FULL_INTERVAL":
++        value["scope_hash"] = "0" * 64
++    elif case == "wrong_label_identity" and method == "FULL_INTERVAL":
++        value["label_version"] = "WRONG_LABEL_VERSION"
++    elif case == "missing_nontarget_allocation" and method == "HAIRCUT":
++        service = {eid for row in value["addresses"].values() for eid in row["events"]}
++        name = next(eid for eid in value["allocation_raw"] if eid not in service)
++        value["allocation_raw"].pop(name)
++    elif case == "event_point_inconsistent" and method == "HAIRCUT":
++        row = next(iter(value["events"].values()))
++        row["point_raw"] = row["source_amount_raw"] = "999"
++    elif case in {"invalid_nan", "invalid_bool", "invalid_null", "invalid_fraction"} and method == "FULL_INTERVAL":
++        next(iter(value["addresses"].values()))["upper_raw"] = {"invalid_nan": "NaN", "invalid_bool": True, "invalid_null": None, "invalid_fraction": "1/0"}[case]
++    elif case == "invalid_status" and method == "FULL_INTERVAL":
++        value["status"] = "LOOKS_SUCCESSFUL"
++    elif case == "invalid_na_on_supported_input" and method == "HAIRCUT":
++        value.update(status="NOT_APPLICABLE", applicability="NOT_APPLICABLE", failure_reason="UNSUPPORTED_BECAUSE_RESULT_UNAVAILABLE",
++                     addresses=None, events=None, joint_by_asset=None, allocation_raw=None, output_address_ids=None,
++                     output_event_ids=None, positive_addresses=None, boundary_completion=None, construction_audit=None)
++    elif case == "reversed_interval" and method == "FULL_INTERVAL":
++        next(iter(value["addresses"].values())).update(lower_raw="3", upper_raw="2")
++    elif case == "duplicate_group_member" and method == "HAIRCUT":
++        row = next(iter(value["addresses"].values())); row["events"].append(row["events"][0])
++    elif case == "positive_set_inconsistent" and method == "FULL_INTERVAL":
++        value["positive_addresses"] = []
++    elif case == "wrong_event_asset" and method == "HAIRCUT":
++        next(iter(value["events"].values()))["asset"] = "TOK"
++    elif case == "product_union_wrong_sum" and method == "NO_CROSS_TARGET_COUPLING":
++        next(iter(value["joint_by_asset"].values())).update(lower_raw="0", upper_raw="0")
++    elif case == "protocol_absent_changed" and method == "NO_PROTOCOL_CONTINUATION":
++        next(iter(value["joint_by_asset"].values())).update(lower_raw="0", upper_raw="0")
++    elif case == "balance_address_non_nested" and method == "BALANCE_INFORMATION_REMOVED":
++        next(iter(value["addresses"].values())).update(lower_raw="2", upper_raw="2")
++    return value
++
++
++def child_main(argv=None):
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--fault-child", action="store_true")
++    parser.add_argument("--tree", type=Path, required=True)
++    parser.add_argument("--output", type=Path, required=True)
++    parser.add_argument("--case", choices=ALL_CASES, required=True)
++    parser.add_argument("--kind", choices=("public", "min"), default="min")
++    parser.add_argument("--batch-selection", choices=("controlled",), help="Full extracted-package fault run; mutate only the case's first selected query, retain the rest")
++    args = parser.parse_args(argv)
++    sys.dont_write_bytecode = True
++    sys.path.insert(0, str(args.tree / "src"))
++    import run_stage1c as runner
++    desired = selected_samples(args.case)
++    if args.output.exists():
++        raise ValueError("Fault output must be fresh")
++    original_dispatch, original_verify = runner.dispatch, runner.verify_freeze
++    original_methods = runner.METHODS
++    verified = []
++
++    def deny(*a, **kw):
++        raise RuntimeError("STAGE1C_R1_FAULT_PROBE_NETWORK_DISABLED")
++
++    def checked_selection(tree, kind):
++        frozen, rows = original_verify(tree, kind)
++        chosen = [row for sid in desired for row in rows if row["sample_id"] == sid]
++        if len(chosen) != len(desired):
++            raise ValueError("Frozen requested fault-test selection is incomplete")
++        verified.append({"checked_full_input_count": len(rows), "selected": desired, "frozen_version": frozen["version"]})
++        return frozen, rows
++
++    def faulty_dispatch(doc, method):
++        if args.batch_selection and doc.get("scenario_id", doc.get("name")) != desired[0]:
++            return original_dispatch(doc, method)
++        return mutate_return(args.case, doc, method, original_dispatch(doc, method))
++
++    if args.case == "missing_whole_method":
++        runner.METHODS = tuple(m for m in original_methods if m != "POISON")
++    log, err = io.StringIO(), io.StringIO()
++    selection = args.batch_selection or (desired[0] if len(desired) == 1 else "ids:" + ",".join(desired))
++    command = ["run_stage1c.py", "--tree", str(args.tree), "--kind", args.kind, "--selection", selection, "--output", str(args.output)]
++    with patch.object(runner, "dispatch", side_effect=faulty_dispatch), patch.object(runner, "verify_freeze", side_effect=checked_selection), \
++         patch.object(sys, "argv", command), patch.object(socket, "create_connection", side_effect=deny), \
++         patch.object(socket.socket, "connect", side_effect=deny), patch.object(socket, "getaddrinfo", side_effect=deny), \
++         redirect_stdout(log), redirect_stderr(err):
++        status = runner.main()
++    runner.METHODS = original_methods
++    args.output.mkdir(parents=True, exist_ok=True)
++    (args.output / "probe_stdout.log").write_text(log.getvalue(), encoding="utf-8")
++    (args.output / "probe_stderr.log").write_text(err.getvalue(), encoding="utf-8")
++    idx = read(args.output / "RESULTS_INDEX.json") if (args.output / "RESULTS_INDEX.json").exists() else {}
++    queries = []
++    for row in idx.get("method_results_index", []):
++        folder = args.output / row["path"]
++        evaluation = read(folder / "EVALUATION.json") if (folder / "EVALUATION.json").exists() else {}
++        receipt_files = [p.name for p in folder.iterdir() if p.is_file() and ("ACCEPT" in p.name or "CONTRACT" in p.name or "VALID" in p.name)]
++        queries.append({"sample_id": row["sample_id"], "evaluation_passed": evaluation.get("passed"),
++                        "evaluation_errors": evaluation.get("errors"), "raw_method_output_saved": (folder / "METHOD_RESULTS.json").exists(),
++                        "acceptance_receipt_files": sorted(receipt_files), "method_statuses": row.get("method_statuses")})
++    receipt = {"case": args.case, "expected_cli_exit_code": 0 if args.case in POSITIVE else 1,
++               "cli_exit_code": status, "batch_passed": idx.get("passed"), "batch_status": idx.get("status"),
++               "sample_count": idx.get("sample_count"), "queries": queries, "freeze_verifier_calls": verified,
++               "source_or_inputs_modified_by_probe": False, "fault_injection_boundary": "METHOD_DISPATCH_RETURN_OR_MANDATORY_METHOD_DISPATCH_SET",
++               "selection_note": "Real original verifier executes all frozen source/input checks and returns the full row list unchanged; production CLI selects explicit frozen query IDs."}
++    write(args.output / "FAULT_CHILD_RECEIPT.json", receipt)
++    print(json.dumps(receipt, ensure_ascii=False))
++    return status
++
++
++class Stage1CR1FaultContractTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        import run_stage1c as runner
++        from stage1c_output_contract import accept_method_results
++        cls.runner = runner
++        cls.accept = staticmethod(accept_method_results)
++        cls.cache = {}
++
++    def prepared(self, sid):
++        if sid in self.cache:
++            return copy.deepcopy(self.cache[sid])
++        if sid.startswith("controlled-v1/"):
++            doc = read(BASE / "controlled_v1" / sid.removeprefix("controlled-v1/") / "observed.json")
++            result = {method: self.runner.normalized(self.runner.dispatch(copy.deepcopy(doc), method)) for method in self.runner.METHODS}
++        else:
++            path = BASE / "derived/context_pipeline" / sid / "model_input.json"
++            if not path.exists():
++                # Public package still exercises the real-context schema with
++                # a declared synthetic account/flow fixture. Full MIN fault
++                # subprocesses separately use the actual immutable real query.
++                from test_context_lp_r3 import example
++                doc = example(); doc["query_id"] = "SYNTHETIC_R1_CONTEXT_FORMAT_CONTROL"
++                result = {method: self.runner.normalized(self.runner.dispatch(copy.deepcopy(doc), method)) for method in self.runner.METHODS}
++            else:
++                doc = read(path)
++                # Saved real values are accepted only after full contract checking;
++                # no expensive new method batch is hidden inside unit discovery.
++                result = read(BASE / "results/real/samples" / sid / "METHOD_RESULTS.json")
++        identity = {"sample_id": sid, "query_id": doc.get("query_id", sid), "input_fact_hash": self.runner.digest(self.runner.canonical(doc)),
++                    "scope_hash": "UNIT_FROZEN_SCOPE", "label_version": "UNIT_FROZEN_LABELS",
++                    "method_versions": {m: "UNIT_METHOD_VERSION" for m in self.runner.METHODS}}
++        for method, value in result.items():
++            value.update(method_id=method, method_version="UNIT_METHOD_VERSION", sample_id=sid, query_id=identity["query_id"],
++                         input_fact_hash=identity["input_fact_hash"], scope_hash=identity["scope_hash"], label_version=identity["label_version"])
++        self.cache[sid] = (doc, result, identity)
++        return copy.deepcopy(self.cache[sid])
++
++    def check_fault(self, case):
++        sid = selected_samples(case)[0]
++        doc, good, identity = self.prepared(sid)
++        positive = self.accept(doc, copy.deepcopy(good), expected_identity=identity)
++        self.assertTrue(positive["passed"], positive.get("errors"))
++        bad = {m: mutate_return(case, doc, m, v) for m, v in good.items()}
++        if case == "missing_whole_method":
++            bad.pop("POISON")
++        receipt = self.accept(doc, bad, expected_identity=identity)
++        self.assertFalse(receipt["passed"], case)
++        self.assertTrue(receipt["errors"], case)
++        self.assertTrue(all(isinstance(e, dict) and e.get("code") for e in receipt["errors"]))
++
++    def test_normal_nonzero_control(self):
++        doc, results, identity = self.prepared(selected_samples("normal_positive_control")[0])
++        self.assertTrue(self.accept(doc, results, expected_identity=identity)["passed"])
++
++    def test_legal_empty_target_and_explicit_zero_rules(self):
++        doc, _, identity = self.prepared(selected_samples("normal_positive_control")[0])
++        doc["target_accounts"] = []; doc["objective_groups"] = {}
++        results = {m: self.runner.normalized(self.runner.dispatch(copy.deepcopy(doc), m)) for m in self.runner.METHODS}
++        identity["input_fact_hash"] = self.runner.digest(self.runner.canonical(doc))
++        for method, value in results.items():
++            value.update(method_id=method, method_version=identity["method_versions"][method],
++                         **{k: v for k, v in identity.items() if k != "method_versions"})
++        receipt = self.accept(doc, results, expected_identity=identity)
++        self.assertTrue(receipt["passed"], receipt.get("errors"))
++        self.assertEqual(results["FULL_INTERVAL"]["joint_by_asset"]["ETH"]["lower_raw"], "0")
++        self.assertEqual(results["BOUNDED_REACHABILITY"]["joint_by_asset"], {})
++
++    def test_six_prespecified_haircut_not_applicable_remain_valid(self):
++        for sid in selected_samples("six_haircut_na_control"):
++            with self.subTest(sample=sid):
++                doc, results, identity = self.prepared(sid)
++                receipt = self.accept(doc, results, expected_identity=identity)
++                self.assertTrue(receipt["passed"], receipt.get("errors"))
++                self.assertEqual(results["HAIRCUT"]["status"], "NOT_APPLICABLE")
++
++    def test_scope_controls_poison_and_target_product_not_source_capped(self):
++        from fractions import Fraction
++        doc, results, identity = self.prepared(selected_samples("poison_and_product_scope_control")[0])
++        self.assertTrue(self.accept(doc, results, expected_identity=identity)["passed"])
++        full = Fraction(results["FULL_INTERVAL"]["joint_by_asset"]["ETH"]["upper_raw"])
++        self.assertGreater(Fraction(results["POISON"]["joint_by_asset"]["ETH"]["nominal_raw"]), full)
++        self.assertGreater(Fraction(results["NO_CROSS_TARGET_COUPLING"]["joint_by_asset"]["ETH"]["upper_raw"]), full)
++
++    def test_zero_hop_and_explicit_zero_normal_controls(self):
++        for case in ("zero_hop_control", "explicit_zero_control"):
++            doc, results, identity = self.prepared(selected_samples(case)[0])
++            self.assertTrue(self.accept(doc, results, expected_identity=identity)["passed"])
++
++    def test_feasible_haircut_can_differ_from_hidden_assignment(self):
++        from fractions import Fraction
++        sid = selected_samples("normal_positive_control")[0]
++        doc, results, identity = self.prepared(sid)
++        hidden = read(BASE / "controlled_v1" / sid.removeprefix("controlled-v1/") / "hidden.json")
++        self.assertTrue(self.accept(doc, results, expected_identity=identity)["passed"])
++        group, amount = next(iter(results["HAIRCUT"]["addresses"].items()))
++        actual_hidden = sum(Fraction(hidden["event_source_amounts_raw"][e]) for e in doc["objective_groups"][group])
++        self.assertNotEqual(Fraction(amount["point_raw"]), actual_hidden)
++
++
++def _fault_test(case):
++    def test(self):
++        self.check_fault(case)
++    return test
++
++
++for _case in FOUR + tuple(c for c in ADDITIONAL if c != "mixed_bad_then_good"):
++    setattr(Stage1CR1FaultContractTests, "test_reject_" + _case, _fault_test(_case))
++
++
++if __name__ == "__main__":
++    if "--fault-child" in sys.argv:
++        raise SystemExit(child_main())
++    unittest.main()
+--- accepted-stage1c/tests/test_stage1c_r1_pipeline.py
++++ stage1c-r1/tests/test_stage1c_r1_pipeline.py
+@@ -0,0 +1,160 @@
++"""Saved-result, report, CLI and immutable-revision integration boundaries."""
++import copy,io,json,sys,tempfile,unittest
++from contextlib import redirect_stdout
++from pathlib import Path
++from unittest.mock import patch
++BASE=Path(__file__).resolve().parents[1]
++sys.path.insert(0,str(BASE/'src'))
++import run_stage1c as runner
++import stage1c_result_gate as gate
++import stage1c_reports as reports
++import stage1c_revision as revision
++from test_stage1c_runner import observed,hidden
++
++class PipelineTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.document=observed()
++        cls.returns={m:runner.normalized(runner.dispatch(copy.deepcopy(cls.document),m)) for m in runner.METHODS}
++
++    def setUp(self):
++        scratch=BASE/'test_scratch';scratch.mkdir(exist_ok=True)
++        self.temp=tempfile.TemporaryDirectory(prefix='r1_pipeline_',dir=scratch)
++        self.addCleanup(self.temp.cleanup)
++        self.tree=Path(self.temp.name);self.out=self.tree/'batch'
++        runner.write(self.tree/'observed.json',self.document)
++        runner.write(self.tree/'hidden.json',hidden())
++        runner.write(self.tree/'EXPERIMENT_FREEZE.json',{'unit':'integration'})
++        self.frozen={'method_versions':{m:'unit-v1' for m in runner.METHODS}}
++        self.row={'sample_id':'runner-unit','query_id':'runner-unit','kind':'controlled','family':'normal_mixing',
++            'incident_id':'SYNTHETIC','source_layer':'SYNTHETIC','zero_hop':False,'observed_path':'observed.json',
++            'hidden_path':'hidden.json','label_version':'unit-labels','scope_hash':'unit-scope',
++            'input_fact_hash':runner.file_hash(self.tree/'observed.json')}
++        self.patch=patch.object(runner,'verify_freeze',return_value=(self.frozen,[self.row]))
++        self.patch.start();self.addCleanup(self.patch.stop)
++
++    def run_case(self,change=None):
++        # Real runner repeats returns and evaluates with the real contract/Oracle;
++        # only algorithm recomputation is cached to keep these boundary tests local.
++        def dispatch(doc,method):
++            result=copy.deepcopy(self.returns[method])
++            if change:change(method,result)
++            return result
++        with patch.object(runner,'dispatch',side_effect=dispatch),redirect_stdout(io.StringIO()):
++            code=runner.run(self.tree,self.out,'public','all')
++        return code
++
++    def test_saved_success_is_recomputed_and_then_tampering_fails(self):
++        self.assertTrue(self.run_case()['passed'])
++        self.assertTrue(gate.validate_saved_batch(self.tree,self.out)['passed'])
++        path=self.out/'samples/runner-unit/METHOD_RESULTS.json'
++        data=runner.read(path);data['HAIRCUT']['joint_by_asset']['ETH']['point_raw']='999'
++        runner.write(path,data)
++        receipt=gate.validate_saved_batch(self.tree,self.out)
++        self.assertFalse(receipt['passed'])
++        self.assertIn('RECOMPUTED_OUTPUT_CONTRACT_FAILED',{e['code'] for e in receipt['queries'][0]['errors']})
++
++    def test_saved_scientific_comparison_order_is_not_a_numeric_difference(self):
++        self.run_case();actual=runner.evaluate_query
++        def permuted(*args,**kwargs):
++            contract,evaluation,ablations,timing=actual(*args,**kwargs)
++            evaluation['comparisons'].reverse()
++            return contract,evaluation,ablations,timing
++        with patch.object(runner,'evaluate_query',side_effect=permuted):
++            self.assertTrue(gate.validate_saved_batch(self.tree,self.out)['passed'])
++        def changed(*args,**kwargs):
++            contract,evaluation,ablations,timing=permuted(*args,**kwargs)
++            evaluation['comparisons'][0]['width_raw']='999'
++            return contract,evaluation,ablations,timing
++        with patch.object(runner,'evaluate_query',side_effect=changed):
++            self.assertFalse(gate.validate_saved_batch(self.tree,self.out)['passed'])
++
++    def test_forged_success_flags_do_not_certify_missing_output(self):
++        self.run_case(lambda m,v:v.update(addresses={},events={},joint_by_asset={}) if m=='FULL_INTERVAL' else None)
++        index=runner.read(self.out/'RESULTS_INDEX.json');index.update(passed=True,status='COMPLETED')
++        for row in index['method_results_index']:row.update(passed=True,contract_passed=True,evaluation_passed=True)
++        runner.write(self.out/'RESULTS_INDEX.json',index)
++        self.assertFalse(gate.validate_saved_batch(self.tree,self.out)['passed'])
++
++    def test_empty_batch_cannot_pass_vacuously(self):
++        self.run_case();index=runner.read(self.out/'RESULTS_INDEX.json')
++        index.update(method_results_index=[],sample_count=0,controlled_count=0)
++        runner.write(self.out/'RESULTS_INDEX.json',index)
++        receipt=gate.validate_saved_batch(self.tree,self.out)
++        self.assertFalse(receipt['passed'])
++        self.assertIn('FROZEN_QUERY_DOMAIN_MISMATCH',{e['code'] for e in receipt['errors']})
++
++    def test_index_status_must_match_verified_method_status(self):
++        self.run_case();index=runner.read(self.out/'RESULTS_INDEX.json')
++        index['method_results_index'][0]['method_statuses']['HAIRCUT']='ERROR'
++        runner.write(self.out/'RESULTS_INDEX.json',index)
++        self.assertFalse(gate.validate_saved_batch(self.tree,self.out)['passed'])
++
++    def test_report_failure_has_no_certified_metrics_and_cli_exits_one(self):
++        self.run_case(lambda m,v:v.update(allocation_raw=None) if m=='HAIRCUT' else None)
++        dest=self.tree/'reports'
++        with patch('sys.argv',['reports','--tree',str(self.tree),'--results',str(self.out),'--output',str(dest)]),redirect_stdout(io.StringIO()):
++            status=reports.main()
++        self.assertEqual(status,1)
++        stats=runner.read(dest/'STATISTICS.json')
++        self.assertFalse(stats['certified_statistics_generated'])
++        self.assertIsNone(stats['controlled']['query_count'])
++        self.assertFalse(runner.read(dest/'REPORT_ACCEPTANCE.json')['passed'])
++        self.assertEqual((self.out/'PAIRED_RESULTS.csv').read_text().strip(),'status')
++        self.assertTrue((self.out/'samples/runner-unit/RAW_METHOD_RETURNS.json').is_file())
++
++    def test_native_identity_failure_propagates_to_method_and_query_status(self):
++        summary=self.run_case(lambda m,v:v.update(input_fact_hash='wrong-native-hash') if m=='HAIRCUT' else None)
++        self.assertFalse(summary['passed'])
++        receipt=runner.read(self.out/'samples/runner-unit/OUTPUT_CONTRACT.json')
++        self.assertEqual(receipt['status'],'FAIL')
++        self.assertFalse(receipt['method_checks']['HAIRCUT']['passed'])
++
++    def test_suspect_report_cannot_overwrite_a_prior_report(self):
++        dest=self.tree/'reports';dest.mkdir();(dest/'prior.txt').write_text('prior')
++        with self.assertRaisesRegex(ValueError,'fresh'):
++            reports.generate_reports(self.tree,self.out,dest)
++        self.assertEqual((dest/'prior.txt').read_text(),'prior')
++
++    def test_explicit_selection_is_stable_and_rejects_unknown_or_duplicates(self):
++        rows=[{'sample_id':'a','kind':'controlled'},{'sample_id':'b','kind':'real'}]
++        self.assertEqual([r['sample_id'] for r in runner.select_rows(rows,'ids:b,a')],['b','a'])
++        for value in ('ids:a,a','ids:unknown','ids:'):
++            with self.assertRaises(ValueError):runner.select_rows(rows,value)
++
++    def test_scientific_freeze_is_never_recreated(self):
++        before=(self.tree/'EXPERIMENT_FREEZE.json').read_bytes()
++        with self.assertRaisesRegex(ValueError,'immutable'):runner.freeze(self.tree,'new')
++        self.assertEqual((self.tree/'EXPERIMENT_FREEZE.json').read_bytes(),before)
++
++    def test_inherited_test_or_algorithm_change_is_rejected(self):
++        (self.tree/'src').mkdir();(self.tree/'tests').mkdir()
++        path=self.tree/'src/stage1c_baselines.py';path.write_text('accepted')
++        parent={'source_inventory':[{'path':'src/stage1c_baselines.py','sha256':runner.file_hash(path)}]}
++        with patch.object(revision,'PARENT_FREEZE_SHA256',runner.file_hash(self.tree/'EXPERIMENT_FREEZE.json')):
++            self.assertEqual(revision._parent_unchanged(self.tree,parent),[])
++            path.write_text('changed algorithm')
++            with self.assertRaisesRegex(ValueError,'Unapproved'):revision._parent_unchanged(self.tree,parent)
++
++    def test_effective_revision_policy_keeps_contract_and_excludes_account_budget(self):
++        (self.tree/'configs').mkdir()
++        private={k:{} for k in revision.EXECUTION_POLICY_KEYS}
++        private.update(authorization_id='STAGE1C_R1_OUTPUT_CONTRACT_AND_INTEGRATION_V1',budget={'private_billing_example':'do not publish'})
++        runner.write(self.tree/'configs/STAGE1C_R1_POLICY.json',private)
++        parent={'warmups':1,'timed_repetitions':5,'method_versions':self.frozen['method_versions'],'source_inventory':[]}
++        for name,key in [('EXPERIMENT_INPUTS.json','inputs_manifest_sha256'),('configs/STAGE1C_EFFECTIVE_POLICY.json','effective_policy_sha256'),('METHOD_SPEC_EFFECTIVE.md','method_spec_sha256'),('controlled_v1/MANIFEST.json','controlled_manifest_sha256')]:
++            runner.write(self.tree/name,{'immutable':name});parent[key]=runner.file_hash(self.tree/name)
++        runner.write(self.tree/'EXPERIMENT_FREEZE.json',parent)
++        with patch.object(revision,'PARENT_FREEZE_SHA256',runner.file_hash(self.tree/'EXPERIMENT_FREEZE.json')):
++            frozen=revision.freeze_revision(self.tree,'stage1c-r1-unit')
++            self.assertNotIn('budget',runner.read(self.tree/'configs/STAGE1C_R1_EXECUTION_POLICY.json'))
++            self.assertEqual(runner.read(self.tree/'configs/STAGE1C_R1_POLICY.json'),private)
++            self.assertTrue(revision.verify_revision(self.tree,parent))
++            private['budget']['private_billing_example']='changed'
++            runner.write(self.tree/'configs/STAGE1C_R1_POLICY.json',private)
++            with self.assertRaisesRegex(ValueError,'Private authorization'):revision.verify_revision(self.tree,parent)
++            (self.tree/'configs/STAGE1C_R1_POLICY.json').unlink()
++            self.assertTrue(revision.verify_revision(self.tree,parent))
++            with self.assertRaisesRegex(ValueError,'safe'):revision.freeze_revision(self.tree,'stage1c-r1-../../escape')
++
++if __name__=='__main__':unittest.main()

@@ -1,0 +1,34 @@
+{
+  "address_metrics": {},
+  "comparisons": [],
+  "contract_passed": false,
+  "errors": [
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "haircut_full_assignment_audit": null,
+  "passed": false,
+  "status": "NOT_CERTIFIED_CONTRACT_FAILED"
+}

@@ -1,0 +1,2597 @@
+{
+  "BALANCE_INFORMATION_REMOVED": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "before_seed": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "entry_first": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "entry_first"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        },
+        "entry_second": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "other_target": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "0",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "0",
+                "to_return_account": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        }
+      },
+      "model_scope": "INFORMATION_RELAXED",
+      "modifications": {
+        "nesting": {
+          "nested": true,
+          "proof": "Identical variables, event ports, source injection, ordering and equalities; only physical actual-balance upper bounds are removed.",
+          "removed_information": "INITIAL_AND_ALIGNED_AND_REPLAYED_ACTUAL_BALANCE_CAPS"
+        },
+        "raw_graph_unchanged": true,
+        "removed_bound_variables": [
+          "z:T|ETH:before_seed",
+          "z:T|ETH:entry_first",
+          "h:A|ETH:to_return_account",
+          "z:A|ETH:to_return_account",
+          "h:B|ETH:timed_return",
+          "z:B|ETH:timed_return",
+          "h:A|ETH:entry_second",
+          "z:A|ETH:entry_second",
+          "h:B|ETH:other_target",
+          "z:B|ETH:other_target",
+          "z:U|ETH:other_target"
+        ]
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 19,
+        "base_variables": 26,
+        "endpoint_optimizations": 12,
+        "entry_intervals": 4,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.006074300006730482,
+        "solve_and_certification_seconds": 0.11684020000393502
+      }
+    }
+  },
+  "BOUNDED_REACHABILITY": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "events": [
+            "other_target"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "before_seed": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": false,
+          "witness": null
+        },
+        "entry_first": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "entry_first"
+          ]
+        },
+        "entry_second": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "entry_second"
+          ]
+        },
+        "other_target": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "U|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account",
+            "other_target"
+          ]
+        },
+        "seed": {
+          "actual_raw": "4",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "timed_return": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account",
+            "timed_return"
+          ]
+        },
+        "to_return_account": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH",
+            "U|ETH"
+          ],
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "output_event_ids": [
+        "entry_first",
+        "entry_second",
+        "other_target"
+      ],
+      "output_kind": "ADDRESS_EVENT_SET_NO_AMOUNT",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
+      "status": "OK"
+    }
+  },
+  "FULL_INTERVAL": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "3.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "3/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "3/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "3",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "3",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "before_seed": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "entry_first": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "entry_first"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        },
+        "entry_second": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "2.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "1/2",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "1/2",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "2",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "2",
+          "objective_events": [
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "other_target": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "4",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "raw_graph_unchanged": true
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 19,
+        "base_variables": 26,
+        "endpoint_optimizations": 12,
+        "entry_intervals": 4,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.004219900001771748,
+        "solve_and_certification_seconds": 0.09699669999827165
+      }
+    }
+  },
+  "HAIRCUT": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "nominal_raw": null,
+          "point_raw": "25/7",
+          "source_amount_raw": "25/7",
+          "supported": true
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "events": [
+            "other_target"
+          ],
+          "nominal_raw": null,
+          "point_raw": "3/7",
+          "source_amount_raw": "3/7",
+          "supported": true
+        }
+      },
+      "allocation_raw": {
+        "before_seed": "0",
+        "entry_first": "1/2",
+        "entry_second": "43/14",
+        "other_target": "3/7",
+        "seed": "4",
+        "timed_return": "18/7",
+        "to_return_account": "3"
+      },
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": {
+        "B0_out_raw": "0",
+        "S0_out_raw": "0",
+        "adopted": false,
+        "asset": "ETH",
+        "convention": "H_BMIN_BOUNDARY_V1",
+        "is_observed_fact": false,
+        "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+        "sequence": []
+      },
+      "construction_audit": {
+        "allocation_construction": "EXACT_FRACTION_PROPORTIONAL_REPLAY",
+        "debit_trace": [
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "5",
+            "actual_debit_raw": "1",
+            "event_id": "before_seed",
+            "ratio": "0",
+            "source_before_raw": "0",
+            "source_debit_raw": "0"
+          },
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "8",
+            "actual_debit_raw": "1",
+            "event_id": "entry_first",
+            "ratio": "1/2",
+            "source_before_raw": "4",
+            "source_debit_raw": "1/2"
+          },
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "7",
+            "actual_debit_raw": "6",
+            "event_id": "to_return_account",
+            "ratio": "1/2",
+            "source_before_raw": "7/2",
+            "source_debit_raw": "3"
+          },
+          {
+            "account_asset": "B|ETH",
+            "actual_before_raw": "7",
+            "actual_debit_raw": "6",
+            "event_id": "timed_return",
+            "ratio": "3/7",
+            "source_before_raw": "3",
+            "source_debit_raw": "18/7"
+          },
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "7",
+            "actual_debit_raw": "7",
+            "event_id": "entry_second",
+            "ratio": "43/98",
+            "source_before_raw": "43/14",
+            "source_debit_raw": "43/14"
+          },
+          {
+            "account_asset": "B|ETH",
+            "actual_before_raw": "1",
+            "actual_debit_raw": "1",
+            "event_id": "other_target",
+            "ratio": "3/7",
+            "source_before_raw": "3/7",
+            "source_debit_raw": "3/7"
+          }
+        ],
+        "final_actual_balance_raw": {
+          "A|ETH": "0",
+          "B|ETH": "0",
+          "T|ETH": "9",
+          "U|ETH": "1"
+        },
+        "final_source_balance_raw": {
+          "A|ETH": "0",
+          "B|ETH": "0",
+          "T|ETH": "25/7",
+          "U|ETH": "3/7"
+        },
+        "per_asset": {
+          "ETH": {
+            "exact_conserved": true,
+            "fees_and_boundary_sinks_raw": "0",
+            "net_conversion_raw": "0",
+            "retained_in_accounts_terminals_and_outside_raw": "4",
+            "seed_raw": "4"
+          }
+        }
+      },
+      "events": {
+        "before_seed": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "0",
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "0",
+          "supported": false,
+          "witness": null
+        },
+        "entry_first": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "1/2",
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "1/2",
+          "supported": true,
+          "witness": null
+        },
+        "entry_second": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "43/14",
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "43/14",
+          "supported": true,
+          "witness": null
+        },
+        "other_target": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "3/7",
+          "recipient": "U|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "3/7",
+          "supported": true,
+          "witness": null
+        },
+        "seed": {
+          "actual_raw": "4",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "4",
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": "4",
+          "supported": true,
+          "witness": null
+        },
+        "timed_return": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "18/7",
+          "recipient": "A|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "18/7",
+          "supported": true,
+          "witness": null
+        },
+        "to_return_account": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "3",
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "3",
+          "supported": true,
+          "witness": null
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": true,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH",
+            "U|ETH"
+          ],
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "nominal_raw": null,
+          "point_raw": "4",
+          "source_amount_raw": "4"
+        }
+      },
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "output_event_ids": [
+        "entry_first",
+        "entry_second",
+        "other_target"
+      ],
+      "output_kind": "PROPORTIONAL_FEASIBLE_POINT",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
+      "status": "OK"
+    }
+  },
+  "NO_CROSS_TARGET_COUPLING": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "3.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "3/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "3/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "3",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "3",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "before_seed": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "entry_first": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "entry_first"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        },
+        "entry_second": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "2.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "1/2",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "1/2",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "2",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "2",
+          "objective_events": [
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "other_target": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "copy_count": 2,
+          "derivation": "Exact sum of extrema in disjoint variables and constraints",
+          "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+          "lower_raw": "3",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "5"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "definition": "F_ind = product_a F^(a); omit x_e^(a)=x_e^(b) and corresponding state identity for a != b; each copy retains all targets as absorbing terminals.",
+        "global_common_source_budget": false,
+        "product_copies": [
+          {
+            "address_asset": "T|ETH",
+            "copy_id": "F^0",
+            "cross_copy_identity_equalities_present": false,
+            "equalities": 19,
+            "physical_identity_namespace": "target_copy/0/",
+            "variables": 26
+          },
+          {
+            "address_asset": "U|ETH",
+            "copy_id": "F^1",
+            "cross_copy_identity_equalities_present": false,
+            "equalities": 19,
+            "physical_identity_namespace": "target_copy/1/",
+            "variables": 26
+          }
+        ],
+        "raw_graph_unchanged": true,
+        "unbound_all_state_variables_count": 26,
+        "unbound_identical_physical_variables": [
+          "before_seed",
+          "seed",
+          "entry_first",
+          "to_return_account",
+          "timed_return",
+          "entry_second",
+          "other_target"
+        ],
+        "within_each_copy_common_source_budget": true
+      },
+      "output_kind": "product_of_target_specific_copies",
+      "positive_addresses": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 19,
+        "base_variables": 26,
+        "endpoint_optimizations": 10,
+        "entry_intervals": 4,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0030436999950325117,
+        "solve_and_certification_seconds": 0.09139269999286626
+      }
+    }
+  },
+  "NO_PROTOCOL_CONTINUATION": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "3.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "3/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "3/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "3",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "3",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "before_seed": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "before_seed"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "entry_first": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "entry_first"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        },
+        "entry_second": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "2.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "1/2",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "1/2",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "2",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "0",
+                "entry_second": "4",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "4",
+                "to_return_account": "4"
+              }
+            }
+          },
+          "lower_raw": "2",
+          "objective_events": [
+            "entry_second"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        },
+        "other_target": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "1.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1/4",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1/4",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "1",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "2",
+                "other_target": "1",
+                "seed": "4",
+                "timed_return": "2",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "1"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            },
+            "upper": {
+              "approximate_raw": "4.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "4",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "before_seed": "0",
+                "entry_first": "1",
+                "entry_second": "3",
+                "other_target": "0",
+                "seed": "4",
+                "timed_return": "3",
+                "to_return_account": "3"
+              }
+            }
+          },
+          "lower_raw": "4",
+          "objective_events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "4"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "boundary_source_variables": [],
+        "connected_protocol_count": 0,
+        "feature_status": "FEATURE_ABSENT_SAME_INPUT",
+        "gross_and_refund_conservation_preserved": true,
+        "physical_outputs_retained_as_source_zero": [],
+        "raw_graph_unchanged": true,
+        "unlinked_source_ratio_equalities": []
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 19,
+        "base_variables": 26,
+        "endpoint_optimizations": 12,
+        "entry_intervals": 4,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.00325209999573417,
+        "solve_and_certification_seconds": 0.11131759999261703
+      }
+    }
+  },
+  "POISON": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second"
+          ],
+          "nominal_raw": "8",
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        },
+        "U|ETH": {
+          "asset": "ETH",
+          "events": [
+            "other_target"
+          ],
+          "nominal_raw": "1",
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "before_seed": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": "0",
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": false,
+          "witness": null
+        },
+        "entry_first": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": "1",
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "entry_first"
+          ]
+        },
+        "entry_second": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "entry_second"
+          ]
+        },
+        "other_target": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": "1",
+          "point_raw": null,
+          "recipient": "U|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account",
+            "other_target"
+          ]
+        },
+        "seed": {
+          "actual_raw": "4",
+          "asset": "ETH",
+          "nominal_raw": "4",
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "timed_return": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": "6",
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account",
+            "timed_return"
+          ]
+        },
+        "to_return_account": {
+          "actual_raw": "6",
+          "asset": "ETH",
+          "nominal_raw": "6",
+          "point_raw": null,
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "to_return_account"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH",
+            "U|ETH"
+          ],
+          "events": [
+            "before_seed",
+            "entry_first",
+            "entry_second",
+            "other_target"
+          ],
+          "nominal_raw": "9",
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|ETH",
+        "U|ETH"
+      ],
+      "output_event_ids": [
+        "entry_first",
+        "entry_second",
+        "other_target"
+      ],
+      "output_kind": "POISON_NOMINAL_RAW",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
+      "status": "OK"
+    }
+  }
+}

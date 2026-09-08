@@ -1,0 +1,373 @@
+{
+  "bindings": {
+    "contract_module_sha256": "651f544ad251dc90c66ddb3efc8a7f10dce181fba44d4309b715f35dc3a8f655",
+    "expected_identity_sha256": "67a0b4479bbc3a8e5b58074b35514e0937b2b8620a9b82701bfa7c40f8542fcd",
+    "input_document_sha256": "4f9b24e1446b52efeea8d52cff40ff320c5c484f2e7fcaea7b79c075be432264",
+    "method_results_sha256": "a9336011c1c8bbdb4b37a1d6c5eaade8ca0d2cdb13cbeec2a641d25356467478"
+  },
+  "contract_version": "stage1c-r1-output-acceptance-v1",
+  "counts": {
+    "post_generation_unique_allocation_audits": 13,
+    "received_methods": 7,
+    "required_addresses": 2,
+    "required_baseline_ports": 7,
+    "required_interval_events": 2,
+    "required_methods": 7
+  },
+  "errors": [],
+  "expected_domains": {
+    "addresses": {
+      "T|ETH": [
+        "b_t"
+      ],
+      "U|ETH": [
+        "a_u"
+      ]
+    },
+    "allocation_ports": [
+      "a_b",
+      "a_u",
+      "b_t",
+      "background_in",
+      "gas_failed",
+      "gas_success",
+      "seed"
+    ],
+    "baseline_events": [
+      "a_b",
+      "a_u",
+      "b_t",
+      "background_in",
+      "gas_failed",
+      "gas_success",
+      "seed"
+    ],
+    "baseline_joint_assets": [
+      "ETH"
+    ],
+    "boundary_completion_expected": {
+      "B0_out_raw": "0",
+      "S0_out_raw": "0",
+      "adopted": false,
+      "asset": "ETH",
+      "convention": "H_BMIN_BOUNDARY_V1",
+      "is_observed_fact": false,
+      "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+      "sequence": []
+    },
+    "connected_protocol_ids": [],
+    "context_format": false,
+    "derivation": "Frozen observations and unchanged method-specific physical port semantics only",
+    "empty_target_domain": false,
+    "errors": [],
+    "haircut_not_applicable_basis": null,
+    "interval_events": [
+      "a_u",
+      "b_t"
+    ],
+    "interval_joint_assets": [
+      "ETH"
+    ],
+    "passed": true,
+    "port_facts": {
+      "a_b": {
+        "amount_raw": "5",
+        "asset": "ETH",
+        "operation_ordinal": 5,
+        "recipient": "B|ETH",
+        "role": "TRANSFER",
+        "sender": "A|ETH"
+      },
+      "a_u": {
+        "amount_raw": "5",
+        "asset": "ETH",
+        "operation_ordinal": 7,
+        "recipient": "U|ETH",
+        "role": "TRANSFER",
+        "sender": "A|ETH"
+      },
+      "b_t": {
+        "amount_raw": "5",
+        "asset": "ETH",
+        "operation_ordinal": 6,
+        "recipient": "T|ETH",
+        "role": "TRANSFER",
+        "sender": "B|ETH"
+      },
+      "background_in": {
+        "amount_raw": "1",
+        "asset": "ETH",
+        "operation_ordinal": 2,
+        "recipient": "A|ETH",
+        "role": "NORMAL_INCOMING",
+        "sender": null
+      },
+      "gas_failed": {
+        "amount_raw": "1",
+        "asset": "ETH",
+        "operation_ordinal": 3,
+        "recipient": null,
+        "role": "GAS",
+        "sender": "A|ETH"
+      },
+      "gas_success": {
+        "amount_raw": "1",
+        "asset": "ETH",
+        "operation_ordinal": 1,
+        "recipient": null,
+        "role": "GAS",
+        "sender": "A|ETH"
+      },
+      "seed": {
+        "amount_raw": "8",
+        "asset": "ETH",
+        "operation_ordinal": 0,
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "sender": null
+      }
+    },
+    "service_entries_by_asset": {
+      "ETH": [
+        "a_u",
+        "b_t"
+      ]
+    },
+    "source_potential_assets": [
+      "ETH"
+    ],
+    "temporal_marking_expected": {
+      "a_b": true,
+      "a_u": true,
+      "b_t": true,
+      "background_in": false,
+      "gas_failed": true,
+      "gas_success": true,
+      "seed": true
+    }
+  },
+  "hard_invariants": [
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "FULL_INTERVAL",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "TARGET_COPY_STRUCTURE",
+      "detail": "One full-constraint independent namespace per address-asset; internal budget retained; cross-copy shared identity removed",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.product_copies"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.connected_protocol_count"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.feature_status"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.gross_and_refund_conservation_preserved"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "BALANCE_STRUCTURAL_NESTING",
+      "detail": "Independent unchanged-model reconstruction confirms same variables/equalities and relaxed balance caps",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.nesting"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "addresses.U|ETH"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "addresses.U|ETH"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "addresses.U|ETH"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "events.a_u"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "events.a_u"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "events.a_u"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "events.b_t"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "events.b_t"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "events.b_t"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "TARGET_COPY_JOINT_CONTAINS_FULL",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "TARGET_COPY_EXACT_DECOMPOSITION",
+      "detail": "Independent joint is the exact sum of target-copy extrema, not a one-seed feasible total",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "hidden_or_reference_read": false,
+  "method_checks": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "BOUNDED_REACHABILITY": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "FULL_INTERVAL": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "HAIRCUT": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "full_allocation_audit": {
+        "bad_bounds": [],
+        "bad_equalities": [],
+        "exact_feasible": true
+      },
+      "passed": true
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "POISON": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    }
+  },
+  "no_solver_or_oracle_called": true,
+  "passed": true,
+  "schema_version": "stage1c-r1-output-acceptance-v1",
+  "status": "PASS"
+}

@@ -1,0 +1,9 @@
+# C1-V01 repair
+
+Expected method-specific output domains are derived from frozen physical ports and independently checked against declared target groups. Interval methods require every target address/entry and asset union, including explicit zero. Baselines retain their full visited-port domain. The genuine empty-target interval source-asset[0,0] and baseline empty joint forms remain valid. Only input-justified Haircut unknown-balance NA is accepted.
+
+Successful Haircut must supply every allocation port. Exact rational checks bind event points and aliases to allocations, address points to frozen service-entry sums and per-asset joint points to their unique union. A full allocation audit checks timing, capacity, balances, source, fees and boundary constraints after generation. It never clips points, substitutes hidden truth or uses FULL endpoints to generate a baseline.
+
+Applicable balance nesting, independent-copy decomposition/singleton equality, protocol boundary preservation and absent-feature equality are hard requirements. Query receipts bind method outputs, inputs, parent and revision freeze, contract and scientific artifacts. Offline reports and package validation independently recompute this path, so matching two malformed projections or forged passed flags cannot certify results. Native method identity failures are preserved before the runner adds its envelope, and update method/contract/query failure states.
+
+The four original CLI counterexamples are preserved before repair, then rejected after repair.32 negative and6 positive CLI/report/saved-gate controls plus the complete public validator mixed batch exercise the chain. Full file/domain and exception details are retained in fault_evidence. See OUTPUT_CONTRACT_SPEC.md for exact type and domain rules and05_FAULT_PROPAGATION_RESULTS.json for executed outcomes.

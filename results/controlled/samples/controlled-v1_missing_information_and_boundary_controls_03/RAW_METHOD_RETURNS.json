@@ -1,0 +1,1211 @@
+{
+  "BALANCE_INFORMATION_REMOVED": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "pre_seed_service": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "model_scope": "INFORMATION_RELAXED",
+      "modifications": {
+        "nesting": {
+          "nested": true,
+          "proof": "Identical variables, event ports, source injection, ordering and equalities; only physical actual-balance upper bounds are removed.",
+          "removed_information": "INITIAL_AND_ALIGNED_AND_REPLAYED_ACTUAL_BALANCE_CAPS"
+        },
+        "raw_graph_unchanged": true,
+        "removed_bound_variables": [
+          "h:A|ETH:pre_seed_service",
+          "z:A|ETH:pre_seed_service",
+          "z:T|ETH:pre_seed_service",
+          "h:A|ETH:no_service_path",
+          "z:A|ETH:no_service_path",
+          "h:B|ETH:terminal_boundary",
+          "z:B|ETH:terminal_boundary"
+        ]
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 1,
+        "base_equalities": 9,
+        "base_variables": 13,
+        "endpoint_optimizations": 2,
+        "entry_intervals": 1,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.002096800002618693,
+        "solve_and_certification_seconds": 0.014360700006363913
+      }
+    }
+  },
+  "BOUNDED_REACHABILITY": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": false
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "no_service_path": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "no_service_path"
+          ]
+        },
+        "pre_seed_service": {
+          "actual_raw": "2",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": false,
+          "witness": null
+        },
+        "seed": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "terminal_boundary": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": null,
+          "role": "BOUNDARY_OUTFLOW",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "no_service_path",
+            "terminal_boundary"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "9c1d065d0037d567eb972a40c8c30bc7c2c918a78c76fa3bdc480e91bf2f263d",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH"
+          ],
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [],
+      "output_event_ids": [],
+      "output_kind": "ADDRESS_EVENT_SET_NO_AMOUNT",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/03",
+      "status": "OK"
+    }
+  },
+  "FULL_INTERVAL": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "pre_seed_service": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "raw_graph_unchanged": true
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 1,
+        "base_equalities": 9,
+        "base_variables": 13,
+        "endpoint_optimizations": 2,
+        "entry_intervals": 1,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.002824199997121468,
+        "solve_and_certification_seconds": 0.013082300007226877
+      }
+    }
+  },
+  "HAIRCUT": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": null,
+          "point_raw": "0",
+          "source_amount_raw": "0",
+          "supported": false
+        }
+      },
+      "allocation_raw": {
+        "no_service_path": "7",
+        "pre_seed_service": "0",
+        "seed": "7",
+        "terminal_boundary": "7"
+      },
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": {
+        "B0_out_raw": "0",
+        "S0_out_raw": "0",
+        "adopted": false,
+        "asset": "ETH",
+        "convention": "H_BMIN_BOUNDARY_V1",
+        "is_observed_fact": false,
+        "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+        "sequence": []
+      },
+      "construction_audit": {
+        "allocation_construction": "EXACT_FRACTION_PROPORTIONAL_REPLAY",
+        "debit_trace": [
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "2",
+            "actual_debit_raw": "2",
+            "event_id": "pre_seed_service",
+            "ratio": "0",
+            "source_before_raw": "0",
+            "source_debit_raw": "0"
+          },
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "7",
+            "actual_debit_raw": "7",
+            "event_id": "no_service_path",
+            "ratio": "1",
+            "source_before_raw": "7",
+            "source_debit_raw": "7"
+          },
+          {
+            "account_asset": "B|ETH",
+            "actual_before_raw": "7",
+            "actual_debit_raw": "7",
+            "event_id": "terminal_boundary",
+            "ratio": "1",
+            "source_before_raw": "7",
+            "source_debit_raw": "7"
+          }
+        ],
+        "final_actual_balance_raw": {
+          "A|ETH": "0",
+          "B|ETH": "0",
+          "T|ETH": "2"
+        },
+        "final_source_balance_raw": {
+          "A|ETH": "0",
+          "B|ETH": "0",
+          "T|ETH": "0"
+        },
+        "per_asset": {
+          "ETH": {
+            "exact_conserved": true,
+            "fees_and_boundary_sinks_raw": "7",
+            "net_conversion_raw": "0",
+            "retained_in_accounts_terminals_and_outside_raw": "0",
+            "seed_raw": "7"
+          }
+        }
+      },
+      "events": {
+        "no_service_path": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "7",
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "7",
+          "supported": true,
+          "witness": null
+        },
+        "pre_seed_service": {
+          "actual_raw": "2",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "0",
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": "0",
+          "supported": false,
+          "witness": null
+        },
+        "seed": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "7",
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": "7",
+          "supported": true,
+          "witness": null
+        },
+        "terminal_boundary": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "7",
+          "recipient": null,
+          "role": "BOUNDARY_OUTFLOW",
+          "source_amount_raw": "7",
+          "supported": true,
+          "witness": null
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "9c1d065d0037d567eb972a40c8c30bc7c2c918a78c76fa3bdc480e91bf2f263d",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": true,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH"
+          ],
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": null,
+          "point_raw": "0",
+          "source_amount_raw": "0"
+        }
+      },
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [],
+      "output_event_ids": [],
+      "output_kind": "PROPORTIONAL_FEASIBLE_POINT",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/03",
+      "status": "OK"
+    }
+  },
+  "NO_CROSS_TARGET_COUPLING": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "pre_seed_service": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "copy_count": 1,
+          "derivation": "Exact sum of extrema in disjoint variables and constraints",
+          "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "definition": "F_ind = product_a F^(a); omit x_e^(a)=x_e^(b) and corresponding state identity for a != b; each copy retains all targets as absorbing terminals.",
+        "global_common_source_budget": false,
+        "product_copies": [
+          {
+            "address_asset": "T|ETH",
+            "copy_id": "F^0",
+            "cross_copy_identity_equalities_present": false,
+            "equalities": 9,
+            "physical_identity_namespace": "target_copy/0/",
+            "variables": 13
+          }
+        ],
+        "raw_graph_unchanged": true,
+        "unbound_all_state_variables_count": 13,
+        "unbound_identical_physical_variables": [
+          "pre_seed_service",
+          "seed",
+          "no_service_path",
+          "terminal_boundary"
+        ],
+        "within_each_copy_common_source_budget": true
+      },
+      "output_kind": "product_of_target_specific_copies",
+      "positive_addresses": [],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 1,
+        "base_equalities": 9,
+        "base_variables": 13,
+        "endpoint_optimizations": 2,
+        "entry_intervals": 1,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.001554800008307211,
+        "solve_and_certification_seconds": 0.014960600004997104
+      }
+    }
+  },
+  "NO_PROTOCOL_CONTINUATION": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "pre_seed_service": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "asset": "ETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "no_service_path": "7",
+                "pre_seed_service": "0",
+                "seed": "7",
+                "terminal_boundary": "7"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "pre_seed_service"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "boundary_source_variables": [],
+        "connected_protocol_count": 0,
+        "feature_status": "FEATURE_ABSENT_SAME_INPUT",
+        "gross_and_refund_conservation_preserved": true,
+        "physical_outputs_retained_as_source_zero": [],
+        "raw_graph_unchanged": true,
+        "unlinked_source_ratio_equalities": []
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 1,
+        "base_equalities": 9,
+        "base_variables": 13,
+        "endpoint_optimizations": 2,
+        "entry_intervals": 1,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0027375000063329935,
+        "solve_and_certification_seconds": 0.014060000001336448
+      }
+    }
+  },
+  "POISON": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|ETH": {
+          "asset": "ETH",
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": "0",
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": false
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "no_service_path": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": "B|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "no_service_path"
+          ]
+        },
+        "pre_seed_service": {
+          "actual_raw": "2",
+          "asset": "ETH",
+          "nominal_raw": "0",
+          "point_raw": null,
+          "recipient": "T|ETH",
+          "role": "TRANSFER",
+          "source_amount_raw": null,
+          "supported": false,
+          "witness": null
+        },
+        "seed": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "terminal_boundary": {
+          "actual_raw": "7",
+          "asset": "ETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": null,
+          "role": "BOUNDARY_OUTFLOW",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "no_service_path",
+            "terminal_boundary"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "9c1d065d0037d567eb972a40c8c30bc7c2c918a78c76fa3bdc480e91bf2f263d",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "ETH": {
+          "addresses": [
+            "T|ETH"
+          ],
+          "events": [
+            "pre_seed_service"
+          ],
+          "nominal_raw": "0",
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [],
+      "output_event_ids": [],
+      "output_kind": "POISON_NOMINAL_RAW",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/03",
+      "status": "OK"
+    }
+  }
+}

@@ -117,6 +117,7 @@
         "upper_raw": "5"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "joint_by_asset": {
       "ETH": {
@@ -189,10 +190,12 @@
       "raw_graph_unchanged": true,
       "removed_bound_variables": []
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
     "status": "COMPLETED",
@@ -205,8 +208,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0006386000022757798,
-      "solve_and_certification_seconds": 0.0056751999945845455
+      "model_build_seconds": 0.001888300001155585,
+      "solve_and_certification_seconds": 0.013110200001392514
     }
   },
   "BOUNDED_REACHABILITY": {
@@ -257,6 +260,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "input_usage": {
       "actual_fees": true,
@@ -282,6 +286,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "BOUNDED_REACHABILITY",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "b7e8a9d19d7e705fb78193b749f9bfad01c216d6224d459b714d1bcd916c1e24",
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06"
+    },
     "output_address_ids": [
       "T|ETH"
     ],
@@ -292,6 +302,7 @@
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
@@ -421,6 +432,7 @@
         "upper_raw": "5"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "joint_by_asset": {
       "ETH": {
@@ -487,10 +499,12 @@
     "modifications": {
       "raw_graph_unchanged": true
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
     "status": "COMPLETED",
@@ -503,8 +517,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0003865000035148114,
-      "solve_and_certification_seconds": 0.005095100001199171
+      "model_build_seconds": 0.00045030000910628587,
+      "solve_and_certification_seconds": 0.012296399989281781
     }
   },
   "HAIRCUT": {
@@ -516,6 +530,7 @@
     "construction_audit": null,
     "events": null,
     "failure_reason": "UNKNOWN_MODELED_ACTUAL_BALANCE at A|ETH before enter_missing",
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "input_usage": {
       "actual_fees": true,
@@ -529,10 +544,17 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "HAIRCUT",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "b7e8a9d19d7e705fb78193b749f9bfad01c216d6224d459b714d1bcd916c1e24",
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06"
+    },
     "output_address_ids": null,
     "output_event_ids": null,
     "output_kind": "PROPORTIONAL_FEASIBLE_POINT",
     "positive_addresses": null,
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
@@ -656,6 +678,7 @@
         "upper_raw": "5"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "joint_by_asset": {
       "ETH": {
@@ -693,10 +716,12 @@
       ],
       "within_each_copy_common_source_budget": true
     },
+    "native_identity": {},
     "output_kind": "product_of_target_specific_copies",
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
     "status": "COMPLETED",
@@ -709,8 +734,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0004517999987001531,
-      "solve_and_certification_seconds": 0.0056398000015178695
+      "model_build_seconds": 0.001545500010251999,
+      "solve_and_certification_seconds": 0.012866199991549365
     }
   },
   "NO_PROTOCOL_CONTINUATION": {
@@ -831,6 +856,7 @@
         "upper_raw": "5"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "joint_by_asset": {
       "ETH": {
@@ -903,10 +929,12 @@
       "raw_graph_unchanged": true,
       "unlinked_source_ratio_equalities": []
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",
     "status": "COMPLETED",
@@ -919,8 +947,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0003832000002148561,
-      "solve_and_certification_seconds": 0.006614799996896181
+      "model_build_seconds": 0.0004885999951511621,
+      "solve_and_certification_seconds": 0.011795800004620105
     }
   },
   "POISON": {
@@ -971,6 +999,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "ab79c3860a29e17fd43a3fb8b6bb778da686bd59df6e03b9c9277ba7ca3d546f",
     "input_usage": {
       "actual_fees": true,
@@ -996,6 +1025,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "POISON",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "b7e8a9d19d7e705fb78193b749f9bfad01c216d6224d459b714d1bcd916c1e24",
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06"
+    },
     "output_address_ids": [
       "T|ETH"
     ],
@@ -1006,6 +1041,7 @@
     "positive_addresses": [
       "T|ETH"
     ],
+    "query_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "query_or_sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "sample_id": "controlled-v1/missing_information_and_boundary_controls/06",
     "scope_hash": "9c72dcd3b9a549b0e85308bb7d271f36aa227f034ff13df2e44c154913152e83",

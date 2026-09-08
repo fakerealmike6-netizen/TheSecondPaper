@@ -1,0 +1,656 @@
+{
+  "batch_status": "COMPLETED",
+  "checkpoint": "CHECKPOINT_1C_R1_REACHED",
+  "controlled": {
+    "address_metrics": {
+      "BALANCE_INFORMATION_REMOVED": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "BOUNDED_REACHABILITY": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "FULL_INTERVAL": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "HAIRCUT": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "NO_CROSS_TARGET_COUPLING": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "NO_PROTOCOL_CONTINUATION": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      },
+      "POISON": {
+        "eligible_positive_query_count": 1,
+        "empty_positive_control_count": 0,
+        "false_positive_query_address_asset_pairs": 0,
+        "full_population_count": 1,
+        "query_macro_recall": "1"
+      }
+    },
+    "all_objectives_covered_query_count": 1,
+    "balance_nested_query_asset_count": 1,
+    "by_family": {
+      "normal_mixing": {
+        "all_objectives_covered_query_count": 1,
+        "balance_nested_query_asset_count": 1,
+        "coupling_upper_changed_query_asset_count": 0,
+        "evaluation_passed": 1,
+        "haircut_exact_feasible_query_count": 1,
+        "haircut_query_mean_normalized_error": "1/4",
+        "joint_hidden_covered_count": 1,
+        "poison_exceeds_feasible_union_upper_count": 1,
+        "positive_joint_lower_count": 1,
+        "protocol_changed_query_asset_count": 0,
+        "query_count": 1,
+        "query_mean_normalized_union_width": "1/2",
+        "resolved_query_asset_union_count": 1,
+        "zero_joint_lower_count": 0
+      }
+    },
+    "comparison_counts": {
+      "addresses_covered": 1,
+      "addresses_total": 1,
+      "events_covered": 1,
+      "events_total": 1,
+      "joint_by_asset_covered": 1,
+      "joint_by_asset_total": 1
+    },
+    "coupling_upper_changed_query_asset_count": 0,
+    "deduplicated_outputs_with_synthetic_query_namespace": {
+      "BALANCE_INFORMATION_REMOVED": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "BOUNDED_REACHABILITY": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "FULL_INTERVAL": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "HAIRCUT": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "NO_CROSS_TARGET_COUPLING": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "NO_PROTOCOL_CONTINUATION": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      },
+      "POISON": {
+        "address_assets": 1,
+        "addresses": 1,
+        "events": 1
+      }
+    },
+    "evaluation_passed": 1,
+    "haircut_exact_feasible_query_count": 1,
+    "haircut_maximum_error_to_one_hidden_assignment_raw_by_asset": {
+      "ETH": "1/2"
+    },
+    "haircut_query_mean_normalized_error": "1/4",
+    "joint_hidden_covered_count": 1,
+    "maximum_endpoint_error_raw_by_asset": {
+      "ETH": "0"
+    },
+    "method_status_counts": {
+      "BALANCE_INFORMATION_REMOVED": {
+        "COMPLETED": 1
+      },
+      "BOUNDED_REACHABILITY": {
+        "COMPLETED": 1
+      },
+      "FULL_INTERVAL": {
+        "COMPLETED": 1
+      },
+      "HAIRCUT": {
+        "COMPLETED": 1
+      },
+      "NO_CROSS_TARGET_COUPLING": {
+        "COMPLETED": 1
+      },
+      "NO_PROTOCOL_CONTINUATION": {
+        "COMPLETED": 1
+      },
+      "POISON": {
+        "COMPLETED": 1
+      }
+    },
+    "poison_exceeds_feasible_union_upper_count": 1,
+    "population": "ALL_60_PRESPECIFIED_CONTROLS_RETAINED",
+    "positive_joint_lower_count": 1,
+    "protocol_changed_query_asset_count": 0,
+    "queries": [
+      {
+        "ablation_by_asset": [
+          {
+            "asset": "ETH",
+            "balance_nested_endpoints": true,
+            "balance_relaxed_lower_raw": "0",
+            "balance_relaxed_upper_raw": "2",
+            "full_lower_raw": "1",
+            "full_upper_raw": "2",
+            "independent_lower_raw": "1",
+            "independent_upper_excess_raw": "0",
+            "independent_upper_raw": "2",
+            "independent_upper_vector_jointly_realizable_in_full": true,
+            "no_protocol_lower_raw": "1",
+            "no_protocol_upper_raw": "2",
+            "protocol_result_changed": false
+          }
+        ],
+        "all_full_objectives_hidden_covered": true,
+        "errors": [],
+        "evaluation_passed": true,
+        "family": "normal_mixing",
+        "haircut_exact_feasible": true,
+        "haircut_query_mean_normalized_error": "1/4",
+        "joint_intervals": {
+          "ETH": {
+            "hidden_covered": true,
+            "lower_raw": "1",
+            "poison_minus_full_upper_raw": "1",
+            "poison_nominal_raw": "3",
+            "poison_over_full_upper": "3/2",
+            "positive_lower": true,
+            "upper_raw": "2",
+            "width_over_seed": "1/2",
+            "width_raw": "1"
+          }
+        },
+        "method_statuses": {
+          "BALANCE_INFORMATION_REMOVED": "COMPLETED",
+          "BOUNDED_REACHABILITY": "COMPLETED",
+          "FULL_INTERVAL": "COMPLETED",
+          "HAIRCUT": "COMPLETED",
+          "NO_CROSS_TARGET_COUPLING": "COMPLETED",
+          "NO_PROTOCOL_CONTINUATION": "COMPLETED",
+          "POISON": "COMPLETED"
+        },
+        "sample_id": "controlled-v1/normal_mixing/00"
+      }
+    ],
+    "query_count": 1,
+    "query_mean_normalized_union_width": "1/2",
+    "resolved_query_asset_union_count": 1,
+    "tiny_checks": [
+      {
+        "allocation_count": 2,
+        "continuous_endpoint_link": "1:1 network integrality; not a fractional-grid approximation",
+        "failures": [],
+        "independent_check": "DIRECT_OPERATION_INTEGER_ENUMERATION",
+        "objectives_checked": 4,
+        "sample_id": "controlled-v1/normal_mixing/00",
+        "status": "PASS"
+      }
+    ],
+    "zero_joint_lower_count": 0
+  },
+  "efficiency": {
+    "groups": {
+      "controlled": {
+        "BALANCE_INFORMATION_REMOVED": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 0.003824600004008971,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.003832800008240156,
+              "median_model_build_seconds": 0.0002356000040890649,
+              "median_solve_and_certification_seconds": 0.003321299998788163,
+              "method_max_seconds": 0.00383960000181105,
+              "method_median_seconds": 0.003824600004008971,
+              "method_min_seconds": 0.0035007999977096915,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 20587229,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_intervals": 1,
+                "base_equalities": 4,
+                "base_variables": 6,
+                "endpoint_optimizations": 2,
+                "entry_intervals": 1,
+                "joint_intervals": 1
+              }
+            }
+          ]
+        },
+        "BOUNDED_REACHABILITY": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 9.380000119563192e-05,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.00010200000542681664,
+              "median_model_build_seconds": null,
+              "median_solve_and_certification_seconds": null,
+              "method_max_seconds": 0.00011470000026747584,
+              "method_median_seconds": 9.380000119563192e-05,
+              "method_min_seconds": 8.929999603424221e-05,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 8129,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_outputs": 1,
+                "endpoint_optimizations": 0,
+                "joint_outputs": 1,
+                "physical_ports_visited": 2
+              }
+            }
+          ]
+        },
+        "FULL_INTERVAL": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 0.0035069999867118895,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.0035151999909430742,
+              "median_model_build_seconds": 0.00010679999832063913,
+              "median_solve_and_certification_seconds": 0.0032857000041985884,
+              "method_max_seconds": 0.003751099997316487,
+              "method_median_seconds": 0.0035069999867118895,
+              "method_min_seconds": 0.0033832000044640154,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 24963,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_intervals": 1,
+                "base_equalities": 4,
+                "base_variables": 6,
+                "endpoint_optimizations": 2,
+                "entry_intervals": 1,
+                "joint_intervals": 1
+              }
+            }
+          ]
+        },
+        "HAIRCUT": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 0.000145500001963228,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.0001537000061944127,
+              "median_model_build_seconds": null,
+              "median_solve_and_certification_seconds": null,
+              "method_max_seconds": 0.0002442999975755811,
+              "method_median_seconds": 0.000145500001963228,
+              "method_min_seconds": 0.0001390999968862161,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 16841,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_outputs": 1,
+                "endpoint_optimizations": 0,
+                "joint_outputs": 1,
+                "physical_ports_visited": 2
+              }
+            }
+          ]
+        },
+        "NO_CROSS_TARGET_COUPLING": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 0.00331729999743402,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.0033255000016652048,
+              "median_model_build_seconds": 0.00010010000551119447,
+              "median_solve_and_certification_seconds": 0.0031029999954625964,
+              "method_max_seconds": 0.0037081999907968566,
+              "method_median_seconds": 0.00331729999743402,
+              "method_min_seconds": 0.003255499992519617,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 30672,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_intervals": 1,
+                "base_equalities": 4,
+                "base_variables": 6,
+                "endpoint_optimizations": 2,
+                "entry_intervals": 1,
+                "joint_intervals": 1
+              }
+            }
+          ]
+        },
+        "NO_PROTOCOL_CONTINUATION": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 0.0034945999941555783,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.003502799998386763,
+              "median_model_build_seconds": 0.00010279999696649611,
+              "median_solve_and_certification_seconds": 0.0032596000091871247,
+              "method_max_seconds": 0.004198999988147989,
+              "method_median_seconds": 0.0034945999941555783,
+              "method_min_seconds": 0.0033578000002307817,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 24949,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_intervals": 1,
+                "base_equalities": 4,
+                "base_variables": 6,
+                "endpoint_optimizations": 2,
+                "entry_intervals": 1,
+                "joint_intervals": 1
+              }
+            }
+          ]
+        },
+        "POISON": {
+          "completed_count": 1,
+          "median_of_completed_query_method_medians_seconds": 9.459999273531139e-05,
+          "population_count": 1,
+          "queries": [
+            {
+              "common_preprocess_median_seconds": 8.200004231184721e-06,
+              "fixed_graph_end_to_end_median_seconds": 0.00010279999696649611,
+              "median_model_build_seconds": null,
+              "median_solve_and_certification_seconds": null,
+              "method_max_seconds": 0.00010470001143403351,
+              "method_median_seconds": 9.459999273531139e-05,
+              "method_min_seconds": 9.380000119563192e-05,
+              "method_status": "COMPLETED",
+              "post_method_validation_seconds": {
+                "common_output_contract_seconds": 0.001962099995580502,
+                "scientific_evaluation_seconds": 0.0018643999937921762,
+                "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+              },
+              "python_warmup_peak_bytes": 9001,
+              "sample_id": "controlled-v1/normal_mixing/00",
+              "task_counts": {
+                "address_outputs": 1,
+                "endpoint_optimizations": 0,
+                "joint_outputs": 1,
+                "physical_ports_visited": 2
+              }
+            }
+          ]
+        }
+      },
+      "real": {
+        "BALANCE_INFORMATION_REMOVED": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "BOUNDED_REACHABILITY": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "FULL_INTERVAL": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "HAIRCUT": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "NO_CROSS_TARGET_COUPLING": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "NO_PROTOCOL_CONTINUATION": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        },
+        "POISON": {
+          "completed_count": 0,
+          "median_of_completed_query_method_medians_seconds": null,
+          "population_count": 0,
+          "queries": []
+        }
+      }
+    },
+    "measurement_scope": "Local fixed observed graph; shared JSON/target preprocessing and method-only computations separated; no online collection timed.",
+    "memory_scope": "Python allocation high-water in warmup only; native HiGHS/SciPy allocations excluded.",
+    "online_acquisition_saving_claim": false,
+    "statistical_significance_claim": false,
+    "task_equivalence": false,
+    "timed_repetitions": 5,
+    "warmup_repetitions": 1
+  },
+  "external_acceptance": "PENDING_REVIEW",
+  "new_research_cost": "0",
+  "new_research_platform_requests": 0,
+  "passed": true,
+  "public_safety": "ALLOWLISTED_AGGREGATES_NO_REAL_ADDRESSES_EVENTS_REFERENCE_ROWS_OR_ACCOUNT_LEDGER",
+  "real": {
+    "deduplication": {
+      "BALANCE_INFORMATION_REMOVED": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "BOUNDED_REACHABILITY": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "FULL_INTERVAL": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "HAIRCUT": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "NO_CROSS_TARGET_COUPLING": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "NO_PROTOCOL_CONTINUATION": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      },
+      "POISON": {
+        "all_output_actor_status": "NOT_ALL_OUTPUT_ADDRESSES_HAVE_A_FROZEN_ACTOR_MAPPING",
+        "global_all_output_actors": null,
+        "global_matched_known_reference_actors": 0,
+        "global_unique_address_assets": 0,
+        "global_unique_addresses": 0,
+        "global_unique_service_entry_events": 0,
+        "query_address_asset_pairs": 0,
+        "query_entry_event_pairs": 0
+      }
+    },
+    "queries": [],
+    "query_and_incident_macro": {
+      "BALANCE_INFORMATION_REMOVED": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "BOUNDED_REACHABILITY": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "FULL_INTERVAL": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "HAIRCUT": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "NO_CROSS_TARGET_COUPLING": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "NO_PROTOCOL_CONTINUATION": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      },
+      "POISON": {
+        "all_incidents": 0,
+        "eligible_incidents": 0,
+        "eligible_queries": 0,
+        "incident_macro_known_positive_address_recall": null,
+        "query_macro_known_positive_address_recall": null
+      }
+    },
+    "query_count": 0,
+    "reference_limitation": "Atomic has one independently retained known-positive address and six entries. Harmony has no currently verified reference positives after first-service correction; its runtime targets are not a reference denominator. Recall is null there.",
+    "strata": {
+      "S1": {
+        "evaluated": 0
+      },
+      "S2": {
+        "evaluated": 0
+      },
+      "S3": {
+        "evaluated": 0,
+        "new_injections": 0
+      }
+    }
+  },
+  "report_validation_seconds": 0.14648009999655187,
+  "result_acceptance_recomputed": true,
+  "results_index_sha256": "36b723d3c568956260bcc56602b35b1dfae3d0cd5fe2e087828ca61f745a762a",
+  "runtime": {
+    "numpy": "2.4.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.14.3",
+    "scipy": "1.17.1",
+    "system": "Windows"
+  },
+  "schema_version": "STAGE1C_R1_VERIFIED_POST_RESULT_REPORTS_V1"
+}

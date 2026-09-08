@@ -1,0 +1,324 @@
+{
+  "cases": [
+    {
+      "case": "normal_positive_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "explicit_zero_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "zero_hop_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "six_haircut_na_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "poison_and_product_scope_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "real_no_protocol_control",
+      "expected_cli_exit_code": 0,
+      "fault_chain_verified": true,
+      "process_exit_code": 0,
+      "report_process_exit_code": 0,
+      "validator_process_exit_code": 0
+    },
+    {
+      "case": "full_missing_output",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "haircut_missing_witness_bad_point",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "haircut_bad_point_with_valid_witness",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "balance_ablation_non_nested",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "partial_missing_target",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "extra_target",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_asset_target",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "missing_whole_method",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_input_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_sample_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_method_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_scope_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_label_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "missing_nontarget_allocation",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "event_point_inconsistent",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_nan",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_bool",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_null",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_fraction",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_status",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "invalid_na_on_supported_input",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "reversed_interval",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "duplicate_group_member",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "positive_set_inconsistent",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "wrong_event_asset",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "product_union_wrong_sum",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "protocol_absent_changed",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "balance_address_non_nested",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "real_full_missing_output",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "real_haircut_bad_point_with_valid_witness",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "real_wrong_input_identity",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    },
+    {
+      "case": "mixed_bad_then_good",
+      "expected_cli_exit_code": 1,
+      "fault_chain_verified": true,
+      "process_exit_code": 1,
+      "report_process_exit_code": 1,
+      "validator_process_exit_code": 1
+    }
+  ],
+  "cases_executed": 38,
+  "full_diagnostics": "MIN fault_evidence; public synthetic originals and return-boundary tests",
+  "full_package_fault": {
+    "bad_query_count": 1,
+    "batch_query_count": 60,
+    "fault_chain_verified": true,
+    "good_query_count": 59,
+    "no_missing_required_check_shortcut": true,
+    "no_payload_hash_corruption": true,
+    "validator_cli_exit_code": 1,
+    "validator_passed": false
+  },
+  "negative_cases": 32,
+  "passed": true,
+  "positive_cases": 6,
+  "source_and_scientific_inputs_unchanged": true
+}

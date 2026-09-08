@@ -1,6 +1,6 @@
-# Stage1C first paired experiment results
+# Stage1C-R1 same-input paired experiment regression
 
-External acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_REACHED`.
+External acceptance: `PENDING_REVIEW`. Stop: `CHECKPOINT_1C_R1_REACHED`.
 
 Actual batch status: COMPLETED; 60 controlled queries and 2 real development queries. Controlled evaluations passed: 60/60. These are first development validations, not unseen holdout or full-population evidence.
 

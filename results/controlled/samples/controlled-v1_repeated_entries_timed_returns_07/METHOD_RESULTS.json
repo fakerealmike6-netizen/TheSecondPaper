@@ -403,6 +403,7 @@
         "upper_raw": "1"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "joint_by_asset": {
       "ETH": {
@@ -500,11 +501,13 @@
         "z:U|ETH:other_target"
       ]
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
     "status": "COMPLETED",
@@ -517,8 +520,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0022045000005164184,
-      "solve_and_certification_seconds": 0.05013300000427989
+      "model_build_seconds": 0.006074300006730482,
+      "solve_and_certification_seconds": 0.11684020000393502
     }
   },
   "BOUNDED_REACHABILITY": {
@@ -650,6 +653,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "input_usage": {
       "actual_fees": true,
@@ -679,6 +683,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "BOUNDED_REACHABILITY",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -693,6 +703,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
@@ -1108,6 +1119,7 @@
         "upper_raw": "1"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "joint_by_asset": {
       "ETH": {
@@ -1187,11 +1199,13 @@
     "modifications": {
       "raw_graph_unchanged": true
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
     "status": "COMPLETED",
@@ -1204,8 +1218,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0014311999984784052,
-      "solve_and_certification_seconds": 0.05720170000131475
+      "model_build_seconds": 0.004219900001771748,
+      "solve_and_certification_seconds": 0.09699669999827165
     }
   },
   "HAIRCUT": {
@@ -1414,6 +1428,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "input_usage": {
       "actual_fees": true,
@@ -1443,6 +1458,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "HAIRCUT",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -1457,6 +1478,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
@@ -1872,6 +1894,7 @@
         "upper_raw": "1"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "joint_by_asset": {
       "ETH": {
@@ -1922,11 +1945,13 @@
       ],
       "within_each_copy_common_source_budget": true
     },
+    "native_identity": {},
     "output_kind": "product_of_target_specific_copies",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
     "status": "COMPLETED",
@@ -1939,8 +1964,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0014085000002523884,
-      "solve_and_certification_seconds": 0.04077049999614246
+      "model_build_seconds": 0.0030436999950325117,
+      "solve_and_certification_seconds": 0.09139269999286626
     }
   },
   "NO_PROTOCOL_CONTINUATION": {
@@ -2347,6 +2372,7 @@
         "upper_raw": "1"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "joint_by_asset": {
       "ETH": {
@@ -2432,11 +2458,13 @@
       "raw_graph_unchanged": true,
       "unlinked_source_ratio_equalities": []
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",
     "status": "COMPLETED",
@@ -2449,8 +2477,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0015382999990833923,
-      "solve_and_certification_seconds": 0.049469800003862474
+      "model_build_seconds": 0.00325209999573417,
+      "solve_and_certification_seconds": 0.11131759999261703
     }
   },
   "POISON": {
@@ -2582,6 +2610,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "32f0b2651ab7364985f72392aab0a4a1b5552493656a371082d6e07cfb8b02a3",
     "input_usage": {
       "actual_fees": true,
@@ -2611,6 +2640,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "POISON",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "48a7b0730a4280ca978d06c5a637f0e28fdf289fae32cfa50f69534d591cb645",
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -2625,6 +2660,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/repeated_entries_timed_returns/07",
     "query_or_sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "sample_id": "controlled-v1/repeated_entries_timed_returns/07",
     "scope_hash": "9c666c75a5049f2ed73403c91e7321ac5d1e82f145847214461231fd8d616797",

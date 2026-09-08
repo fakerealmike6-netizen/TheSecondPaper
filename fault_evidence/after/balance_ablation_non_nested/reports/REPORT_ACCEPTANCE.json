@@ -1,0 +1,75 @@
+{
+  "elapsed_validation_seconds": 0.12583839999570046,
+  "errors": [
+    {
+      "code": "BATCH_RECEIPT_FAILED"
+    }
+  ],
+  "failed_queries": 1,
+  "passed": false,
+  "queries": [
+    {
+      "errors": [
+        {
+          "code": "RECOMPUTED_OUTPUT_CONTRACT_FAILED",
+          "errors": [
+            {
+              "code": "ENDPOINT_VALUE_MISMATCH",
+              "detail": "Endpoint must equal reported interval",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH.endpoints.lower"
+            },
+            {
+              "code": "WITNESS_OBJECTIVE_MISMATCH",
+              "detail": "Witness objective differs from endpoint",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH.endpoints.lower"
+            },
+            {
+              "code": "BALANCE_ENDPOINT_NESTING",
+              "detail": "Same-input relaxed interval must contain FULL",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH"
+            }
+          ]
+        },
+        {
+          "code": "RECOMPUTED_SCIENTIFIC_CHECK_FAILED",
+          "errors": [
+            {
+              "code": "ENDPOINT_VALUE_MISMATCH",
+              "detail": "Endpoint must equal reported interval",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH.endpoints.lower"
+            },
+            {
+              "code": "WITNESS_OBJECTIVE_MISMATCH",
+              "detail": "Witness objective differs from endpoint",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH.endpoints.lower"
+            },
+            {
+              "code": "BALANCE_ENDPOINT_NESTING",
+              "detail": "Same-input relaxed interval must contain FULL",
+              "method": "BALANCE_INFORMATION_REMOVED",
+              "path": "joint_by_asset.ETH"
+            }
+          ]
+        },
+        {
+          "code": "QUERY_RECEIPT_FAILED"
+        },
+        {
+          "code": "QUERY_INDEX_FAILED"
+        }
+      ],
+      "passed": false,
+      "sample_id": "controlled-v1/normal_mixing/00"
+    }
+  ],
+  "recomputed_common_contract_and_scientific_checks": true,
+  "sample_count": 1,
+  "schema_version": "stage1c-r1-saved-result-gate-1.0",
+  "status": "FAIL",
+  "timing_scope": "Result acceptance verification; not algorithm execution timing"
+}

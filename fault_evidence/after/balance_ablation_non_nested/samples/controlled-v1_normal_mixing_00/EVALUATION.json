@@ -1,0 +1,28 @@
+{
+  "address_metrics": {},
+  "comparisons": [],
+  "contract_passed": false,
+  "errors": [
+    {
+      "code": "ENDPOINT_VALUE_MISMATCH",
+      "detail": "Endpoint must equal reported interval",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "path": "joint_by_asset.ETH.endpoints.lower"
+    },
+    {
+      "code": "WITNESS_OBJECTIVE_MISMATCH",
+      "detail": "Witness objective differs from endpoint",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "path": "joint_by_asset.ETH.endpoints.lower"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "haircut_full_assignment_audit": null,
+  "passed": false,
+  "status": "NOT_CERTIFIED_CONTRACT_FAILED"
+}

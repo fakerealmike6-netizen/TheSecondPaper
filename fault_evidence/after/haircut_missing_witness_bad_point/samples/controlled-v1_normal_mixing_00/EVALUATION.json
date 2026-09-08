@@ -1,0 +1,52 @@
+{
+  "address_metrics": {},
+  "comparisons": [],
+  "contract_passed": false,
+  "errors": [
+    {
+      "code": "FIELD_TYPE",
+      "detail": "Expected dictionary",
+      "method": "HAIRCUT",
+      "path": "allocation_raw"
+    },
+    {
+      "code": "POINT_ALLOCATION_MISMATCH",
+      "detail": "Event point differs from complete allocation",
+      "method": "HAIRCUT",
+      "path": "events.enter"
+    },
+    {
+      "code": "POINT_ALLOCATION_MISMATCH",
+      "detail": "Event point differs from complete allocation",
+      "method": "HAIRCUT",
+      "path": "events.seed"
+    },
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "haircut_full_assignment_audit": null,
+  "passed": false,
+  "status": "NOT_CERTIFIED_CONTRACT_FAILED"
+}

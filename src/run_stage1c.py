@@ -10,6 +10,7 @@ from fractions import Fraction as F
 from pathlib import Path
 from stage1c_intervals import run_interval, audit_allocation, groups, verify_product, METHODS as INTERVALS
 from stage1c_baselines import run_baseline, observed_targets
+from stage1c_output_contract import accept_method_results
 
 METHODS=('FULL_INTERVAL','BOUNDED_REACHABILITY','POISON','HAIRCUT','NO_CROSS_TARGET_COUPLING','NO_PROTOCOL_CONTINUATION','BALANCE_INFORMATION_REMOVED')
 def canonical(value): return (json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()
@@ -18,7 +19,16 @@ def file_hash(path): return digest(Path(path).read_bytes())
 def read(path): return json.loads(Path(path).read_text(encoding='utf-8'))
 def write(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+    path.write_text(diagnostic_json(value,indent=2)+'\n',encoding='utf-8')
+
+def diagnostic_value(value):
+    if isinstance(value,F):return str(value)
+    return {'unserializable_type':type(value).__name__,'representation':repr(value)}
+
+def diagnostic_json(value,indent=None):
+    try:return json.dumps(value,ensure_ascii=False,sort_keys=True,indent=indent,default=diagnostic_value)
+    except (TypeError,ValueError,RecursionError) as exc:
+        return json.dumps({'malformed_serialization':type(exc).__name__,'original_type':type(value).__name__,'original_representation':repr(value)},ensure_ascii=False,indent=indent)
 def safe_path(tree,name):
     from validate_review_bundle_r1 import input_path
     return input_path(Path(tree).resolve(),name)
@@ -33,6 +43,8 @@ def source_inventory(tree):
         for folder in ('src','tests') for p in sorted((tree/folder).glob('*.py'))]
 
 def freeze(tree,version):
+    if (tree/'EXPERIMENT_FREEZE.json').exists():
+        raise ValueError('Existing scientific freeze is immutable; use --freeze-revision for Stage1C-R1 execution changes')
     from stage1c_controlled import generate_suite
     manifest=generate_suite(tree)
     original=read(tree/'configs/stage1c/config/STAGE1C_POLICY.json')
@@ -90,7 +102,10 @@ def freeze(tree,version):
 
 def verify_freeze(tree,kind):
     frozen=read(tree/'EXPERIMENT_FREEZE.json')
-    if source_inventory(tree)!=frozen['source_inventory']: raise ValueError('Frozen source/test version changed')
+    if (tree/'REVISION_FREEZE.json').exists():
+        from stage1c_revision import verify_revision
+        frozen={**frozen,'execution_revision':verify_revision(tree,frozen)}
+    elif source_inventory(tree)!=frozen['source_inventory']: raise ValueError('Frozen source/test version changed')
     for name,key in [('EXPERIMENT_INPUTS.json','inputs_manifest_sha256'),('configs/STAGE1C_EFFECTIVE_POLICY.json','effective_policy_sha256'),('METHOD_SPEC_EFFECTIVE.md','method_spec_sha256'),('controlled_v1/MANIFEST.json','controlled_manifest_sha256')]:
         if file_hash(tree/name)!=frozen[key]: raise ValueError('Freeze mismatch '+name)
     inp=read(tree/'EXPERIMENT_INPUTS.json');rows=inp['controlled']
@@ -104,12 +119,14 @@ def verify_freeze(tree,kind):
     return frozen,rows
 
 def semantic_result(result):
+    if not isinstance(result,dict):return result
     return {k:v for k,v in result.items() if k not in ('timing_parts','elapsed_seconds','profile')}
 
 def dispatch(doc,method):
     return run_interval(doc,method) if method in INTERVALS else run_baseline(doc,method)
 
 def normalized(result):
+    if not isinstance(result,dict):raise TypeError('Method return must be an object')
     result=copy.deepcopy(result)
     if result.get('status')=='OK': result['status']='COMPLETED'
     if 'positive_addresses' not in result: result['positive_addresses']=result.get('output_address_ids')
@@ -140,28 +157,32 @@ def observed_port_facts(doc):
     return facts
 
 def measure(doc,method):
-    before=digest(canonical(doc));rows=[];errors=[];chosen=None;signature=None
+    before=digest(canonical(doc));rows=[];errors=[];chosen=None;signature=None;raw_first=None;raw_failures=[]
     for repetition in range(6):
         # Separate warm-up Python-allocation high-water measurement; timings
         # exclude tracemalloc, imported-library setup and input I/O.
         if repetition==0: tracemalloc.start()
         start=time.perf_counter()
+        raw=None
         try:
-            result=normalized(dispatch(copy.deepcopy(doc),method))
+            raw=dispatch(copy.deepcopy(doc),method)
+            result=normalized(raw)
         except Exception as exc:
             result={'status':'ERROR','applicability':'ERROR','output_kind':None,
                 'addresses':None,'events':None,'joint_by_asset':None,'positive_addresses':None,
                 'failure_reason':type(exc).__name__+': '+str(exc)}
         elapsed=time.perf_counter()-start
+        if repetition==0:raw_first=copy.deepcopy(raw)
+        if result.get('status')=='ERROR':raw_failures.append({'repetition':repetition,'raw_return':copy.deepcopy(raw),'failure':result.get('failure_reason')})
         memory=None
         if repetition==0:
             _,memory=tracemalloc.get_traced_memory();tracemalloc.stop()
-        current=digest(canonical(semantic_result(result)))
+        current=digest(diagnostic_json(semantic_result(result)).encode())
         if signature is None: signature=current;chosen=result
         if current!=signature: errors.append('Non-deterministic method output at repetition '+str(repetition))
         rows.append({'repetition':repetition,'warmup':repetition==0,'elapsed_seconds':elapsed,
                      'python_peak_allocated_bytes_warmup_only':memory,
-                     'result_semantic_sha256':current,'status':result['status'],
+                     'result_semantic_sha256':current,'status':result.get('status','MISSING'),
                      'parts':result.get('timing_parts'),'task_counts':result.get('task_counts')})
     if digest(canonical(doc))!=before:errors.append('Method mutated shared observed input')
     if errors:chosen['status']='ERROR';chosen['execution_errors']=errors
@@ -169,7 +190,8 @@ def measure(doc,method):
     return chosen,{'repetitions':rows,'median_seconds':statistics.median(times),'min_seconds':min(times),'max_seconds':max(times),
         'warmup_python_peak_bytes':rows[0]['python_peak_allocated_bytes_warmup_only'],
         'memory_scope':'Python allocations during warmup; excludes native SciPy/HiGHS memory. No whole-process memory claim.',
-        'different_output_workloads_not_speed_equivalent':True,'deterministic':not errors}
+        'different_output_workloads_not_speed_equivalent':True,'deterministic':not errors,
+        'raw_method_return':raw_first,'raw_failed_attempts':raw_failures}
 
 def evaluate_controlled(doc,hidden,results):
     from stage1c_oracle import oracle_intervals, tiny_enumeration_check
@@ -239,14 +261,110 @@ def ablation_comparison(results):
             'protocol_result_changed':any(F(v[k])!=F(no_protocol[k]) for k in ('lower_raw','upper_raw'))})
     return out
 
+def expected_identity(row,frozen):
+    return {k:row[k] for k in ('sample_id','query_id','input_fact_hash','scope_hash','label_version')} | {'method_versions':frozen['method_versions']}
+
+def attach_identity(doc,method,value,row,frozen):
+    """Validate native algorithm metadata before adding the execution envelope."""
+    from stage1c_baselines import VERSION as BASELINE_VERSION, _hash
+    value=copy.deepcopy(value);errors=[];native={}
+    expected=expected_identity(row,frozen)
+    native_expected={'method_id':method,'method_version':BASELINE_VERSION,'query_or_sample_id':doc.get('query_id',doc.get('scenario_id')),'input_fact_hash':_hash(doc)} if method not in INTERVALS else {}
+    for key,want in native_expected.items():
+        native[key]=value.get(key)
+        if value.get('status')!='ERROR' and (key not in value or value[key]!=want):
+            errors.append({'code':'NATIVE_IDENTITY_MISMATCH','method':method,'path':key,'expected':want,'actual':value.get(key)})
+    envelope={**{k:v for k,v in expected.items() if k!='method_versions'},'method_id':method,'method_version':expected['method_versions'][method]}
+    for key,want in envelope.items():
+        if key in value and key not in native_expected and value[key]!=want:
+            errors.append({'code':'EXECUTION_IDENTITY_MISMATCH','method':method,'path':key,'expected':want,'actual':value[key]})
+        value[key]=want
+    value['native_identity']=native
+    value['identity_errors']=errors
+    return value
+
+def evaluate_real(doc,row,results):
+    point=results['HAIRCUT']
+    audit=audit_allocation(doc,point['allocation_raw']) if point.get('allocation_raw') is not None else None
+    v=(results['FULL_INTERVAL'].get('joint_by_asset') or {}).get('ETH',{'lower_raw':None,'upper_raw':None})
+    accepted=row['accepted_same_input_joint_eth']
+    regression=all(v[k] is not None and F(v[k])/10**18==F(accepted[i]) for i,k in enumerate(('lower_raw','upper_raw')))
+    errors=[]
+    if not regression:errors.append('SAME_INPUT_FULL_REGRESSION_MISMATCH')
+    if audit is not None and not audit['exact_feasible']:errors.append('HAIRCUT_ASSIGNMENT_INFEASIBLE')
+    return {'same_input_full_regression':regression,'haircut_full_assignment_audit':audit,
+        'real_source_amount_ground_truth':None,'real_amount_accuracy':None,
+        'reference_evaluation':'POST_RESULT_ONLY_SEPARATE_REVIEW_REPORT','errors':errors,'passed':not errors}
+
+def evaluate_query(tree,row,frozen,doc,results):
+    """One acceptance path for controlled and real; science runs only after it."""
+    started=time.perf_counter()
+    contract=accept_method_results(doc,results,expected_identity=expected_identity(row,frozen))
+    identity_errors=[e for value in results.values() if isinstance(value,dict) for e in value.get('identity_errors',[])]
+    if identity_errors:
+        contract['errors'].extend(identity_errors);contract['passed']=False;contract['status']='FAIL'
+        for error in identity_errors:
+            if error['method'] in contract['method_checks']:
+                record=contract['method_checks'][error['method']]
+                record['passed']=False;record['errors'].append(error)
+    contract_seconds=time.perf_counter()-started
+    science_started=time.perf_counter()
+    if not contract['passed']:
+        evaluation={'passed':False,'status':'NOT_CERTIFIED_CONTRACT_FAILED','errors':contract['errors'],
+                    'comparisons':[],'address_metrics':{},'haircut_full_assignment_audit':None}
+        ablations=[]
+    else:
+        try:
+            evaluation=evaluate_controlled(doc,read(safe_path(tree,row['hidden_path'])),results) if row['kind']=='controlled' else evaluate_real(doc,row,results)
+            ablations=ablation_comparison(results)
+            hard=[{'code':'HARD_ABLATION_FAILURE','asset':a.get('asset'),'details':a} for a in ablations
+                  if a.get('status') in ('ERROR','UNRESOLVED','NOT_COMPARABLE') or a.get('balance_nested_endpoints') is False]
+            if hard:evaluation.setdefault('errors',[]).extend(hard);evaluation['passed']=False
+        except Exception as exc:
+            evaluation={'passed':False,'status':'SCIENTIFIC_CHECK_ERROR','errors':[type(exc).__name__+': '+str(exc)],'comparisons':[]};ablations=[]
+    evaluation['contract_passed']=contract['passed']
+    evaluation['passed']=evaluation.get('passed') is True and contract['passed'] is True
+    return contract,evaluation,ablations,{'common_output_contract_seconds':contract_seconds,'scientific_evaluation_seconds':time.perf_counter()-science_started,
+        'scope':'Post-method validation only; excluded from algorithm warmup and five timed executions'}
+
+def query_binding(tree,folder,row,frozen):
+    return {'expected_identity':expected_identity(row,frozen),'parent_freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),
+        'execution_revision':frozen.get('execution_revision'),
+        'files':{name:file_hash(folder/name) for name in ('METHOD_RESULTS.json','EVALUATION.json','ABLATIONS.json','OUTPUT_CONTRACT.json')},
+        'observed_sha256':file_hash(safe_path(tree,row['observed_path']))}
+
+def flat_results(row,results,tg,physical):
+    records=[]
+    for method,value in results.items():
+        for category in ('addresses','events','joint_by_asset'):
+            for target,rec in (value.get(category) or {}).items():
+                names=[target] if category=='events' else tg[target] if category=='addresses' else [e for g,es in tg.items() if g.rsplit('|',1)[1]==target for e in es]
+                asset=physical[target]['asset'] if category=='events' else target.rsplit('|',1)[1] if category=='addresses' else target
+                records.append({'sample_id':row['sample_id'],'query_id':row['query_id'],'incident_id':row['incident_id'],'kind':row['kind'],
+                    'source_layer':row['source_layer'],'zero_hop':row.get('zero_hop',False),'method':method,'category':category,'target':target,
+                    'status':value['status'],'output_kind':value['output_kind'],'lower_raw':rec.get('lower_raw'),'upper_raw':rec.get('upper_raw'),
+                    'point_raw':rec.get('point_raw'),'POISON_NOMINAL_RAW':rec.get('nominal_raw'),
+                    'physical_capacity_raw':str(sum((F(physical[e]['amount_raw']) for e in names),F(0))),'asset':asset,
+                    'evidence_ids':json.dumps(sorted({x for e in names for x in physical[e]['evidence_ids']})),
+                    'unit':'raw_by_asset_no_cross_asset_sum','input_fact_hash':row['input_fact_hash'],'certification':'QUERY_ACCEPTED'})
+    return records
+
+def select_rows(rows,selection):
+    if selection=='all':return list(rows)
+    if isinstance(selection,str) and selection.startswith('ids:'):
+        ids=selection[4:].split(',');known={r['sample_id']:r for r in rows}
+        if not ids or len(set(ids))!=len(ids) or any(s not in known for s in ids):raise ValueError('Empty, duplicate or unknown selection')
+        return [known[s] for s in ids]
+    return [r for r in rows if r['kind']==selection or r['sample_id']==selection]
+
 def run(tree,out,kind='min',selection='all'):
     import numpy,scipy
     frozen,rows=verify_freeze(tree,kind)
-    if selection!='all':rows=[r for r in rows if r['kind']==selection or r['sample_id']==selection]
+    rows=select_rows(rows,selection)
     if not rows:raise ValueError('Empty or unknown selection')
     if out.exists():raise ValueError('Run output must be fresh; prior failures are retained')
     out.mkdir(parents=True)
-    index=[];support=[];flat=[];timing_rows=[];all_passed=True
+    index=[];support=[];flat=[];timing_rows=[];validation_rows=[];all_passed=True
     for number,row in enumerate(rows):
         sid=row['sample_id']; data_bytes=safe_path(tree,row['observed_path']).read_bytes()
         # Timed common preprocessing = deserialize and canonical target extraction.
@@ -258,65 +376,50 @@ def run(tree,out,kind='min',selection='all'):
         physical=observed_port_facts(doc)
         offset=hashlib.sha256(sid.encode()).digest()[0]%len(METHODS)
         order=METHODS[offset:]+METHODS[:offset]
-        results={};profiles={}
+        results={};profiles={};raw_returns={}
         for method in order:
             value,profile=measure(doc,method)
-            value.update(method_id=method,method_version=frozen['method_versions'][method],
-                sample_id=sid,input_fact_hash=row['input_fact_hash'],scope_hash=row['scope_hash'],label_version=row['label_version'])
+            raw_returns[method]={'first_return':profile.pop('raw_method_return'),'failed_attempts':profile.pop('raw_failed_attempts')}
+            value=attach_identity(doc,method,value,row,frozen)
             results[method]=value;profiles[method]=profile
-            support.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'method':method,
-                'status':value['status'],'applicability':value.get('applicability'),'output_kind':value.get('output_kind'),
-                'reason':value.get('failure_reason')})
             timing_rows.append({'sample_id':sid,'method':method,'median_seconds':profile['median_seconds'],
                 'min_seconds':profile['min_seconds'],'max_seconds':profile['max_seconds'],
                 'common_preprocess_median_seconds':statistics.median(preprocess[1:]),
                 'fixed_graph_end_to_end_median_seconds':profile['median_seconds']+statistics.median(preprocess[1:]),
                 'warmup_python_peak_bytes':profile['warmup_python_peak_bytes'],
                 'endpoint_optimizations':(value.get('task_counts') or {}).get('endpoint_optimizations',0)})
-            if value['status']=='ERROR':all_passed=False
-            for category in ('addresses','events','joint_by_asset'):
-                for target,rec in (value.get(category) or {}).items():
-                    names=[target] if category=='events' else tg[target] if category=='addresses' else [e for g,es in tg.items() if g.rsplit('|',1)[1]==target for e in es]
-                    asset=physical[target]['asset'] if category=='events' else target.rsplit('|',1)[1] if category=='addresses' else target
-                    capacity=str(sum((F(physical[e]['amount_raw']) for e in names),F(0)))
-                    flat.append({'sample_id':sid,'query_id':row['query_id'],'incident_id':row['incident_id'],'kind':row['kind'],
-                        'source_layer':row['source_layer'],'zero_hop':row.get('zero_hop',False),'method':method,'category':category,
-                        'target':target,'status':value['status'],'output_kind':value['output_kind'],
-                        'lower_raw':rec.get('lower_raw'),'upper_raw':rec.get('upper_raw'),'point_raw':rec.get('point_raw'),
-                        'POISON_NOMINAL_RAW':rec.get('nominal_raw'),'physical_capacity_raw':capacity,'asset':asset,
-                        'evidence_ids':json.dumps(sorted({x for e in names for x in physical[e]['evidence_ids']})),
-                        'unit':'raw_by_asset_no_cross_asset_sum','input_fact_hash':row['input_fact_hash']})
         # Persist methods before opening hidden/reference or running Oracle.
         dest=out/'samples'/sid.replace(':','_').replace('/','_')
+        write(dest/'RAW_METHOD_RETURNS.json',raw_returns)
         write(dest/'METHOD_RESULTS.json',results)
-        evaluation=None
-        if row['kind']=='controlled':
-            try:evaluation=evaluate_controlled(doc,read(safe_path(tree,row['hidden_path'])),results)
-            except Exception as exc:evaluation={'passed':False,'errors':[type(exc).__name__+': '+str(exc)]}
-            if not evaluation['passed']:all_passed=False
-        else:
-            point=results['HAIRCUT']
-            audit=audit_allocation(doc,point['allocation_raw']) if point.get('allocation_raw') is not None else None
-            v=(results['FULL_INTERVAL'].get('joint_by_asset') or {}).get('ETH',{'lower_raw':None,'upper_raw':None});accepted=row['accepted_same_input_joint_eth']
-            regression=all(v[k] is not None and F(v[k])/10**18==F(accepted[i]) for i,k in enumerate(('lower_raw','upper_raw')))
-            evaluation={'same_input_full_regression':regression,'haircut_full_assignment_audit':audit,
-                'real_source_amount_ground_truth':None,'real_amount_accuracy':None,
-                'reference_evaluation':'POST_RESULT_ONLY_SEPARATE_REVIEW_REPORT',
-                'passed':regression and (audit is None or audit['exact_feasible'])}
-            if not evaluation['passed']:all_passed=False
+        contract,evaluation,ablations,validation_time=evaluate_query(tree,row,frozen,doc,results)
+        write(dest/'OUTPUT_CONTRACT.json',contract)
         write(dest/'EVALUATION.json',evaluation)
-        ablations=ablation_comparison(results);write(dest/'ABLATIONS.json',ablations)
+        write(dest/'ABLATIONS.json',ablations)
+        write(dest/'QUERY_ACCEPTANCE.json',{'schema_version':'stage1c-r1-query-acceptance-1.0','passed':evaluation['passed'],
+            'binding':query_binding(tree,dest,row,frozen),'contract_passed':contract['passed'],'scientific_checks_passed':evaluation['passed'],
+            'errors':evaluation.get('errors',[]),'validation_timing':validation_time})
+        validation_rows.append({'sample_id':sid,**validation_time})
+        if evaluation['passed']:flat.extend(flat_results(row,results,tg,physical))
+        else:all_passed=False
+        for method,value in results.items():
+            support.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'method':method,
+                'status':value.get('status','MISSING'),'applicability':value.get('applicability'),'output_kind':value.get('output_kind'),
+                'reason':value.get('failure_reason'),'contract_passed':contract['passed'],'query_passed':evaluation['passed']})
         write(dest/'EFFICIENCY.json',{'method_order':order,'shared_preprocessing_raw_seconds':preprocess,'profiles':profiles,
-            'common_scope':'Fixed local input JSON read once; no online acquisition was timed','warmups':1,'timed_repetitions':5})
+            'common_scope':'Fixed local input JSON read once; no online acquisition was timed','warmups':1,'timed_repetitions':5,
+            'post_method_validation':validation_time})
         index.append({'sample_id':sid,'kind':row['kind'],'family':row.get('family'),'path':dest.relative_to(out).as_posix(),
-            'input_fact_hash':row['input_fact_hash'],'method_statuses':{m:r['status'] for m,r in results.items()},
-            'evaluation_passed':evaluation['passed']})
+            'input_fact_hash':row['input_fact_hash'],'method_statuses':{m:r.get('status','MISSING') for m,r in results.items()},
+            'evaluation_passed':evaluation['passed'],'contract_passed':contract['passed'],'passed':evaluation['passed'],
+            'query_acceptance_sha256':file_hash(dest/'QUERY_ACCEPTANCE.json')})
         print(json.dumps({'sample':sid,'n':number+1,'total':len(rows),'passed':evaluation['passed'],'statuses':index[-1]['method_statuses']}),flush=True)
     write_csv(out/'METHOD_SUPPORT_MATRIX.csv',support);write_csv(out/'PAIRED_RESULTS.csv',flat);write_csv(out/'TIMINGS.csv',timing_rows)
-    summary={'schema_version':'stage1c-run-results-1.0','status':'COMPLETED' if all_passed else 'PARTIAL',
+    write_csv(out/'VALIDATION_TIMINGS.csv',validation_rows)
+    summary={'schema_version':'stage1c-r1-run-results-1.0','status':'COMPLETED' if all_passed else 'PARTIAL',
         'passed':all_passed,'scope':kind,'selection':selection,'sample_count':len(rows),
         'controlled_count':sum(r['kind']=='controlled' for r in rows),'real_count':sum(r['kind']=='real' for r in rows),
-        'freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),'method_results_index':index,
+        'freeze_sha256':file_hash(tree/'EXPERIMENT_FREEZE.json'),'execution_revision':frozen.get('execution_revision'),'method_results_index':index,
         'runtime':{'system':platform.system(),'platform':platform.platform(),'python':platform.python_version(),'numpy':numpy.__version__,'scipy':scipy.__version__},
         'research_platform_requests':0,'new_research_cost':'0','external_acceptance':'PENDING_REVIEW',
         'input_unchanged':verify_freeze(tree,kind)[0]==frozen}
@@ -326,9 +429,13 @@ def run(tree,out,kind='min',selection='all'):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--tree',type=Path,default=Path(__file__).resolve().parents[1])
     p.add_argument('--freeze',action='store_true');p.add_argument('--version',default='stage1c-v1')
+    p.add_argument('--freeze-revision',action='store_true')
     p.add_argument('--kind',choices=('min','public'),default='public');p.add_argument('--selection',default='all')
     p.add_argument('--output',type=Path);a=p.parse_args();tree=a.tree.resolve()
     try:
+        if a.freeze_revision:
+            from stage1c_revision import freeze_revision
+            result=freeze_revision(tree,a.version);print(json.dumps({'revision_frozen':result['version']}));return 0
         if a.freeze: result=freeze(tree,a.version);print(json.dumps({'frozen':result['version']}));return 0
         if a.output is None:raise ValueError('--output required')
         result=run(tree,a.output.resolve(),a.kind,a.selection)

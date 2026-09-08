@@ -1,0 +1,67 @@
+{
+  "batch_passed": false,
+  "batch_status": "PARTIAL",
+  "case": "full_missing_output",
+  "cli_exit_code": 1,
+  "expected_cli_exit_code": 1,
+  "fault_injection_boundary": "METHOD_DISPATCH_RETURN_OR_MANDATORY_METHOD_DISPATCH_SET",
+  "freeze_verifier_calls": [
+    {
+      "checked_full_input_count": 62,
+      "frozen_version": "stage1c-v1",
+      "selected": [
+        "controlled-v1/normal_mixing/00"
+      ]
+    },
+    {
+      "checked_full_input_count": 62,
+      "frozen_version": "stage1c-v1",
+      "selected": [
+        "controlled-v1/normal_mixing/00"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "acceptance_receipt_files": [
+        "OUTPUT_CONTRACT.json",
+        "QUERY_ACCEPTANCE.json"
+      ],
+      "evaluation_errors": [
+        {
+          "code": "OUTPUT_DOMAIN",
+          "detail": "missing=['T|ETH']; extra=[]",
+          "method": "FULL_INTERVAL",
+          "path": "addresses"
+        },
+        {
+          "code": "OUTPUT_DOMAIN",
+          "detail": "missing=['enter']; extra=[]",
+          "method": "FULL_INTERVAL",
+          "path": "events"
+        },
+        {
+          "code": "OUTPUT_DOMAIN",
+          "detail": "missing=['ETH']; extra=[]",
+          "method": "FULL_INTERVAL",
+          "path": "joint_by_asset"
+        }
+      ],
+      "evaluation_passed": false,
+      "method_statuses": {
+        "BALANCE_INFORMATION_REMOVED": "COMPLETED",
+        "BOUNDED_REACHABILITY": "COMPLETED",
+        "FULL_INTERVAL": "COMPLETED",
+        "HAIRCUT": "COMPLETED",
+        "NO_CROSS_TARGET_COUPLING": "COMPLETED",
+        "NO_PROTOCOL_CONTINUATION": "COMPLETED",
+        "POISON": "COMPLETED"
+      },
+      "raw_method_output_saved": true,
+      "sample_id": "controlled-v1/normal_mixing/00"
+    }
+  ],
+  "sample_count": 1,
+  "selection_note": "Real original verifier executes all frozen source/input checks and returns the full row list unchanged; production CLI selects explicit frozen query IDs.",
+  "source_or_inputs_modified_by_probe": false
+}

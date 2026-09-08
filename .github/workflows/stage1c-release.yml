@@ -1,7 +1,7 @@
-name: Publish frozen Stage1C public review bundle
+name: Publish frozen Stage1C-R1 public review bundle
 on:
   push:
-    branches: ['stage1c-20260908T084753+0800']
+    branches: ['stage1c-r1-20260908T104446-0800']
 permissions:
   contents: write
 jobs:
@@ -25,10 +25,10 @@ jobs:
           GH_REPO: fakerealmike6-netizen/TheSecondPaper
           COMMIT: ${{ github.sha }}
         run: |
-          python3 tools/stage1c_release.py --output "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip"
-          tag='stage1c-20260908T084753+0800'
+          python3 tools/stage1c_release.py --output "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip"
+          tag='stage1c-r1-20260908T104446-0800'
           if gh release view "$tag" >/dev/null 2>&1; then
             echo 'Existing release is never overwritten.'
             exit 1
           fi
-          gh release create "$tag" "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip" "$RUNNER_TEMP/Stage1C_Public_Review_Bundle.zip.sha256" --target "$COMMIT" --title 'Stage1C: paired experiments and ablations' --notes-file docs/RELEASE_NOTES.md
+          gh release create "$tag" "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip" "$RUNNER_TEMP/Stage1C_R1_Public_Review_Bundle.zip.sha256" --target "$COMMIT" --title 'Stage1C-R1: output acceptance and same-input regression' --notes-file docs/RELEASE_NOTES.md

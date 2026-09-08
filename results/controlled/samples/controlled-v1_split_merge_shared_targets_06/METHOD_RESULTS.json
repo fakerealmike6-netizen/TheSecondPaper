@@ -269,6 +269,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "joint_by_asset": {
       "ETH": {
@@ -361,11 +362,13 @@
         "z:D|ETH:d_u"
       ]
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
     "status": "COMPLETED",
@@ -378,8 +381,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.002660400001332164,
-      "solve_and_certification_seconds": 0.024933500004408415
+      "model_build_seconds": 0.0054527999891433865,
+      "solve_and_certification_seconds": 0.06469959999958519
     }
   },
   "BOUNDED_REACHABILITY": {
@@ -516,6 +519,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "input_usage": {
       "actual_fees": true,
@@ -543,6 +547,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "BOUNDED_REACHABILITY",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "0fd3d422e3ac4b91153aa04278c1bf28306073d9fd627214eca897bd230f1299",
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -556,6 +566,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
@@ -837,6 +848,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "joint_by_asset": {
       "ETH": {
@@ -914,11 +926,13 @@
     "modifications": {
       "raw_graph_unchanged": true
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
     "status": "COMPLETED",
@@ -931,8 +945,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0013832000040565617,
-      "solve_and_certification_seconds": 0.02758979999634903
+      "model_build_seconds": 0.0030879999976605177,
+      "solve_and_certification_seconds": 0.06500110001070425
     }
   },
   "HAIRCUT": {
@@ -1143,6 +1157,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "input_usage": {
       "actual_fees": true,
@@ -1170,6 +1185,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "HAIRCUT",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "0fd3d422e3ac4b91153aa04278c1bf28306073d9fd627214eca897bd230f1299",
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -1183,6 +1204,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
@@ -1464,6 +1486,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "joint_by_asset": {
       "ETH": {
@@ -1514,11 +1537,13 @@
       ],
       "within_each_copy_common_source_budget": true
     },
+    "native_identity": {},
     "output_kind": "product_of_target_specific_copies",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
     "status": "COMPLETED",
@@ -1531,8 +1556,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0013805999988107942,
-      "solve_and_certification_seconds": 0.017748400001437403
+      "model_build_seconds": 0.005087400000775233,
+      "solve_and_certification_seconds": 0.054235400006291457
     }
   },
   "NO_PROTOCOL_CONTINUATION": {
@@ -1805,6 +1830,7 @@
         "upper_raw": "6"
       }
     },
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "joint_by_asset": {
       "ETH": {
@@ -1888,11 +1914,13 @@
       "raw_graph_unchanged": true,
       "unlinked_source_ratio_equalities": []
     },
+    "native_identity": {},
     "output_kind": "feasible_interval",
     "positive_addresses": [
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",
     "status": "COMPLETED",
@@ -1905,8 +1933,8 @@
       "joint_intervals": 1
     },
     "timing_parts": {
-      "model_build_seconds": 0.0019343999956618063,
-      "solve_and_certification_seconds": 0.02248880000115605
+      "model_build_seconds": 0.003264900005888194,
+      "solve_and_certification_seconds": 0.06430430000182241
     }
   },
   "POISON": {
@@ -2043,6 +2071,7 @@
       }
     },
     "failure_reason": null,
+    "identity_errors": [],
     "input_fact_hash": "2f66614d5467923d91304d91728ed38156f1bab9e16e72564b31cb424cb3b837",
     "input_usage": {
       "actual_fees": true,
@@ -2070,6 +2099,12 @@
     "label_version": "CONTROLLED_V1_SERVICES_1",
     "method_id": "POISON",
     "method_version": "stage1c-v1:e1c9ea756c022513",
+    "native_identity": {
+      "input_fact_hash": "0fd3d422e3ac4b91153aa04278c1bf28306073d9fd627214eca897bd230f1299",
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06"
+    },
     "output_address_ids": [
       "T|ETH",
       "U|ETH"
@@ -2083,6 +2118,7 @@
       "T|ETH",
       "U|ETH"
     ],
+    "query_id": "controlled-v1/split_merge_shared_targets/06",
     "query_or_sample_id": "controlled-v1/split_merge_shared_targets/06",
     "sample_id": "controlled-v1/split_merge_shared_targets/06",
     "scope_hash": "45cc9c7e91d17c6176224626d23042eb3476cc122f8662b4bdce32a023df2ba1",

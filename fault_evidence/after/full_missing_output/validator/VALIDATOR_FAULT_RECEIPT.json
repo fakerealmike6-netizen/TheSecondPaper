@@ -1,0 +1,76 @@
+{
+  "elapsed_validation_seconds": 0.13336309998703655,
+  "errors": [
+    {
+      "code": "BATCH_RECEIPT_FAILED"
+    }
+  ],
+  "failed_queries": 1,
+  "fault_hook_scope": "PRODUCTION_SAVED_RESULT_GATE_NOT_PAYLOAD_HASH_FAILURE",
+  "passed": false,
+  "queries": [
+    {
+      "errors": [
+        {
+          "code": "RECOMPUTED_OUTPUT_CONTRACT_FAILED",
+          "errors": [
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['T|ETH']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "addresses"
+            },
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['enter']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "events"
+            },
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['ETH']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "joint_by_asset"
+            }
+          ]
+        },
+        {
+          "code": "RECOMPUTED_SCIENTIFIC_CHECK_FAILED",
+          "errors": [
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['T|ETH']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "addresses"
+            },
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['enter']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "events"
+            },
+            {
+              "code": "OUTPUT_DOMAIN",
+              "detail": "missing=['ETH']; extra=[]",
+              "method": "FULL_INTERVAL",
+              "path": "joint_by_asset"
+            }
+          ]
+        },
+        {
+          "code": "QUERY_RECEIPT_FAILED"
+        },
+        {
+          "code": "QUERY_INDEX_FAILED"
+        }
+      ],
+      "passed": false,
+      "sample_id": "controlled-v1/normal_mixing/00"
+    }
+  ],
+  "recomputed_common_contract_and_scientific_checks": true,
+  "sample_count": 1,
+  "schema_version": "stage1c-r1-saved-result-gate-1.0",
+  "status": "FAIL",
+  "timing_scope": "Result acceptance verification; not algorithm execution timing"
+}

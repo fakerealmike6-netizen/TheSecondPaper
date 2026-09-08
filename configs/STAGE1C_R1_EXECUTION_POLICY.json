@@ -1,0 +1,143 @@
+{
+  "authorization_id": "STAGE1C_R1_OUTPUT_CONTRACT_AND_INTEGRATION_V1",
+  "baseline_commit": "d88b839361b8fa93308430641baf7af423d76ae8",
+  "baseline_run": "20260908T084753+0800_stage1c",
+  "baseline_tree": "cef2f09aaa6033e9cb7393d6dc5cad6119a4f450",
+  "checkpoint": "CHECKPOINT_1C_R1_REACHED",
+  "delivery": {
+    "extracted_bundle_tests": true,
+    "min_zip": "Stage1C_R1_Review_Bundle_MIN.zip",
+    "new_research_phase_auto_start": false,
+    "private_handoff": "Stage1C_R1_Review_Handoff.zip",
+    "public_zip": "Stage1C_R1_Public_Review_Bundle.zip",
+    "sha256_sidecars": true
+  },
+  "experiments": {
+    "controlled_count": 60,
+    "controlled_suite": "CONTROLLED_V1",
+    "hidden_observations_and_references_immutable": true,
+    "method_definitions_changed": false,
+    "method_ids": [
+      "FULL_INTERVAL",
+      "BOUNDED_REACHABILITY",
+      "POISON",
+      "HAIRCUT",
+      "NO_CROSS_TARGET_COUPLING",
+      "NO_PROTOCOL_CONTINUATION",
+      "BALANCE_INFORMATION_REMOVED"
+    ],
+    "new_sampling": false,
+    "nonunique_endpoint_witness_bytes_must_match": false,
+    "old_controlled_scenarios": 12,
+    "old_oracle_comparisons": 32,
+    "real_count": 2,
+    "regression_suite_tests_at_baseline": 865,
+    "require_old_timings_equal": false,
+    "timed_repetitions": 5,
+    "validation_time_separate_from_method_time": true,
+    "warmups": 1,
+    "witnesses_must_be_feasible": true
+  },
+  "external_acceptance": "PENDING_REVIEW",
+  "integration_review": {
+    "allow_unchanged_contract_inherited_review": true,
+    "claim_inherited_as_new_line_by_line_review": false,
+    "include_sql_configuration_workflows_reports_and_validators": true,
+    "inventory_all_current_files_and_entrypoints": true,
+    "matrix_required": true,
+    "review_changed_and_affected_dependencies": true
+  },
+  "network": {
+    "existing_free_public_ci_allowed": true,
+    "github_read_publish_allowed": true,
+    "keep_original_context_constraints": true,
+    "new_data_collection": false,
+    "new_material_gap_requires_explicit_impact_and_separate_authorization": true,
+    "new_paid_runner_allowed": false,
+    "new_research_platform_requests_authorized": 0,
+    "official_docs_allowed": true,
+    "query_usage_endpoint_for_reverification": false
+  },
+  "next_batch": {
+    "change_4_plus_2_selection_due_to_repair_results": false,
+    "new_queries_authorized": false,
+    "status": "PROPOSAL_ONLY_UNCHANGED"
+  },
+  "publication": {
+    "force_push": false,
+    "hand_off_is_private": true,
+    "one_time_recovery_update": false,
+    "parent_commit": "d88b839361b8fa93308430641baf7af423d76ae8",
+    "private_data_publication": false,
+    "public_full_relevant_sources_tests_and_synthetic_results": true,
+    "replace_old_main_or_tag": false,
+    "repo": "https://github.com/fakerealmike6-netizen/TheSecondPaper",
+    "tag_prefix": "stage1c-r1-"
+  },
+  "repairs": {
+    "primary_lp_rewrite": false,
+    "required": [
+      "C1-V01"
+    ],
+    "scientific_method_redefinition": false,
+    "scope": "expected output domains; successful point/allocation consistency; hard invariant failure propagation; related real/control/report/package integration",
+    "whole_unchanged_history_reaudit_before_work": false
+  },
+  "required_additional_integration_controls": [
+    "partial_missing_or_extra_target_and_wrong_asset",
+    "missing_whole_method",
+    "wrong_input_identity",
+    "incomplete_nontarget_allocation",
+    "event_point_inconsistent",
+    "invalid_numeric_state",
+    "real_format_evaluator_fault_injection",
+    "two_query_one_bad_one_good_batch",
+    "report_and_extracted_bundle_failure_propagation"
+  ],
+  "required_faults": [
+    "full_missing_output",
+    "haircut_missing_witness_bad_point",
+    "haircut_bad_point_with_valid_witness",
+    "balance_ablation_non_nested"
+  ],
+  "required_positive_controls": [
+    "original_unmodified_case",
+    "legitimate_empty_target",
+    "explicit_zero",
+    "zero_hop",
+    "six_frozen_haircut_not_applicable",
+    "feasible_haircut_not_equal_hidden",
+    "real_no_protocol_feature",
+    "poison_nominal_not_a_feasible_vector",
+    "product_copies_not_single_source_joint"
+  ],
+  "schema_version": "stage1c-r1-evaluation-gate-policy-1.0",
+  "stage": "Stage1C-R1",
+  "validation_contract": {
+    "abstention_used_to_hide_contract_errors": false,
+    "baseline_all_port_events_distinct_from_interval_target_event_domain": true,
+    "empty_target_contract_is_method_specific": true,
+    "event_address_joint_point_allocation_equality_required": true,
+    "expected_domains_from": "frozen observed inputs and unchanged method-specific port semantics, not returned output/positive results/hidden/Oracle",
+    "failure_propagation": [
+      "method_contract",
+      "query",
+      "batch",
+      "cli_nonzero",
+      "report_or_diagnostic_status",
+      "final_package_verification"
+    ],
+    "hard_invariant_failure_is_batch_failure": true,
+    "independent_target_copies_union_capped_by_single_seed": false,
+    "legitimate_not_applicable_retained": true,
+    "point_clip_to_full_interval_allowed": false,
+    "point_equals_hidden_required": false,
+    "poison_must_be_globally_source_conserving": false,
+    "raw_status_can_overwrite_validation_status": false,
+    "same_common_contract_for_controlled_and_real": true,
+    "store_original_bad_outputs": true,
+    "successful_haircut_requires_complete_allocation": true,
+    "unknown_or_missing_number_is_zero": false,
+    "version": "stage1c-r1-output-acceptance-v1"
+  }
+}

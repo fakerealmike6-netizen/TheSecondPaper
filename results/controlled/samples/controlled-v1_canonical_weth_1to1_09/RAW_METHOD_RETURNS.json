@@ -1,0 +1,2096 @@
+{
+  "BALANCE_INFORMATION_REMOVED": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "weth_split:output0": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "weth_split:output1": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "8.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "8",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "8",
+                "weth_split:output0": "1",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "8"
+        }
+      },
+      "model_scope": "INFORMATION_RELAXED",
+      "modifications": {
+        "nesting": {
+          "nested": true,
+          "proof": "Identical variables, event ports, source injection, ordering and equalities; only physical actual-balance upper bounds are removed.",
+          "removed_information": "INITIAL_AND_ALIGNED_AND_REPLAYED_ACTUAL_BALANCE_CAPS"
+        },
+        "raw_graph_unchanged": true,
+        "removed_bound_variables": [
+          "h:A|ETH:wrap",
+          "z:A|ETH:wrap",
+          "h:A|WETH:weth_split",
+          "z:A|WETH:weth_split",
+          "z:T|WETH:weth_split",
+          "z:U|WETH:weth_split"
+        ]
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 11,
+        "base_variables": 16,
+        "endpoint_optimizations": 6,
+        "entry_intervals": 2,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0035595999943325296,
+        "solve_and_certification_seconds": 0.0433677999972133
+      }
+    }
+  },
+  "BOUNDED_REACHABILITY": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output0"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output1"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "seed": {
+          "actual_raw": "8",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "weth_split:input": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": null,
+          "role": "MULTIOUTPUT_INPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:input"
+          ]
+        },
+        "weth_split:output0": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "T|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:output0"
+          ]
+        },
+        "weth_split:output1": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "U|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:output1"
+          ]
+        },
+        "wrap:input": {
+          "actual_raw": "15",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": null,
+          "role": "PROTOCOL_INPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:input"
+          ]
+        },
+        "wrap:net": {
+          "actual_raw": "14",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": null,
+          "role": "PROTOCOL_NET",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:net"
+          ]
+        },
+        "wrap:output": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|WETH",
+          "role": "PROTOCOL_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output"
+          ]
+        },
+        "wrap:refund": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "PROTOCOL_REFUND",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:refund"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "a5b761796196dd7df540a37eec06a49afebc8b31ed60fdd92c8be2051a37d9ca",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "addresses": [
+            "T|WETH",
+            "U|WETH"
+          ],
+          "events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "nominal_raw": null,
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "BOUNDED_REACHABILITY",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "output_event_ids": [
+        "weth_split:output0",
+        "weth_split:output1"
+      ],
+      "output_kind": "ADDRESS_EVENT_SET_NO_AMOUNT",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/09",
+      "status": "OK"
+    }
+  },
+  "FULL_INTERVAL": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "weth_split:output0": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "weth_split:output1": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "8.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-1",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-1",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "8",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "8",
+                "weth_split:output0": "1",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "8",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "7",
+          "objective_events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "8"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "raw_graph_unchanged": true
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 11,
+        "base_variables": 16,
+        "endpoint_optimizations": 6,
+        "entry_intervals": 2,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0019071000133408234,
+        "solve_and_certification_seconds": 0.04499319999013096
+      }
+    }
+  },
+  "HAIRCUT": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output0"
+          ],
+          "nominal_raw": null,
+          "point_raw": "56/15",
+          "source_amount_raw": "56/15",
+          "supported": true
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output1"
+          ],
+          "nominal_raw": null,
+          "point_raw": "56/15",
+          "source_amount_raw": "56/15",
+          "supported": true
+        }
+      },
+      "allocation_raw": {
+        "seed": "8",
+        "weth_split:input": "112/15",
+        "weth_split:output0": "56/15",
+        "weth_split:output1": "56/15",
+        "wrap:input": "8",
+        "wrap:net": "112/15",
+        "wrap:output": "112/15",
+        "wrap:refund": "8/15"
+      },
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": {
+        "B0_out_raw": "0",
+        "S0_out_raw": "0",
+        "adopted": false,
+        "asset": "ETH",
+        "convention": "H_BMIN_BOUNDARY_V1",
+        "is_observed_fact": false,
+        "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+        "sequence": []
+      },
+      "construction_audit": {
+        "allocation_construction": "EXACT_FRACTION_PROPORTIONAL_REPLAY",
+        "debit_trace": [
+          {
+            "account_asset": "A|ETH",
+            "actual_before_raw": "15",
+            "actual_debit_raw": "15",
+            "event_id": "wrap:input",
+            "ratio": "8/15",
+            "source_before_raw": "8",
+            "source_debit_raw": "8"
+          },
+          {
+            "account_asset": "A|WETH",
+            "actual_before_raw": "14",
+            "actual_debit_raw": "14",
+            "event_id": "weth_split:input",
+            "ratio": "8/15",
+            "source_before_raw": "112/15",
+            "source_debit_raw": "112/15"
+          }
+        ],
+        "final_actual_balance_raw": {
+          "A|ETH": "1",
+          "A|WETH": "0",
+          "T|WETH": "7",
+          "U|WETH": "7"
+        },
+        "final_source_balance_raw": {
+          "A|ETH": "8/15",
+          "A|WETH": "0",
+          "T|WETH": "56/15",
+          "U|WETH": "56/15"
+        },
+        "per_asset": {
+          "ETH": {
+            "exact_conserved": true,
+            "fees_and_boundary_sinks_raw": "0",
+            "net_conversion_raw": "-112/15",
+            "retained_in_accounts_terminals_and_outside_raw": "8/15",
+            "seed_raw": "8"
+          },
+          "WETH": {
+            "exact_conserved": true,
+            "fees_and_boundary_sinks_raw": "0",
+            "net_conversion_raw": "112/15",
+            "retained_in_accounts_terminals_and_outside_raw": "112/15",
+            "seed_raw": "0"
+          }
+        }
+      },
+      "events": {
+        "seed": {
+          "actual_raw": "8",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "8",
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": "8",
+          "supported": true,
+          "witness": null
+        },
+        "weth_split:input": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": "112/15",
+          "recipient": null,
+          "role": "MULTIOUTPUT_INPUT",
+          "source_amount_raw": "112/15",
+          "supported": true,
+          "witness": null
+        },
+        "weth_split:output0": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": "56/15",
+          "recipient": "T|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": "56/15",
+          "supported": true,
+          "witness": null
+        },
+        "weth_split:output1": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": "56/15",
+          "recipient": "U|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": "56/15",
+          "supported": true,
+          "witness": null
+        },
+        "wrap:input": {
+          "actual_raw": "15",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "8",
+          "recipient": null,
+          "role": "PROTOCOL_INPUT",
+          "source_amount_raw": "8",
+          "supported": true,
+          "witness": null
+        },
+        "wrap:net": {
+          "actual_raw": "14",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "112/15",
+          "recipient": null,
+          "role": "PROTOCOL_NET",
+          "source_amount_raw": "112/15",
+          "supported": true,
+          "witness": null
+        },
+        "wrap:output": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": null,
+          "point_raw": "112/15",
+          "recipient": "A|WETH",
+          "role": "PROTOCOL_OUTPUT",
+          "source_amount_raw": "112/15",
+          "supported": true,
+          "witness": null
+        },
+        "wrap:refund": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": null,
+          "point_raw": "8/15",
+          "recipient": "A|ETH",
+          "role": "PROTOCOL_REFUND",
+          "source_amount_raw": "8/15",
+          "supported": true,
+          "witness": null
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "a5b761796196dd7df540a37eec06a49afebc8b31ed60fdd92c8be2051a37d9ca",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": true,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "addresses": [
+            "T|WETH",
+            "U|WETH"
+          ],
+          "events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "nominal_raw": null,
+          "point_raw": "112/15",
+          "source_amount_raw": "112/15"
+        }
+      },
+      "method_id": "HAIRCUT",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "output_event_ids": [
+        "weth_split:output0",
+        "weth_split:output1"
+      ],
+      "output_kind": "PROPORTIONAL_FEASIBLE_POINT",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/09",
+      "status": "OK"
+    }
+  },
+  "NO_CROSS_TARGET_COUPLING": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "weth_split:output0": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        },
+        "weth_split:output1": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "7",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            },
+            "upper": {
+              "approximate_raw": "7.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "-7/8",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "-7/8",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "7",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "7",
+                "weth_split:output0": "0",
+                "weth_split:output1": "7",
+                "wrap:input": "8",
+                "wrap:net": "7",
+                "wrap:output": "7",
+                "wrap:refund": "1"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_POSITIVE",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "7"
+        }
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "asset": "WETH",
+          "copy_count": 2,
+          "derivation": "Exact sum of extrema in disjoint variables and constraints",
+          "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+          "lower_raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "14"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "definition": "F_ind = product_a F^(a); omit x_e^(a)=x_e^(b) and corresponding state identity for a != b; each copy retains all targets as absorbing terminals.",
+        "global_common_source_budget": false,
+        "product_copies": [
+          {
+            "address_asset": "T|WETH",
+            "copy_id": "F^0",
+            "cross_copy_identity_equalities_present": false,
+            "equalities": 11,
+            "physical_identity_namespace": "target_copy/0/",
+            "variables": 16
+          },
+          {
+            "address_asset": "U|WETH",
+            "copy_id": "F^1",
+            "cross_copy_identity_equalities_present": false,
+            "equalities": 11,
+            "physical_identity_namespace": "target_copy/1/",
+            "variables": 16
+          }
+        ],
+        "raw_graph_unchanged": true,
+        "unbound_all_state_variables_count": 16,
+        "unbound_identical_physical_variables": [
+          "seed",
+          "wrap:input",
+          "wrap:refund",
+          "wrap:output",
+          "wrap:net",
+          "weth_split:input",
+          "weth_split:output0",
+          "weth_split:output1"
+        ],
+        "within_each_copy_common_source_budget": true
+      },
+      "output_kind": "product_of_target_specific_copies",
+      "positive_addresses": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 11,
+        "base_variables": 16,
+        "endpoint_optimizations": 4,
+        "entry_intervals": 2,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0014630000077886507,
+        "solve_and_certification_seconds": 0.03396519999660086
+      }
+    }
+  },
+  "NO_PROTOCOL_CONTINUATION": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "applicability": "SUPPORTED",
+      "events": {
+        "weth_split:output0": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        },
+        "weth_split:output1": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "asset": "WETH",
+          "endpoints": {
+            "lower": {
+              "approximate_raw": "0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            },
+            "upper": {
+              "approximate_raw": "-0.0",
+              "certificate": {
+                "certified": true,
+                "exact_dual_feasible": true,
+                "exact_dual_objective": "0",
+                "exact_primal_feasible": true,
+                "exact_primal_objective": "0",
+                "failure_detail": null,
+                "primal_recovery": {
+                  "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+                  "status": "EXACT_CANDIDATE_RECOVERED"
+                },
+                "rational_reconstruction_denominator_limit": 1000000000
+              },
+              "raw": "0",
+              "status": "OPTIMAL_EXACT_CERTIFIED",
+              "witness_event_source_raw": {
+                "seed": "8",
+                "weth_split:input": "0",
+                "weth_split:output0": "0",
+                "weth_split:output1": "0",
+                "wrap:input": "8",
+                "wrap:net": "8",
+                "wrap:output": "0",
+                "wrap:refund": "0"
+              }
+            }
+          },
+          "lower_raw": "0",
+          "objective_events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "positive_support": "CERTIFIED_ZERO",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "upper_raw": "0"
+        }
+      },
+      "model_scope": "KNOWN_DECLARED_LEDGER",
+      "modifications": {
+        "boundary_source_variables": [
+          "wrap:net"
+        ],
+        "connected_protocol_count": 1,
+        "feature_status": "APPLIED",
+        "gross_and_refund_conservation_preserved": true,
+        "physical_outputs_retained_as_source_zero": [
+          "wrap:output"
+        ],
+        "raw_graph_unchanged": true,
+        "unlinked_source_ratio_equalities": [
+          "protocol:wrap:fixed_ratio"
+        ]
+      },
+      "output_kind": "feasible_interval",
+      "positive_addresses": [],
+      "status": "COMPLETED",
+      "task_counts": {
+        "address_intervals": 2,
+        "base_equalities": 10,
+        "base_variables": 16,
+        "endpoint_optimizations": 6,
+        "entry_intervals": 2,
+        "joint_intervals": 1
+      },
+      "timing_parts": {
+        "model_build_seconds": 0.0026803000073414296,
+        "solve_and_certification_seconds": 0.043580500001553446
+      }
+    }
+  },
+  "POISON": {
+    "failed_attempts": [],
+    "first_return": {
+      "addresses": {
+        "T|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output0"
+          ],
+          "nominal_raw": "7",
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        },
+        "U|WETH": {
+          "asset": "WETH",
+          "events": [
+            "weth_split:output1"
+          ],
+          "nominal_raw": "7",
+          "point_raw": null,
+          "source_amount_raw": null,
+          "supported": true
+        }
+      },
+      "allocation_raw": null,
+      "amount_unit": "RAW_PER_ASSET_EXACT_RATIONAL",
+      "applicability": "APPLICABLE",
+      "boundary_completion": null,
+      "construction_audit": null,
+      "events": {
+        "seed": {
+          "actual_raw": "8",
+          "asset": "ETH",
+          "nominal_raw": "8",
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "SEED",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed"
+          ]
+        },
+        "weth_split:input": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": "14",
+          "point_raw": null,
+          "recipient": null,
+          "role": "MULTIOUTPUT_INPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:input"
+          ]
+        },
+        "weth_split:output0": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": "T|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:output0"
+          ]
+        },
+        "weth_split:output1": {
+          "actual_raw": "7",
+          "asset": "WETH",
+          "nominal_raw": "7",
+          "point_raw": null,
+          "recipient": "U|WETH",
+          "role": "MULTIOUTPUT_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output",
+            "weth_split:output1"
+          ]
+        },
+        "wrap:input": {
+          "actual_raw": "15",
+          "asset": "ETH",
+          "nominal_raw": "15",
+          "point_raw": null,
+          "recipient": null,
+          "role": "PROTOCOL_INPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:input"
+          ]
+        },
+        "wrap:net": {
+          "actual_raw": "14",
+          "asset": "ETH",
+          "nominal_raw": "14",
+          "point_raw": null,
+          "recipient": null,
+          "role": "PROTOCOL_NET",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:net"
+          ]
+        },
+        "wrap:output": {
+          "actual_raw": "14",
+          "asset": "WETH",
+          "nominal_raw": "14",
+          "point_raw": null,
+          "recipient": "A|WETH",
+          "role": "PROTOCOL_OUTPUT",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:output"
+          ]
+        },
+        "wrap:refund": {
+          "actual_raw": "1",
+          "asset": "ETH",
+          "nominal_raw": "1",
+          "point_raw": null,
+          "recipient": "A|ETH",
+          "role": "PROTOCOL_REFUND",
+          "source_amount_raw": null,
+          "supported": true,
+          "witness": [
+            "seed",
+            "wrap:refund"
+          ]
+        }
+      },
+      "failure_reason": null,
+      "input_fact_hash": "a5b761796196dd7df540a37eec06a49afebc8b31ed60fdd92c8be2051a37d9ca",
+      "input_usage": {
+        "actual_fees": true,
+        "balances_and_anchors": false,
+        "hidden_or_oracle": false,
+        "main_endpoints": false,
+        "physical_events_order_assets_targets": true,
+        "source_zero_roles": true
+      },
+      "joint_by_asset": {
+        "WETH": {
+          "addresses": [
+            "T|WETH",
+            "U|WETH"
+          ],
+          "events": [
+            "weth_split:output0",
+            "weth_split:output1"
+          ],
+          "nominal_raw": "14",
+          "point_raw": null,
+          "source_amount_raw": null
+        }
+      },
+      "method_id": "POISON",
+      "method_version": "stage1c-baselines-v1.0.0",
+      "output_address_ids": [
+        "T|WETH",
+        "U|WETH"
+      ],
+      "output_event_ids": [
+        "weth_split:output0",
+        "weth_split:output1"
+      ],
+      "output_kind": "POISON_NOMINAL_RAW",
+      "query_or_sample_id": "controlled-v1/canonical_weth_1to1/09",
+      "status": "OK"
+    }
+  }
+}

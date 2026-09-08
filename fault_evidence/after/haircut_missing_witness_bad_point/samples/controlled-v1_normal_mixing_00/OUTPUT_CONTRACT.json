@@ -1,0 +1,352 @@
+{
+  "bindings": {
+    "contract_module_sha256": "651f544ad251dc90c66ddb3efc8a7f10dce181fba44d4309b715f35dc3a8f655",
+    "expected_identity_sha256": "8a385fae52d162a112001726edb51ad9c0752a3b37478a888de4d61cfbb4006a",
+    "input_document_sha256": "4d343011fd68ab6f7c70bc01191884f55507d9fb4d7389fed2ad51b30a56df08",
+    "method_results_sha256": "6d8b5be434c3edfe13611f8ac1cd9229fdde9c8af68794fe8208e476940b51d1"
+  },
+  "contract_version": "stage1c-r1-output-acceptance-v1",
+  "counts": {
+    "post_generation_unique_allocation_audits": 6,
+    "received_methods": 7,
+    "required_addresses": 1,
+    "required_baseline_ports": 2,
+    "required_interval_events": 1,
+    "required_methods": 7
+  },
+  "errors": [
+    {
+      "code": "FIELD_TYPE",
+      "detail": "Expected dictionary",
+      "method": "HAIRCUT",
+      "path": "allocation_raw"
+    },
+    {
+      "code": "POINT_ALLOCATION_MISMATCH",
+      "detail": "Event point differs from complete allocation",
+      "method": "HAIRCUT",
+      "path": "events.enter"
+    },
+    {
+      "code": "POINT_ALLOCATION_MISMATCH",
+      "detail": "Event point differs from complete allocation",
+      "method": "HAIRCUT",
+      "path": "events.seed"
+    },
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "POINT_AGGREGATE_MISMATCH",
+      "detail": "Aggregate differs from frozen service-entry allocation sum",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "POINT_ALIAS_MISMATCH",
+      "detail": "Point alias mismatch",
+      "method": "HAIRCUT",
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "expected_domains": {
+    "addresses": {
+      "T|ETH": [
+        "enter"
+      ]
+    },
+    "allocation_ports": [
+      "enter",
+      "seed"
+    ],
+    "baseline_events": [
+      "enter",
+      "seed"
+    ],
+    "baseline_joint_assets": [
+      "ETH"
+    ],
+    "boundary_completion_expected": {
+      "B0_out_raw": "0",
+      "S0_out_raw": "0",
+      "adopted": false,
+      "asset": "ETH",
+      "convention": "H_BMIN_BOUNDARY_V1",
+      "is_observed_fact": false,
+      "selection_basis": "max(0, max_prefix(cumulative_unknown_returns - cumulative_nonservice_exits))",
+      "sequence": []
+    },
+    "connected_protocol_ids": [],
+    "context_format": false,
+    "derivation": "Frozen observations and unchanged method-specific physical port semantics only",
+    "empty_target_domain": false,
+    "errors": [],
+    "haircut_not_applicable_basis": null,
+    "interval_events": [
+      "enter"
+    ],
+    "interval_joint_assets": [
+      "ETH"
+    ],
+    "passed": true,
+    "port_facts": {
+      "enter": {
+        "amount_raw": "3",
+        "asset": "ETH",
+        "operation_ordinal": 1,
+        "recipient": "T|ETH",
+        "role": "TRANSFER",
+        "sender": "A|ETH"
+      },
+      "seed": {
+        "amount_raw": "2",
+        "asset": "ETH",
+        "operation_ordinal": 0,
+        "recipient": "A|ETH",
+        "role": "SEED",
+        "sender": null
+      }
+    },
+    "service_entries_by_asset": {
+      "ETH": [
+        "enter"
+      ]
+    },
+    "source_potential_assets": [
+      "ETH"
+    ],
+    "temporal_marking_expected": {
+      "enter": true,
+      "seed": true
+    }
+  },
+  "hard_invariants": [
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "FULL_INTERVAL",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "TARGET_COPY_STRUCTURE",
+      "detail": "One full-constraint independent namespace per address-asset; internal budget retained; cross-copy shared identity removed",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "modifications.product_copies"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.connected_protocol_count"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.feature_status"
+    },
+    {
+      "code": "PROTOCOL_BOUNDARY_STRUCTURE",
+      "detail": "Input-derived continuation boundary field must agree",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "modifications.gross_and_refund_conservation_preserved"
+    },
+    {
+      "code": "RAW_GRAPH_PRESERVED",
+      "detail": "Observed graph unchanged",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.raw_graph_unchanged"
+    },
+    {
+      "code": "BALANCE_STRUCTURAL_NESTING",
+      "detail": "Independent unchanged-model reconstruction confirms same variables/equalities and relaxed balance caps",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "modifications.nesting"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "addresses.T|ETH"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "events.enter"
+    },
+    {
+      "code": "TARGET_COPY_SINGLETON_EQUALITY",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "events.enter"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "events.enter"
+    },
+    {
+      "code": "BALANCE_ENDPOINT_NESTING",
+      "detail": "Same-input relaxed interval must contain FULL",
+      "method": "BALANCE_INFORMATION_REMOVED",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "TARGET_COPY_JOINT_CONTAINS_FULL",
+      "detail": "Independent copies preserve singleton intervals and contain original joint range",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "NO_PROTOCOL_FEATURE_EQUALITY",
+      "detail": "No connected conversion implies no endpoint change",
+      "method": "NO_PROTOCOL_CONTINUATION",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    },
+    {
+      "code": "TARGET_COPY_EXACT_DECOMPOSITION",
+      "detail": "Independent joint is the exact sum of target-copy extrema, not a one-seed feasible total",
+      "method": "NO_CROSS_TARGET_COUPLING",
+      "passed": true,
+      "path": "joint_by_asset.ETH"
+    }
+  ],
+  "hidden_or_reference_read": false,
+  "method_checks": {
+    "BALANCE_INFORMATION_REMOVED": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "BOUNDED_REACHABILITY": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "FULL_INTERVAL": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "HAIRCUT": {
+      "business_status": "COMPLETED",
+      "errors": [
+        {
+          "code": "FIELD_TYPE",
+          "detail": "Expected dictionary",
+          "method": "HAIRCUT",
+          "path": "allocation_raw"
+        },
+        {
+          "code": "POINT_ALLOCATION_MISMATCH",
+          "detail": "Event point differs from complete allocation",
+          "method": "HAIRCUT",
+          "path": "events.enter"
+        },
+        {
+          "code": "POINT_ALLOCATION_MISMATCH",
+          "detail": "Event point differs from complete allocation",
+          "method": "HAIRCUT",
+          "path": "events.seed"
+        },
+        {
+          "code": "POINT_AGGREGATE_MISMATCH",
+          "detail": "Aggregate differs from frozen service-entry allocation sum",
+          "method": "HAIRCUT",
+          "path": "addresses.T|ETH"
+        },
+        {
+          "code": "POINT_ALIAS_MISMATCH",
+          "detail": "Point alias mismatch",
+          "method": "HAIRCUT",
+          "path": "addresses.T|ETH"
+        },
+        {
+          "code": "POINT_AGGREGATE_MISMATCH",
+          "detail": "Aggregate differs from frozen service-entry allocation sum",
+          "method": "HAIRCUT",
+          "path": "joint_by_asset.ETH"
+        },
+        {
+          "code": "POINT_ALIAS_MISMATCH",
+          "detail": "Point alias mismatch",
+          "method": "HAIRCUT",
+          "path": "joint_by_asset.ETH"
+        }
+      ],
+      "passed": false
+    },
+    "NO_CROSS_TARGET_COUPLING": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "NO_PROTOCOL_CONTINUATION": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    },
+    "POISON": {
+      "business_status": "COMPLETED",
+      "errors": [],
+      "passed": true
+    }
+  },
+  "no_solver_or_oracle_called": true,
+  "passed": false,
+  "schema_version": "stage1c-r1-output-acceptance-v1",
+  "status": "FAIL"
+}

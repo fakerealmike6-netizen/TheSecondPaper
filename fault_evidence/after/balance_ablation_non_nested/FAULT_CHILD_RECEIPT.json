@@ -1,0 +1,67 @@
+{
+  "batch_passed": false,
+  "batch_status": "PARTIAL",
+  "case": "balance_ablation_non_nested",
+  "cli_exit_code": 1,
+  "expected_cli_exit_code": 1,
+  "fault_injection_boundary": "METHOD_DISPATCH_RETURN_OR_MANDATORY_METHOD_DISPATCH_SET",
+  "freeze_verifier_calls": [
+    {
+      "checked_full_input_count": 62,
+      "frozen_version": "stage1c-v1",
+      "selected": [
+        "controlled-v1/normal_mixing/00"
+      ]
+    },
+    {
+      "checked_full_input_count": 62,
+      "frozen_version": "stage1c-v1",
+      "selected": [
+        "controlled-v1/normal_mixing/00"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "acceptance_receipt_files": [
+        "OUTPUT_CONTRACT.json",
+        "QUERY_ACCEPTANCE.json"
+      ],
+      "evaluation_errors": [
+        {
+          "code": "ENDPOINT_VALUE_MISMATCH",
+          "detail": "Endpoint must equal reported interval",
+          "method": "BALANCE_INFORMATION_REMOVED",
+          "path": "joint_by_asset.ETH.endpoints.lower"
+        },
+        {
+          "code": "WITNESS_OBJECTIVE_MISMATCH",
+          "detail": "Witness objective differs from endpoint",
+          "method": "BALANCE_INFORMATION_REMOVED",
+          "path": "joint_by_asset.ETH.endpoints.lower"
+        },
+        {
+          "code": "BALANCE_ENDPOINT_NESTING",
+          "detail": "Same-input relaxed interval must contain FULL",
+          "method": "BALANCE_INFORMATION_REMOVED",
+          "path": "joint_by_asset.ETH"
+        }
+      ],
+      "evaluation_passed": false,
+      "method_statuses": {
+        "BALANCE_INFORMATION_REMOVED": "COMPLETED",
+        "BOUNDED_REACHABILITY": "COMPLETED",
+        "FULL_INTERVAL": "COMPLETED",
+        "HAIRCUT": "COMPLETED",
+        "NO_CROSS_TARGET_COUPLING": "COMPLETED",
+        "NO_PROTOCOL_CONTINUATION": "COMPLETED",
+        "POISON": "COMPLETED"
+      },
+      "raw_method_output_saved": true,
+      "sample_id": "controlled-v1/normal_mixing/00"
+    }
+  ],
+  "sample_count": 1,
+  "selection_note": "Real original verifier executes all frozen source/input checks and returns the full row list unchanged; production CLI selects explicit frozen query IDs.",
+  "source_or_inputs_modified_by_probe": false
+}

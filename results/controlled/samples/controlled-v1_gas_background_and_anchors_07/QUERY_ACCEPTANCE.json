@@ -1,0 +1,44 @@
+{
+  "binding": {
+    "execution_revision": {
+      "freeze_sha256": "916871ce36a29e34d3a5813fad33154b7aa605f928d76c22c3d1a1d0b1707f1e",
+      "parent_freeze_sha256": "e22250a3689e0cbb5837c000bd332fcb74171fc58f3bc013a6a340a0ec4d6e06",
+      "source_inventory_sha256": "9e26c5dd67e562f4a486a5573dc24991bdeb0d0afce371dcf76d8e515cf856bd",
+      "version": "stage1c-r1-v5"
+    },
+    "expected_identity": {
+      "input_fact_hash": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
+      "label_version": "CONTROLLED_V1_SERVICES_1",
+      "method_versions": {
+        "BALANCE_INFORMATION_REMOVED": "stage1c-v1:e1c9ea756c022513",
+        "BOUNDED_REACHABILITY": "stage1c-v1:e1c9ea756c022513",
+        "FULL_INTERVAL": "stage1c-v1:e1c9ea756c022513",
+        "HAIRCUT": "stage1c-v1:e1c9ea756c022513",
+        "NO_CROSS_TARGET_COUPLING": "stage1c-v1:e1c9ea756c022513",
+        "NO_PROTOCOL_CONTINUATION": "stage1c-v1:e1c9ea756c022513",
+        "POISON": "stage1c-v1:e1c9ea756c022513"
+      },
+      "query_id": "controlled-v1/gas_background_and_anchors/07",
+      "sample_id": "controlled-v1/gas_background_and_anchors/07",
+      "scope_hash": "2ef58e8b466a0e2df1b764c37277d4ed706fdbfe2aa90c15f27df17878be4aec"
+    },
+    "files": {
+      "ABLATIONS.json": "17213ed4bcc0e1d2b1be395c765052c9a2ee5ae15c754e64cfe7d5876821096b",
+      "EVALUATION.json": "7c3b324d8c20b86af868994857072627f4095d28ba6741f9d550101af2f0dc15",
+      "METHOD_RESULTS.json": "030f7a1e488c1f5648206e336e29f2327cbad930b2c5ed475ac2cb3081fcd28d",
+      "OUTPUT_CONTRACT.json": "b681a4dddf5c7780cf3b1c062810953e3208e089206d221a381c07b62b7e12ae"
+    },
+    "observed_sha256": "2f7c369da3ead744629b256c9a53c6becacc009458d0c08cdab47406137a4626",
+    "parent_freeze_sha256": "e22250a3689e0cbb5837c000bd332fcb74171fc58f3bc013a6a340a0ec4d6e06"
+  },
+  "contract_passed": true,
+  "errors": [],
+  "passed": true,
+  "schema_version": "stage1c-r1-query-acceptance-1.0",
+  "scientific_checks_passed": true,
+  "validation_timing": {
+    "common_output_contract_seconds": 0.011236400008783676,
+    "scientific_evaluation_seconds": 0.007644199999049306,
+    "scope": "Post-method validation only; excluded from algorithm warmup and five timed executions"
+  }
+}
