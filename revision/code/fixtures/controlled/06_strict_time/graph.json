@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "06_strict_time",
+  "title": "A later seed or normal inflow cannot explain earlier output",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "5",
+    "T|ETH": "0",
+    "U|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "earlier",
+      "kind": "transfer",
+      "order": 1,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "5"
+    },
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 2,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "10"
+    },
+    {
+      "id": "later",
+      "kind": "transfer",
+      "order": 3,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "10"
+    },
+    {
+      "id": "future_normal",
+      "kind": "normal_incoming",
+      "order": 4,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "100"
+    },
+    {
+      "id": "future_out",
+      "kind": "transfer",
+      "order": 5,
+      "from": "A",
+      "to": "U",
+      "asset": "ETH",
+      "amount_raw": "100"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "earlier": [
+      "earlier"
+    ],
+    "later": [
+      "later"
+    ],
+    "future_out": [
+      "future_out"
+    ],
+    "T": [
+      "earlier",
+      "later"
+    ]
+  }
+}

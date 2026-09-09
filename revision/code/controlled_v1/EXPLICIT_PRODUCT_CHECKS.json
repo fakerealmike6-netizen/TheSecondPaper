@@ -1,0 +1,513 @@
+{
+  "controlled-v1/canonical_weth_1to1/01": {
+    "base_variables": 16,
+    "common_realizability_proof": "If sum(U_a)>U_union, the combination contradicts the certified FULL union upper. If equal, its FULL maximizer attains every U_a.",
+    "copy_count": 2,
+    "decomposed_interval": {
+      "asset": "WETH",
+      "copy_count": 2,
+      "derivation": "Exact sum of extrema in disjoint variables and constraints",
+      "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+      "lower_raw": "0",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "3"
+    },
+    "explicit_equalities": 22,
+    "explicit_interval": {
+      "asset": "WETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "0.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "0",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "0",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::seed": "2",
+            "copy0::weth_split:input": "1",
+            "copy0::weth_split:output0": "0",
+            "copy0::weth_split:output1": "1",
+            "copy0::wrap:input": "2",
+            "copy0::wrap:net": "1",
+            "copy0::wrap:output": "1",
+            "copy0::wrap:refund": "1",
+            "copy1::seed": "2",
+            "copy1::weth_split:input": "1",
+            "copy1::weth_split:output0": "1",
+            "copy1::weth_split:output1": "0",
+            "copy1::wrap:input": "2",
+            "copy1::wrap:net": "1",
+            "copy1::wrap:output": "1",
+            "copy1::wrap:refund": "1"
+          }
+        },
+        "upper": {
+          "approximate_raw": "3.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-3/2",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-3/2",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "3",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::seed": "2",
+            "copy0::weth_split:input": "1",
+            "copy0::weth_split:output0": "1",
+            "copy0::weth_split:output1": "0",
+            "copy0::wrap:input": "2",
+            "copy0::wrap:net": "1",
+            "copy0::wrap:output": "1",
+            "copy0::wrap:refund": "1",
+            "copy1::seed": "2",
+            "copy1::weth_split:input": "2",
+            "copy1::weth_split:output0": "0",
+            "copy1::weth_split:output1": "2",
+            "copy1::wrap:input": "2",
+            "copy1::wrap:net": "2",
+            "copy1::wrap:output": "2",
+            "copy1::wrap:refund": "0"
+          }
+        }
+      },
+      "lower_raw": "0",
+      "objective_events": [
+        "copy0::weth_split:output0",
+        "copy1::weth_split:output1"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "3"
+    },
+    "explicit_variables": 32,
+    "full_joint_interval": {
+      "asset": "WETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "1.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "1/2",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "1/2",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "1",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "seed": "2",
+            "weth_split:input": "1",
+            "weth_split:output0": "0",
+            "weth_split:output1": "1",
+            "wrap:input": "2",
+            "wrap:net": "1",
+            "wrap:output": "1",
+            "wrap:refund": "1"
+          }
+        },
+        "upper": {
+          "approximate_raw": "2.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-1",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-1",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "2",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "seed": "2",
+            "weth_split:input": "2",
+            "weth_split:output0": "0",
+            "weth_split:output1": "2",
+            "wrap:input": "2",
+            "wrap:net": "2",
+            "wrap:output": "2",
+            "wrap:refund": "0"
+          }
+        }
+      },
+      "lower_raw": "1",
+      "objective_events": [
+        "weth_split:output0",
+        "weth_split:output1"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "2"
+    },
+    "independent_upper_combination_feasible_in_full": false,
+    "independent_upper_sum_exceeds_full_joint": true,
+    "status": "PASS"
+  },
+  "controlled-v1/repeated_entries_timed_returns/00": {
+    "base_variables": 26,
+    "common_realizability_proof": "If sum(U_a)>U_union, the combination contradicts the certified FULL union upper. If equal, its FULL maximizer attains every U_a.",
+    "copy_count": 2,
+    "decomposed_interval": {
+      "asset": "ETH",
+      "copy_count": 2,
+      "derivation": "Exact sum of extrema in disjoint variables and constraints",
+      "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+      "lower_raw": "1",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "3"
+    },
+    "explicit_equalities": 38,
+    "explicit_interval": {
+      "asset": "ETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "1.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "1/2",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "1/2",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "1",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::before_seed": "0",
+            "copy0::entry_first": "1",
+            "copy0::entry_second": "0",
+            "copy0::other_target": "1",
+            "copy0::seed": "2",
+            "copy0::timed_return": "0",
+            "copy0::to_return_account": "1",
+            "copy1::before_seed": "0",
+            "copy1::entry_first": "1",
+            "copy1::entry_second": "1",
+            "copy1::other_target": "0",
+            "copy1::seed": "2",
+            "copy1::timed_return": "0",
+            "copy1::to_return_account": "0"
+          }
+        },
+        "upper": {
+          "approximate_raw": "3.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-3/2",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-3/2",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "3",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::before_seed": "0",
+            "copy0::entry_first": "1",
+            "copy0::entry_second": "1",
+            "copy0::other_target": "0",
+            "copy0::seed": "2",
+            "copy0::timed_return": "1",
+            "copy0::to_return_account": "1",
+            "copy1::before_seed": "0",
+            "copy1::entry_first": "1",
+            "copy1::entry_second": "0",
+            "copy1::other_target": "1",
+            "copy1::seed": "2",
+            "copy1::timed_return": "0",
+            "copy1::to_return_account": "1"
+          }
+        }
+      },
+      "lower_raw": "1",
+      "objective_events": [
+        "copy0::before_seed",
+        "copy0::entry_first",
+        "copy0::entry_second",
+        "copy1::other_target"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "3"
+    },
+    "explicit_variables": 52,
+    "full_joint_interval": {
+      "asset": "ETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "2.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "1",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "1",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "2",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "before_seed": "0",
+            "entry_first": "1",
+            "entry_second": "1",
+            "other_target": "0",
+            "seed": "2",
+            "timed_return": "0",
+            "to_return_account": "0"
+          }
+        },
+        "upper": {
+          "approximate_raw": "2.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-1",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-1",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "2",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "before_seed": "0",
+            "entry_first": "1",
+            "entry_second": "0",
+            "other_target": "1",
+            "seed": "2",
+            "timed_return": "0",
+            "to_return_account": "1"
+          }
+        }
+      },
+      "lower_raw": "2",
+      "objective_events": [
+        "before_seed",
+        "entry_first",
+        "entry_second",
+        "other_target"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "2"
+    },
+    "independent_upper_combination_feasible_in_full": false,
+    "independent_upper_sum_exceeds_full_joint": true,
+    "status": "PASS"
+  },
+  "controlled-v1/split_merge_shared_targets/00": {
+    "base_variables": 26,
+    "common_realizability_proof": "If sum(U_a)>U_union, the combination contradicts the certified FULL union upper. If equal, its FULL maximizer attains every U_a.",
+    "copy_count": 2,
+    "decomposed_interval": {
+      "asset": "ETH",
+      "copy_count": 2,
+      "derivation": "Exact sum of extrema in disjoint variables and constraints",
+      "interpretation": "PRODUCT_OF_TARGET_SPECIFIC_FEASIBLE_SETS_NOT_JOINTLY_REALIZABLE_FULL_AMOUNT",
+      "lower_raw": "0",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "4"
+    },
+    "explicit_equalities": 38,
+    "explicit_interval": {
+      "asset": "ETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "0.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "0",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "0",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "0",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::a_b": "2",
+            "copy0::a_c": "0",
+            "copy0::b_d": "2",
+            "copy0::c_d": "0",
+            "copy0::d_t": "0",
+            "copy0::d_u": "2",
+            "copy0::seed": "2",
+            "copy1::a_b": "2",
+            "copy1::a_c": "0",
+            "copy1::b_d": "2",
+            "copy1::c_d": "0",
+            "copy1::d_t": "2",
+            "copy1::d_u": "0",
+            "copy1::seed": "2"
+          }
+        },
+        "upper": {
+          "approximate_raw": "4.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-2",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-2",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "4",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "copy0::a_b": "2",
+            "copy0::a_c": "0",
+            "copy0::b_d": "2",
+            "copy0::c_d": "0",
+            "copy0::d_t": "2",
+            "copy0::d_u": "0",
+            "copy0::seed": "2",
+            "copy1::a_b": "2",
+            "copy1::a_c": "0",
+            "copy1::b_d": "2",
+            "copy1::c_d": "0",
+            "copy1::d_t": "0",
+            "copy1::d_u": "2",
+            "copy1::seed": "2"
+          }
+        }
+      },
+      "lower_raw": "0",
+      "objective_events": [
+        "copy0::d_t",
+        "copy1::d_u"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "4"
+    },
+    "explicit_variables": 52,
+    "full_joint_interval": {
+      "asset": "ETH",
+      "endpoints": {
+        "lower": {
+          "approximate_raw": "2.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "1",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "1",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "2",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "a_b": "2",
+            "a_c": "0",
+            "b_d": "2",
+            "c_d": "0",
+            "d_t": "2",
+            "d_u": "0",
+            "seed": "2"
+          }
+        },
+        "upper": {
+          "approximate_raw": "2.0",
+          "certificate": {
+            "certified": true,
+            "exact_dual_feasible": true,
+            "exact_dual_objective": "-1",
+            "exact_primal_feasible": true,
+            "exact_primal_objective": "-1",
+            "failure_detail": null,
+            "primal_recovery": {
+              "method": "DIRECT_RATIONAL_RECONSTRUCTION",
+              "status": "EXACT_CANDIDATE_RECOVERED"
+            },
+            "rational_reconstruction_denominator_limit": 1000000000
+          },
+          "raw": "2",
+          "status": "OPTIMAL_EXACT_CERTIFIED",
+          "witness_event_source_raw": {
+            "a_b": "2",
+            "a_c": "0",
+            "b_d": "2",
+            "c_d": "0",
+            "d_t": "2",
+            "d_u": "0",
+            "seed": "2"
+          }
+        }
+      },
+      "lower_raw": "2",
+      "objective_events": [
+        "d_t",
+        "d_u"
+      ],
+      "positive_support": "CERTIFIED_POSITIVE",
+      "status": "OPTIMAL_EXACT_CERTIFIED",
+      "upper_raw": "2"
+    },
+    "independent_upper_combination_feasible_in_full": false,
+    "independent_upper_sum_exceeds_full_joint": true,
+    "status": "PASS"
+  }
+}

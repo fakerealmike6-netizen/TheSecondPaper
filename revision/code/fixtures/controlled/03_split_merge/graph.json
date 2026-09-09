@@ -1,0 +1,94 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "03_split_merge",
+  "title": "Split and merge preserve a single source capacity",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "0",
+    "B|ETH": "0",
+    "C|ETH": "0",
+    "D|ETH": "0",
+    "T|ETH": "0",
+    "U|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "10"
+    },
+    {
+      "id": "a_b",
+      "kind": "transfer",
+      "order": 2,
+      "from": "A",
+      "to": "B",
+      "asset": "ETH",
+      "amount_raw": "6"
+    },
+    {
+      "id": "a_c",
+      "kind": "transfer",
+      "order": 3,
+      "from": "A",
+      "to": "C",
+      "asset": "ETH",
+      "amount_raw": "4"
+    },
+    {
+      "id": "b_d",
+      "kind": "transfer",
+      "order": 4,
+      "from": "B",
+      "to": "D",
+      "asset": "ETH",
+      "amount_raw": "4"
+    },
+    {
+      "id": "c_d",
+      "kind": "transfer",
+      "order": 5,
+      "from": "C",
+      "to": "D",
+      "asset": "ETH",
+      "amount_raw": "4"
+    },
+    {
+      "id": "d_t",
+      "kind": "transfer",
+      "order": 6,
+      "from": "D",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "8"
+    },
+    {
+      "id": "b_u",
+      "kind": "transfer",
+      "order": 7,
+      "from": "B",
+      "to": "U",
+      "asset": "ETH",
+      "amount_raw": "2"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "T": [
+      "d_t"
+    ],
+    "U": [
+      "b_u"
+    ],
+    "T_plus_U": [
+      "d_t",
+      "b_u"
+    ]
+  }
+}

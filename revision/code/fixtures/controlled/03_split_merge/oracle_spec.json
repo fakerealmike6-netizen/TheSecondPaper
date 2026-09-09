@@ -1,0 +1,20 @@
+{
+  "variables": [],
+  "inequalities": [],
+  "objectives": {
+    "T": {
+      "a": [],
+      "constant": "8"
+    },
+    "U": {
+      "a": [],
+      "constant": "2"
+    },
+    "T_plus_U": {
+      "a": [],
+      "constant": "10"
+    }
+  },
+  "derivation": "Every account initially has zero normal funds. Conservation fixes all flows at their actual amounts: 8+2=10.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

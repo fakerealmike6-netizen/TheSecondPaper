@@ -1,0 +1,59 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "09_weth_one_to_one",
+  "title": "Closed WETH deposit ports preserve1:1 source amount",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "100",
+    "A|WETH": "0",
+    "T|WETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "50"
+    },
+    {
+      "id": "wrap",
+      "kind": "conversion",
+      "order": 2,
+      "from": "A",
+      "to": "A",
+      "asset": "ETH",
+      "output_asset": "WETH",
+      "gross_raw": "120",
+      "refund_raw": "0",
+      "output_raw": "120",
+      "certified_semantics": "SYNTHETIC_CONTROLLED",
+      "protocol": "Canonical_WETH9_deposit"
+    },
+    {
+      "id": "enter",
+      "kind": "transfer",
+      "order": 3,
+      "from": "A",
+      "to": "T",
+      "asset": "WETH",
+      "amount_raw": "120"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "ETH_input": [
+      "wrap:input"
+    ],
+    "WETH_output": [
+      "wrap:output"
+    ],
+    "T_WETH": [
+      "enter"
+    ]
+  }
+}

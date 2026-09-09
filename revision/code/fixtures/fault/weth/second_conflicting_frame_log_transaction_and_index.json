@@ -1,0 +1,89 @@
+{
+  "synthetic_only": true,
+  "case_id": "second_conflicting_frame_log_transaction_and_index",
+  "source_evidence_sha256": "7738c782c479c15a35d1981103425fc2c3bc6e0d1a740291ba18e3c4f557cc86",
+  "input": {
+    "policy": {
+      "tx_hash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "credited_address": "0x2222222222222222222222222222222222222222",
+      "amount_raw": "10",
+      "block_number": 123,
+      "deposit_log_index": 7,
+      "input_trace_address": "1"
+    },
+    "tx": {
+      "hash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "from": "0x1111111111111111111111111111111111111111",
+      "blockNumber": "0x7b",
+      "chainId": "0x1"
+    },
+    "receipt": {
+      "transactionHash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "blockNumber": "0x7b",
+      "status": "0x1",
+      "logs": [
+        {
+          "logIndex": "0x7",
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "transactionHash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "topics": [
+            "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+            "0x0000000000000000000000002222222222222222222222222222222222222222"
+          ],
+          "data": "0x000000000000000000000000000000000000000000000000000000000000000a",
+          "removed": false
+        }
+      ],
+      "gasUsed": "0x5",
+      "effectiveGasPrice": "0x2"
+    },
+    "internal_response": {
+      "result": [
+        {
+          "from": "0x2222222222222222222222222222222222222222",
+          "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "value": "10",
+          "isError": "0",
+          "blockNumber": "123"
+        }
+      ]
+    },
+    "call_trace": {
+      "type": "CALL",
+      "from": "0x1111111111111111111111111111111111111111",
+      "to": "0x2222222222222222222222222222222222222222",
+      "calls": [
+        {
+          "type": "CALL",
+          "from": "0x2222222222222222222222222222222222222222",
+          "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "value": "0xa",
+          "input": "0xd0e30db0",
+          "logs": [
+            {
+              "logIndex": "0x999",
+              "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+              "transactionHash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "topics": [
+                "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+                "0x0000000000000000000000002222222222222222222222222222222222222222"
+              ],
+              "data": "0x000000000000000000000000000000000000000000000000000000000000000a",
+              "removed": false
+            }
+          ]
+        }
+      ]
+    },
+    "historical_code": "0x6001600055",
+    "source_attestation": {
+      "reference_runtime_code": "0x6001600055",
+      "source_sha256": "a42acd23e8196512708192a5d17dbb79ad3ec99e5e9d0c06c807abd688573613",
+      "source_url": "https://example.invalid/synthetic",
+      "chain_id": 1,
+      "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "deposit_semantics": "balanceOf[msg.sender] += msg.value; Deposit(msg.sender,msg.value)"
+    }
+  }
+}

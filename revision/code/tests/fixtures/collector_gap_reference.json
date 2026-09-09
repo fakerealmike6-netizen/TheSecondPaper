@@ -1,0 +1,807 @@
+{
+  "collection": {
+    "candidate_events": [
+      {
+        "amount_raw": 5,
+        "asset": "native:eip155:1",
+        "block": 100,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": false,
+        "event_id": "synthetic:e0",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x1111111111111111111111111111111111111111",
+        "sender": "0x4444444444444444444444444444444444444444",
+        "success": true,
+        "timestamp": 1000,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "tx_index": 0
+      },
+      {
+        "amount_raw": 5,
+        "asset": "native:eip155:1",
+        "block": 101,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": false,
+        "event_id": "synthetic:e1",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x2222222222222222222222222222222222222222",
+        "sender": "0x1111111111111111111111111111111111111111",
+        "success": true,
+        "timestamp": 1001,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "tx_index": 1
+      },
+      {
+        "amount_raw": 5,
+        "asset": "native:eip155:1",
+        "block": 102,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": false,
+        "event_id": "synthetic:e2",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x1111111111111111111111111111111111111111",
+        "sender": "0x2222222222222222222222222222222222222222",
+        "success": true,
+        "timestamp": 1002,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000003",
+        "tx_index": 2
+      },
+      {
+        "amount_raw": 5,
+        "asset": "native:eip155:1",
+        "block": 103,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": false,
+        "event_id": "synthetic:e3",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x3333333333333333333333333333333333333333",
+        "sender": "0x1111111111111111111111111111111111111111",
+        "success": true,
+        "timestamp": 1003,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000004",
+        "tx_index": 3
+      }
+    ],
+    "context_events": [
+      {
+        "amount_raw": 5,
+        "arrival_event_id": "synthetic:e0",
+        "asset": "native:eip155:1",
+        "block": 102,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": true,
+        "context_reason": "EXTERNAL_INFLOW_CONTEXT_NO_RENEWAL",
+        "event_id": "synthetic:e2",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x1111111111111111111111111111111111111111",
+        "sender": "0x2222222222222222222222222222222222222222",
+        "success": true,
+        "timestamp": 1002,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000003",
+        "tx_index": 2
+      },
+      {
+        "amount_raw": 5,
+        "arrival_event_id": "synthetic:e1",
+        "asset": "native:eip155:1",
+        "block": 101,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": true,
+        "context_reason": "EXTERNAL_INFLOW_CONTEXT_NO_RENEWAL",
+        "event_id": "synthetic:e1",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x2222222222222222222222222222222222222222",
+        "sender": "0x1111111111111111111111111111111111111111",
+        "success": true,
+        "timestamp": 1001,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "tx_index": 1
+      },
+      {
+        "amount_raw": 5,
+        "arrival_event_id": "synthetic:e2",
+        "asset": "native:eip155:1",
+        "block": 101,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": true,
+        "context_reason": "OUTSIDE_ARRIVAL_WINDOW_CONTEXT",
+        "event_id": "synthetic:e1",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x2222222222222222222222222222222222222222",
+        "sender": "0x1111111111111111111111111111111111111111",
+        "success": true,
+        "timestamp": 1001,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "tx_index": 1
+      },
+      {
+        "amount_raw": 5,
+        "arrival_event_id": "synthetic:e2",
+        "asset": "native:eip155:1",
+        "block": 102,
+        "block_hash": null,
+        "chain_id": "eip155:1",
+        "context_only": true,
+        "context_reason": "EXTERNAL_INFLOW_CONTEXT_NO_RENEWAL",
+        "event_id": "synthetic:e2",
+        "execution_index": null,
+        "gas_price": null,
+        "gas_raw": null,
+        "gas_used": null,
+        "kind": "top",
+        "log_index": null,
+        "provenance": "",
+        "recipient": "0x1111111111111111111111111111111111111111",
+        "sender": "0x2222222222222222222222222222222222222222",
+        "success": true,
+        "timestamp": 1002,
+        "trace_address": null,
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000003",
+        "tx_index": 2
+      }
+    ],
+    "coverage": [
+      {
+        "complete": false,
+        "evidence": "SYNTHETIC",
+        "state_key": [
+          "synthetic:q",
+          "0x1111111111111111111111111111111111111111",
+          "native:eip155:1",
+          "synthetic:e0",
+          0,
+          1010,
+          "ordinary"
+        ]
+      },
+      {
+        "complete": false,
+        "evidence": "SYNTHETIC",
+        "state_key": [
+          "synthetic:q",
+          "0x2222222222222222222222222222222222222222",
+          "native:eip155:1",
+          "synthetic:e1",
+          1,
+          1010,
+          "ordinary"
+        ]
+      },
+      {
+        "complete": false,
+        "evidence": "SYNTHETIC",
+        "state_key": [
+          "synthetic:q",
+          "0x1111111111111111111111111111111111111111",
+          "native:eip155:1",
+          "synthetic:e2",
+          2,
+          1010,
+          "ordinary"
+        ]
+      }
+    ],
+    "fact_conflicts": [],
+    "gaps": [
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e0",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e0",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e0",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "arrival_event_id": "synthetic:e1",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "arrival_event_id": "synthetic:e1",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "arrival_event_id": "synthetic:e1",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e2",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e2",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      },
+      {
+        "address": "0x1111111111111111111111111111111111111111",
+        "arrival_event_id": "synthetic:e2",
+        "nested": {
+          "x": [
+            1,
+            null
+          ]
+        },
+        "reason": "ROOT_EQUIVALENCE_UNRESOLVED_GAP",
+        "tx_hash": "synthetic"
+      }
+    ],
+    "invalidated_evidence": {},
+    "metrics": {
+      "cache_hits": 3,
+      "candidate_address_count": 3,
+      "candidate_event_count": 4,
+      "candidate_membership": [
+        {
+          "arrival_event_id": "synthetic:e0",
+          "depth": 1,
+          "event_id": "synthetic:e1"
+        },
+        {
+          "arrival_event_id": "synthetic:e0",
+          "depth": 1,
+          "event_id": "synthetic:e3"
+        },
+        {
+          "arrival_event_id": "synthetic:e1",
+          "depth": 2,
+          "event_id": "synthetic:e2"
+        },
+        {
+          "arrival_event_id": "synthetic:e2",
+          "depth": 3,
+          "event_id": "synthetic:e3"
+        }
+      ],
+      "candidate_stop_coverage_sha256": "e050192acdb1fe395bedf0c32a7518343f10e75726e1d3d43e957bf0eec9b40e",
+      "candidate_transaction_count": 4,
+      "cumulative_online_collection_seconds": 0.0,
+      "expanded_address_count": 2,
+      "fact_validation_status": "CONSISTENT_OBSERVED_FACTS",
+      "local_window_seconds": null,
+      "new_raw_bytes": 0,
+      "online_collection_seconds": 0.0,
+      "real_requests": 0,
+      "scope_freeze": {
+        "end_block": 105,
+        "end_time": 1010,
+        "local_window_seconds": null,
+        "max_depth": 3,
+        "name": "synthetic",
+        "query_id": "synthetic:q",
+        "scope_id": "scope:5aabc3325f9b45cf1f5f6e957ea3b3a59b175ffb87dce7c99aedd87c57779a16",
+        "start_block": 100,
+        "start_time": 1000,
+        "window_mode": "REFERENCE_FULL"
+      },
+      "scope_hash": "8b9e9e31ccea88c700838c1324f6d601654f7f202c0ae74cfccd313979d2f2ad",
+      "scope_id": "scope:5aabc3325f9b45cf1f5f6e957ea3b3a59b175ffb87dce7c99aedd87c57779a16",
+      "service_address_count": 1,
+      "service_entry_state_count": 2,
+      "state_count": 5,
+      "window_mode": "REFERENCE_FULL"
+    },
+    "quarantined_facts": [],
+    "query_id": "synthetic:q",
+    "semantic_evidence_context": {},
+    "semantic_membership": [],
+    "semantic_units": [],
+    "states": [
+      {
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "state": {
+          "address": "0x1111111111111111111111111111111111111111",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 100,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e0",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x1111111111111111111111111111111111111111",
+            "sender": "0x4444444444444444444444444444444444444444",
+            "success": true,
+            "timestamp": 1000,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "tx_index": 0
+          },
+          "asset": "native:eip155:1",
+          "depth": 0,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "state": {
+          "address": "0x2222222222222222222222222222222222222222",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 101,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e1",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x2222222222222222222222222222222222222222",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1001,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000002",
+            "tx_index": 1
+          },
+          "asset": "native:eip155:1",
+          "depth": 1,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "identity": {
+          "kind": "SERVICE"
+        },
+        "state": {
+          "address": "0x3333333333333333333333333333333333333333",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 103,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e3",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x3333333333333333333333333333333333333333",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1003,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "tx_index": 3
+          },
+          "asset": "native:eip155:1",
+          "depth": 1,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "state": {
+          "address": "0x1111111111111111111111111111111111111111",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 102,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e2",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x1111111111111111111111111111111111111111",
+            "sender": "0x2222222222222222222222222222222222222222",
+            "success": true,
+            "timestamp": 1002,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "tx_index": 2
+          },
+          "asset": "native:eip155:1",
+          "depth": 2,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "identity": {
+          "kind": "SERVICE"
+        },
+        "state": {
+          "address": "0x3333333333333333333333333333333333333333",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 103,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e3",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x3333333333333333333333333333333333333333",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1003,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "tx_index": 3
+          },
+          "asset": "native:eip155:1",
+          "depth": 3,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      }
+    ],
+    "status": "INCOMPLETE_PROVIDER_OR_DATA_GAP",
+    "stops": [
+      {
+        "entry_event_id": "synthetic:e3",
+        "identity": {
+          "kind": "SERVICE"
+        },
+        "reason": "FIRST_IDENTIFIED_SERVICE",
+        "state": {
+          "address": "0x3333333333333333333333333333333333333333",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 103,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e3",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x3333333333333333333333333333333333333333",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1003,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "tx_index": 3
+          },
+          "asset": "native:eip155:1",
+          "depth": 1,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "entry_event_id": "synthetic:e3",
+        "identity": {
+          "kind": "SERVICE"
+        },
+        "reason": "FIRST_IDENTIFIED_SERVICE",
+        "state": {
+          "address": "0x3333333333333333333333333333333333333333",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 103,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e3",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x3333333333333333333333333333333333333333",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1003,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "tx_index": 3
+          },
+          "asset": "native:eip155:1",
+          "depth": 3,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      }
+    ],
+    "unresolved_frontier": [
+      {
+        "coverage": [
+          {
+            "complete": false,
+            "evidence": "SYNTHETIC"
+          }
+        ],
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "reason": "INTERVAL_INCOMPLETE",
+        "state": {
+          "address": "0x1111111111111111111111111111111111111111",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 100,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e0",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x1111111111111111111111111111111111111111",
+            "sender": "0x4444444444444444444444444444444444444444",
+            "success": true,
+            "timestamp": 1000,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "tx_index": 0
+          },
+          "asset": "native:eip155:1",
+          "depth": 0,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "coverage": [
+          {
+            "complete": false,
+            "evidence": "SYNTHETIC"
+          }
+        ],
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "reason": "INTERVAL_INCOMPLETE",
+        "state": {
+          "address": "0x2222222222222222222222222222222222222222",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 101,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e1",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x2222222222222222222222222222222222222222",
+            "sender": "0x1111111111111111111111111111111111111111",
+            "success": true,
+            "timestamp": 1001,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000002",
+            "tx_index": 1
+          },
+          "asset": "native:eip155:1",
+          "depth": 1,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      },
+      {
+        "coverage": [
+          {
+            "complete": false,
+            "evidence": "SYNTHETIC"
+          }
+        ],
+        "identity": {
+          "kind": "UNKNOWN"
+        },
+        "reason": "INTERVAL_INCOMPLETE",
+        "state": {
+          "address": "0x1111111111111111111111111111111111111111",
+          "arrival": {
+            "amount_raw": 5,
+            "asset": "native:eip155:1",
+            "block": 102,
+            "block_hash": null,
+            "chain_id": "eip155:1",
+            "event_id": "synthetic:e2",
+            "execution_index": null,
+            "gas_price": null,
+            "gas_raw": null,
+            "gas_used": null,
+            "kind": "top",
+            "log_index": null,
+            "provenance": "",
+            "recipient": "0x1111111111111111111111111111111111111111",
+            "sender": "0x2222222222222222222222222222222222222222",
+            "success": true,
+            "timestamp": 1002,
+            "trace_address": null,
+            "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "tx_index": 2
+          },
+          "asset": "native:eip155:1",
+          "depth": 2,
+          "local_end": 1010,
+          "protocol_context": "ordinary",
+          "provenance": "observed_candidate_arrival",
+          "query_id": "synthetic:q"
+        }
+      }
+    ]
+  },
+  "real_input_events": 0,
+  "schema_version": "synthetic-collector-gap-reference-v1",
+  "source_sha256": "2255317fb8d1f40f5b3cab028202c850b5645993f42b19106836af74d7ff8608"
+}

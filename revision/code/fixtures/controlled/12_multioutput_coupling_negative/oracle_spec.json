@@ -1,0 +1,41 @@
+{
+  "variables": [
+    "t"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "0"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "100"
+    }
+  ],
+  "objectives": {
+    "T": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    },
+    "U": {
+      "a": [
+        "-1"
+      ],
+      "constant": "100"
+    },
+    "T_plus_U": {
+      "a": [
+        "0"
+      ],
+      "constant": "100"
+    }
+  },
+  "derivation": "The input drains seed100 plus normal100. Source input is100 and shared coupling t+u=100. Dropping this row leaves the wrong square[0,100]^2: individual extrema match but joint upper doubles to200.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

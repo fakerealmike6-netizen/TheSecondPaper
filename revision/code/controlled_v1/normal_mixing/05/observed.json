@@ -1,0 +1,55 @@
+{
+  "construction_notes": [
+    "Parity-fixed payout construction gives both forced-source and zero-lower mixing controls."
+  ],
+  "events": [
+    {
+      "amount_raw": "6",
+      "asset": "ETH",
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A"
+    },
+    {
+      "amount_raw": "4",
+      "asset": "ETH",
+      "from": "A",
+      "id": "enter",
+      "kind": "transfer",
+      "order": 2,
+      "to": "T"
+    }
+  ],
+  "family": "normal_mixing",
+  "generator_version": "CONTROLLED_V1_GENERATOR_1.0.0",
+  "incident_id": "SYNTHETIC_CONTROLLED_V1",
+  "index": 5,
+  "initial_balances": {
+    "A|ETH": "4",
+    "T|ETH": "0"
+  },
+  "label_version": "CONTROLLED_V1_SERVICES_1",
+  "objective_groups": {
+    "T|ETH": [
+      "enter"
+    ]
+  },
+  "provenance": "ORIGINAL_SYNTHETIC_STAGE1C_NOT_EXTERNAL_BLIND_GT",
+  "query_id": "controlled-v1/normal_mixing/05",
+  "sampling": {
+    "chain_id": 1,
+    "first_identified_service_stops_branch": true,
+    "lp_fund_age_limit": null,
+    "lp_path_hop_limit": null,
+    "strict_time_order": true
+  },
+  "scenario_id": "controlled-v1/normal_mixing/05",
+  "schema_version": "stage1c-controlled-observed-1.0",
+  "scope": "FROZEN_ORDERED_OBSERVED_GRAPH",
+  "source_layer": "SYNTHETIC",
+  "target_accounts": [
+    "T"
+  ],
+  "zero_hop": false
+}

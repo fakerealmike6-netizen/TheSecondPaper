@@ -1,0 +1,41 @@
+{
+  "variables": [
+    "t"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "0"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "100"
+    }
+  ],
+  "objectives": {
+    "T": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    },
+    "U": {
+      "a": [
+        "-1"
+      ],
+      "constant": "100"
+    },
+    "T_plus_U": {
+      "a": [
+        "0"
+      ],
+      "constant": "100"
+    }
+  },
+  "derivation": "Normal100+seed100 is fully paid to two targets: t+u=100 with each in [0,100]. The sum of separate maxima is 200; joint maximum is 100.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

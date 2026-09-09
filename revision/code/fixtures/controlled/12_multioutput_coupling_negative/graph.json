@@ -1,0 +1,56 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "12_multioutput_coupling_negative",
+  "title": "Removing shared output coupling must change the joint feasible set",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "100",
+    "T|ETH": "0",
+    "U|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "100"
+    },
+    {
+      "id": "split",
+      "kind": "multioutput",
+      "order": 2,
+      "from": "A",
+      "asset": "ETH",
+      "gross_raw": "200",
+      "outputs": [
+        {
+          "to": "T",
+          "amount_raw": "100"
+        },
+        {
+          "to": "U",
+          "amount_raw": "100"
+        }
+      ],
+      "certified_semantics": "SYNTHETIC_CONTROLLED"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "T": [
+      "split:output0"
+    ],
+    "U": [
+      "split:output1"
+    ],
+    "T_plus_U": [
+      "split:output0",
+      "split:output1"
+    ]
+  }
+}

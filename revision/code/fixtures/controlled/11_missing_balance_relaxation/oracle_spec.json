@@ -1,0 +1,29 @@
+{
+  "variables": [
+    "t"
+  ],
+  "inequalities": [
+    {
+      "a": [
+        "-1"
+      ],
+      "b": "-20"
+    },
+    {
+      "a": [
+        "1"
+      ],
+      "b": "50"
+    }
+  ],
+  "objectives": {
+    "T": {
+      "a": [
+        "1"
+      ],
+      "constant": "0"
+    }
+  },
+  "derivation": "Complete case: residue=50-t<=30, so20<=t<=50. Relaxed case deletes the supported actual residue bound only, leaving0<=t<=50. Every complete vector remains feasible and seed supply remains50.",
+  "semantics": "Bounded continuous rational polytope; extrema occur at vertices. No integer discretization."
+}

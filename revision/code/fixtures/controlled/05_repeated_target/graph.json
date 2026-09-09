@@ -1,0 +1,54 @@
+{
+  "schema_version": "stage1b-controlled-1.0",
+  "scenario_id": "05_repeated_target",
+  "title": "Multiple entries at one address require a joint objective",
+  "provenance": "ORIGINAL_SYNTHETIC_FIXTURE",
+  "initial_balances": {
+    "A|ETH": "100",
+    "T|ETH": "0"
+  },
+  "events": [
+    {
+      "id": "seed",
+      "kind": "seed",
+      "order": 1,
+      "to": "A",
+      "asset": "ETH",
+      "amount_raw": "100"
+    },
+    {
+      "id": "first",
+      "kind": "transfer",
+      "order": 2,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "100"
+    },
+    {
+      "id": "second",
+      "kind": "transfer",
+      "order": 3,
+      "from": "A",
+      "to": "T",
+      "asset": "ETH",
+      "amount_raw": "100"
+    }
+  ],
+  "target_accounts": [
+    "T",
+    "U"
+  ],
+  "objective_groups": {
+    "first": [
+      "first"
+    ],
+    "second": [
+      "second"
+    ],
+    "T_all_entries": [
+      "first",
+      "second"
+    ]
+  }
+}

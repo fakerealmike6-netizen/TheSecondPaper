@@ -1,0 +1,819 @@
+{
+  "component_count": 10,
+  "components": [
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/00",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": {
+        "columns": [
+          "synthetic_input_source_alpha",
+          "refund_source",
+          "weth_enter"
+        ],
+        "alpha_domain": [
+          0,
+          4
+        ],
+        "raw_boundary_count": 5,
+        "folded_boundary_count": 5,
+        "raw_boundary_tuples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            0,
+            2
+          ],
+          [
+            3,
+            0,
+            3
+          ],
+          [
+            4,
+            0,
+            4
+          ]
+        ],
+        "folded_boundary_tuples": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            0,
+            2
+          ],
+          [
+            3,
+            0,
+            3
+          ],
+          [
+            4,
+            0,
+            4
+          ]
+        ],
+        "status": "PASS"
+      },
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_enter": 1
+          },
+          "flow_lower_raw": "2",
+          "flow_upper_raw": "2",
+          "enumeration_lower_raw": "2",
+          "enumeration_upper_raw": "2",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_enter": 2
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/01",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": {
+        "columns": [
+          "synthetic_input_source_alpha",
+          "refund_source",
+          "weth_split:output0",
+          "weth_split:output1"
+        ],
+        "alpha_domain": [
+          0,
+          4
+        ],
+        "raw_boundary_count": 12,
+        "folded_boundary_count": 12,
+        "raw_boundary_tuples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            2
+          ],
+          [
+            2,
+            0,
+            1,
+            1
+          ],
+          [
+            2,
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            1,
+            1,
+            0
+          ],
+          [
+            3,
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            1,
+            0,
+            2
+          ],
+          [
+            3,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            1,
+            1,
+            2
+          ]
+        ],
+        "folded_boundary_tuples": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            2
+          ],
+          [
+            2,
+            0,
+            1,
+            1
+          ],
+          [
+            2,
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            1,
+            1,
+            0
+          ],
+          [
+            3,
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            1,
+            0,
+            2
+          ],
+          [
+            3,
+            1,
+            1,
+            1
+          ],
+          [
+            4,
+            1,
+            1,
+            2
+          ]
+        ],
+        "status": "PASS"
+      },
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "1",
+          "flow_upper_raw": "2",
+          "enumeration_lower_raw": "1",
+          "enumeration_upper_raw": "2",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "1",
+          "flow_upper_raw": "3",
+          "enumeration_lower_raw": "1",
+          "enumeration_upper_raw": "3",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "1",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "1",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "1",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "1",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": -1
+          },
+          "flow_lower_raw": "-2",
+          "flow_upper_raw": "2",
+          "enumeration_lower_raw": "-2",
+          "enumeration_upper_raw": "2",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/02",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_enter": 1
+          },
+          "flow_lower_raw": "6",
+          "flow_upper_raw": "6",
+          "enumeration_lower_raw": "6",
+          "enumeration_upper_raw": "6",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_enter": 2
+          },
+          "flow_lower_raw": "12",
+          "flow_upper_raw": "12",
+          "enumeration_lower_raw": "12",
+          "enumeration_upper_raw": "12",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/03",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": -1
+          },
+          "flow_lower_raw": "-4",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "-4",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/04",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_enter": 1
+          },
+          "flow_lower_raw": "8",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "8",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_enter": 2
+          },
+          "flow_lower_raw": "16",
+          "flow_upper_raw": "16",
+          "enumeration_lower_raw": "16",
+          "enumeration_upper_raw": "16",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/05",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "3",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "3",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "3",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "3",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "3",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "3",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "3",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "3",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": -1
+          },
+          "flow_lower_raw": "-4",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "-4",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/06",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_enter": 1
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_enter": 2
+          },
+          "flow_lower_raw": "8",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "8",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/07",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "6",
+          "flow_upper_raw": "7",
+          "enumeration_lower_raw": "6",
+          "enumeration_upper_raw": "7",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "6",
+          "flow_upper_raw": "13",
+          "enumeration_lower_raw": "6",
+          "enumeration_upper_raw": "13",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "6",
+          "flow_upper_raw": "13",
+          "enumeration_lower_raw": "6",
+          "enumeration_upper_raw": "13",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "6",
+          "flow_upper_raw": "13",
+          "enumeration_lower_raw": "6",
+          "enumeration_upper_raw": "13",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": -1
+          },
+          "flow_lower_raw": "-6",
+          "flow_upper_raw": "12",
+          "enumeration_lower_raw": "-6",
+          "enumeration_upper_raw": "12",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/08",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_enter": 1
+          },
+          "flow_lower_raw": "4",
+          "flow_upper_raw": "4",
+          "enumeration_lower_raw": "4",
+          "enumeration_upper_raw": "4",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_enter": 2
+          },
+          "flow_lower_raw": "8",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "8",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    },
+    {
+      "sample_id": "controlled-v1/canonical_weth_1to1/09",
+      "status": "PASS",
+      "scope": "SYNTHETIC_CLOSED_1TO1_COMPONENT",
+      "raw_equations": [
+        "gross_source = refund_source + deposit_source",
+        "minted_source = deposit_source",
+        "sum(output_source) = minted_source"
+      ],
+      "folded_equation": "sum(output_source) = gross_source - refund_source",
+      "continuous_bijection": {
+        "forward": "(g,r,d,m,y) -> (g,r,y)",
+        "inverse": "d=m=sum(y)=g-r",
+        "validity": "All nonnegative real amounts with the same gross/refund/net/output capacities; no discretization needed for the algebraic bijection."
+      },
+      "full_tiny_boundary_relation": null,
+      "whole_query_weighted_directions": [
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "7",
+          "flow_upper_raw": "8",
+          "enumeration_lower_raw": "7",
+          "enumeration_upper_raw": "8",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": 1
+          },
+          "flow_lower_raw": "7",
+          "flow_upper_raw": "15",
+          "enumeration_lower_raw": "7",
+          "enumeration_upper_raw": "15",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "7",
+          "flow_upper_raw": "15",
+          "enumeration_lower_raw": "7",
+          "enumeration_upper_raw": "15",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 1,
+            "weth_split:output1": 2
+          },
+          "flow_lower_raw": "7",
+          "flow_upper_raw": "15",
+          "enumeration_lower_raw": "7",
+          "enumeration_upper_raw": "15",
+          "status": "PASS"
+        },
+        {
+          "weights": {
+            "weth_split:output0": 2,
+            "weth_split:output1": -1
+          },
+          "flow_lower_raw": "-7",
+          "flow_upper_raw": "14",
+          "enumeration_lower_raw": "-7",
+          "enumeration_upper_raw": "14",
+          "status": "PASS"
+        }
+      ],
+      "refund_note": "Any refund is a synthetic gross/refund envelope around canonical net WETH deposit, not a claim that WETH9.deposit refunds.",
+      "not_real_case_source_truth": true
+    }
+  ]
+}

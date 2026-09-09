@@ -1,0 +1,94 @@
+{
+  "synthetic_only": true,
+  "case_id": "external_wrong_log_tx_index",
+  "input": {
+    "policy": {
+      "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000258",
+      "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "credited_address": "0x0000000000000000000000000000000000000014",
+      "amount_raw": "12",
+      "block_number": 800,
+      "deposit_log_index": 4,
+      "input_trace_address": "1"
+    },
+    "tx": {
+      "hash": "0x0000000000000000000000000000000000000000000000000000000000000258",
+      "blockNumber": "0x320",
+      "chainId": "0x1",
+      "from": "0x0000000000000000000000000000000000000015"
+    },
+    "receipt": {
+      "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000258",
+      "blockNumber": "0x320",
+      "status": "0x1",
+      "logs": [
+        {
+          "logIndex": "0x4",
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000258",
+          "topics": [
+            "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+            "0x0000000000000000000000000000000000000000000000000000000000000014"
+          ],
+          "data": "0x000000000000000000000000000000000000000000000000000000000000000c",
+          "removed": false
+        }
+      ],
+      "gasUsed": "0x2",
+      "effectiveGasPrice": "0x3"
+    },
+    "internal_response": {
+      "result": [
+        {
+          "from": "0x0000000000000000000000000000000000000014",
+          "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "value": "12",
+          "isError": "0",
+          "blockNumber": "800",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000258"
+        }
+      ]
+    },
+    "call_trace": {
+      "from": "0x0000000000000000000000000000000000000015",
+      "to": "0x0000000000000000000000000000000000000014",
+      "type": "CALL",
+      "value": "0xc",
+      "calls": [
+        {
+          "type": "CALL",
+          "from": "0x0000000000000000000000000000000000000014",
+          "to": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "value": "0xc",
+          "input": "0xd0e30db0",
+          "logs": [
+            {
+              "logIndex": "0x63",
+              "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+              "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000259",
+              "topics": [
+                "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+                "0x0000000000000000000000000000000000000000000000000000000000000014"
+              ],
+              "data": "0x000000000000000000000000000000000000000000000000000000000000000c",
+              "removed": false
+            }
+          ]
+        }
+      ],
+      "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000258",
+      "blockNumber": "0x320"
+    },
+    "historical_code": "0x6001600055",
+    "source_attestation": {
+      "reference_runtime_code": "0x6001600055",
+      "source_sha256": "dc7299a5dd1289ef57bac22a5c720a2089af8cbcf437bb7a5b8f9751af02a19d",
+      "source_url": "https://example.invalid/synthetic-only",
+      "chain_id": 1,
+      "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "deposit_semantics": "balanceOf[msg.sender] += msg.value; Deposit(msg.sender,msg.value)"
+    }
+  },
+  "baseline_source_sha256": "0710c1e21696957ff0ce89ec80137f095cfa60740cc43f4b9681a1abd066100b",
+  "external_fixture_sha256": "51dba00f18516f6616a14587e6d49f96a81ffb73743b6624f5203122b80a9fda"
+}
