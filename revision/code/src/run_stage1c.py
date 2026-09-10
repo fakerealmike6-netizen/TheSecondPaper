@@ -122,7 +122,10 @@ def semantic_result(result):
     if not isinstance(result,dict):return result
     return {k:v for k,v in result.items() if k not in ('timing_parts','elapsed_seconds','profile')}
 
-def dispatch(doc,method, *, stage1d_empty_target_recovery=False):
+def dispatch(doc,method, *, stage1d_empty_target_recovery=False, stage1d_coordinate_recovery=False):
+    if stage1d_coordinate_recovery and method in INTERVALS:
+        return run_interval(doc,method,stage1d_empty_target_recovery=stage1d_empty_target_recovery,
+                            stage1d_coordinate_recovery=True)
     if stage1d_empty_target_recovery and method in INTERVALS:
         return run_interval(doc,method,stage1d_empty_target_recovery=True)
     return run_interval(doc,method) if method in INTERVALS else run_baseline(doc,method)
@@ -167,7 +170,7 @@ def observed_port_facts(doc):
             else:facts[e['id']]={'amount_raw':e['amount_raw'],'asset':e['asset'],'evidence_ids':[]}
     return facts
 
-def measure(doc,method, *, stage1d_empty_target_recovery=False):
+def measure(doc,method, *, stage1d_empty_target_recovery=False, stage1d_coordinate_recovery=False):
     before=digest(canonical(doc));rows=[];errors=[];chosen=None;signature=None;raw_first=None;raw_failures=[]
     for repetition in range(6):
         # Separate warm-up Python-allocation high-water measurement; timings
@@ -176,7 +179,11 @@ def measure(doc,method, *, stage1d_empty_target_recovery=False):
         start=time.perf_counter()
         raw=None
         try:
-            raw=dispatch(copy.deepcopy(doc),method,stage1d_empty_target_recovery=True) if stage1d_empty_target_recovery else dispatch(copy.deepcopy(doc),method)
+            if stage1d_coordinate_recovery:
+                raw=dispatch(copy.deepcopy(doc),method,stage1d_empty_target_recovery=stage1d_empty_target_recovery,
+                             stage1d_coordinate_recovery=True)
+            else:
+                raw=dispatch(copy.deepcopy(doc),method,stage1d_empty_target_recovery=True) if stage1d_empty_target_recovery else dispatch(copy.deepcopy(doc),method)
             result=normalized(raw)
         except Exception as exc:
             result={'status':'ERROR','applicability':'ERROR','output_kind':None,

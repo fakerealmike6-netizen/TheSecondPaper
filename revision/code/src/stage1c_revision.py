@@ -5,7 +5,7 @@ import hashlib,json,re
 
 PARENT_COMMIT='d88b839361b8fa93308430641baf7af423d76ae8'
 PARENT_TREE='cef2f09aaa6033e9cb7393d6dc5cad6119a4f450'
-PARENT_FREEZE_SHA256='e22250a3689e0cbb5837c000bd332fcb74171fc58f3bc013a6a340a0ec4d6e06'
+PARENT_FREEZE_SHA256='PRIVATE_PARENT_FREEZE_SHA256'
 ALLOWED_CHANGED_SOURCE={'src/run_stage1c.py','src/stage1c_reports.py','src/validate_stage1c.py'}
 EXECUTION_POLICY_KEYS=('schema_version','stage','checkpoint','authorization_id','baseline_commit','baseline_tree',
     'baseline_run','external_acceptance','repairs','integration_review','validation_contract','experiments',

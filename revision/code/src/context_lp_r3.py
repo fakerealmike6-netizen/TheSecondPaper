@@ -534,7 +534,7 @@ def audit_context_witness(document, event_source_raw, *, remove_balance_informat
         "method": "INDEPENDENT_EXACT_RATIONAL_LEDGER_AND_SOURCE_REPLAY_WITHOUT_LP_ROWS"}
 
 
-def _recover_large_network_vertex(model, result):
+def _propose_large_network_vertex(model, result, priority_bounds=()):
     """Sparse exact active-bound recovery; no coefficient or evidence relaxation.
 
     R3 retains the original small-model routine but permits larger context
@@ -570,6 +570,13 @@ def _recover_large_network_vertex(model, result):
     for i, variable in enumerate(model.variables):
         if variable.lower == variable.upper and not add({i: F(1)}, variable.lower):
             return None
+    # These are proposals to select a vertex, never new model constraints.
+    # A prior rejected candidate can nominate the exact bound it violated.
+    for i, bound in priority_bounds:
+        if bound not in (model.variables[i].lower, model.variables[i].upper):
+            raise ValueError('Vertex recovery may only nominate original exact bounds')
+        if not add({i: F(1)}, bound):
+            return None
     candidates = []
     for i, variable in enumerate(model.variables):
         if variable.lower == variable.upper:
@@ -594,13 +601,22 @@ def _recover_large_network_vertex(model, result):
     for pivot in sorted(basis, reverse=True):
         row, rhs = basis[pivot]
         vector[pivot] = rhs - sum((coefficient * vector[i] for i, coefficient in row.items() if i != pivot), F(0))
-    return vector if model.audit_vector(vector)["exact_feasible"] else None
+    return vector
 
 
-def solve_context_interval(model, document, events, *, time_limit_seconds=60, stage1d_empty_target_recovery=False):
+def _recover_large_network_vertex(model, result):
+    vector = _propose_large_network_vertex(model, result)
+    return vector if vector is not None and model.audit_vector(vector)['exact_feasible'] else None
+
+
+def solve_context_interval(model, document, events, *, time_limit_seconds=60, stage1d_empty_target_recovery=False,
+                           stage1d_coordinate_recovery=False):
     import numpy as np
     from scipy.optimize import linprog
     from scipy.sparse import coo_matrix
+    from time import perf_counter
+    if not isinstance(stage1d_coordinate_recovery, bool):
+        raise ValueError('stage1d_coordinate_recovery must be boolean')
     if not events or len(events) != len(set(events)):
         raise ValueError("Distinct, nonempty objective ports required")
     indices = [model.event_variables[e] for e in events]
@@ -628,7 +644,7 @@ def solve_context_interval(model, document, events, *, time_limit_seconds=60, st
         cost = [F(0)] * len(model.variables)
         for i in indices:
             cost[i] = F(sign)
-        endpoint_started = perf_counter() if stage1d_empty_target_recovery else None
+        endpoint_started = perf_counter()
         recovery_evidence = None
         result = linprog(np.array([float(v) for v in cost]), A_eq=matrix,
                          b_eq=np.array([float(v) for v in model.rhs]), bounds=bounds,
@@ -690,6 +706,35 @@ def solve_context_interval(model, document, events, *, time_limit_seconds=60, st
             else:
                 recovery_evidence["retry_skipped_reason"] = "ORIGINAL_ENDPOINT_TIME_BUDGET_EXHAUSTED"
             recovery_evidence.setdefault("selected_attempt", None)
+        if stage1d_coordinate_recovery and not stage1d_empty_target_recovery and not certificate['certified']:
+            from stage1d_context_certificate_recovery import recover, POLICY
+            original_certificate = certificate
+            recovered, attempt = recover(model, cost, matrix,
+                time_limit_seconds - (perf_counter() - endpoint_started),
+                certify=_certify, recover_vertex=_recover_large_network_vertex,
+                propose_vertex=_propose_large_network_vertex)
+            recovery_evidence = {'policy': POLICY, 'max_additional_attempts': 1,
+                'time_budget_rule': 'ORIGINAL_ENDPOINT_BUDGET_SHARED_WITH_RETRY',
+                'configured_total_time_limit_seconds': time_limit_seconds,
+                'original_model_changed': False, 'original_objective_changed': False,
+                'attempts': [{'attempt': 1, 'method': 'highs', 'presolve': True,
+                    'certificate_sha256': canonical_hash(original_certificate), 'certified': False}],
+                'selected_attempt': None}
+            if 'skip_reason' not in attempt:
+                recovery_evidence['attempts'].append(attempt)
+            else:
+                recovery_evidence['retry_skipped_reason'] = attempt['skip_reason']
+            if recovered is not None:
+                retry_result, retry_certificate, retry_vector, retry_value = recovered
+                retry_witness = {name: fmt(retry_vector[i] * model.variables[i].scale)
+                    for name, i in model.event_variables.items()}
+                retry_audit = audit_context_witness(document, retry_witness,
+                    remove_balance_information=model.metadata['variant'] == 'MATCHED_INFORMATION_RELAXED',
+                    no_protocol_continuation=model.metadata.get('no_protocol_continuation', False))
+                attempt['independent_audit'] = retry_audit
+                if retry_audit['exact_feasible']:
+                    result, certificate, vector, value = recovered
+                    recovery_evidence['selected_attempt'] = 2
         witness = {name: fmt(vector[i] * model.variables[i].scale) for name, i in model.event_variables.items()} if certificate["certified"] else None
         audit = audit_context_witness(document, witness, remove_balance_information=model.metadata["variant"] == "MATCHED_INFORMATION_RELAXED",
                             no_protocol_continuation=model.metadata.get("no_protocol_continuation", False)) if witness is not None else None

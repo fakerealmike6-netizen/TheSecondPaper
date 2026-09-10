@@ -16,6 +16,7 @@ from stage1d_multiasset_context import (ETH, WETH, NATIVE, CONTRACT, asset, cont
                                       project_context_assets, validate_collection_asset_domain)
 from stage1d_finite_state_rpc import balance_plan, logs_plan
 from stage1d_gap_sequence import concat_gaps, serialize_gaps
+from stage1d_raw_fields import validate_raw_member, transaction_type, exact_trace_path
 
 SCHEMA = 'stage1d-closure-final-context-v1'
 ROLE_FIELDS = ('kind', 'actor', 'branch_action', 'technical_role_status',
@@ -116,24 +117,64 @@ def _rows(material):
     return rows
 
 
-def _project(rows, plan):
+def _project(rows, plan, mandatory=()):
     # Select physical transaction identities first. Full original trace trees
     # (including nonvalue frames, zero/failed top rows and creation/refunds) are
     # evidence dependencies, not extra modeled accounts or candidate neighbors.
-    normalized = [(original, _event(original)) for original in rows]
+    normalized = [(original, _event(validate_raw_member(original, physical=True))) for original in rows]
     def touched(original, event):
         addresses = {event.get('sender'), event.get('recipient')}
         addresses.update(original.get(k) for k in
                          ('created_address', 'refund_address', 'fee_recipient', 'address'))
-        return any(context_asset(event.get('asset', NATIVE)) == asset(row.get('asset', NATIVE))
+        return any((context_asset(event.get('asset', NATIVE)) == asset(row.get('asset', NATIVE))
                    and row['address'] in addresses
+                   or asset(row.get('asset', NATIVE)) == ETH and row['address'] == event.get('sender'))
                    and row['ledger_start_block'] <= event['block'] <= row['ledger_end_block']
                    for row in plan['rows'])
-    matched = {event['tx_hash'] for original, event in normalized
+    matched = set(mandatory) | {event['tx_hash'] for original, event in normalized
                if event.get('tx_hash') and touched(original, event)}
     return [copy.deepcopy(original) for original, event in normalized
             if event.get('tx_hash') in matched
             or not event.get('tx_hash') and touched(original, event)]
+
+
+def project_necessary_families(collection, rows, plan):
+    """One transaction-family projection for prepare, assembly and dispatch.
+
+    Membership comes from the current model windows and explicit dependencies;
+    once selected, all supplied members of that family remain evidence.
+    """
+    candidates = collection.get('candidate_events', [])
+    mandatory = {_event(r)['tx_hash'] for r in candidates if _event(r).get('tx_hash')}
+    for key in ('semantic_units', 'context_dependencies', 'boundary_dependencies', 'balance_alignment_dependencies'):
+        dependencies = collection.get(key, [])
+        if isinstance(dependencies, dict):
+            dependencies = dependencies.values()
+        for item in dependencies:
+            if isinstance(item, dict) and item.get('tx_hash'):
+                mandatory.add(item['tx_hash'].lower())
+    combined = list(collection.get('context_events', [])) + list(rows)
+    selected = _project(combined, plan, mandatory)
+    def storage_order(original):
+        event=_event(original)
+        path=exact_trace_path(original.get('trace_address',original.get('traceAddress')))
+        # Canonical storage only: missing positions remain missing in the fact.
+        return (event.get('block') if event.get('block') is not None else -1,
+                event.get('tx_index') if event.get('tx_index') is not None else -1,
+                event.get('tx_hash') or '',event.get('kind')!='top',
+                path if path is not None else (-1,),_hashable(original))
+    selected.sort(key=storage_order)
+    selected_ids = {_event(r)['tx_hash'] for r in selected if _event(r).get('tx_hash')}
+    all_ids = {_event(r)['tx_hash'] for r in combined if _event(r).get('tx_hash')}
+    return selected, {
+        'basis': 'CURRENT_CANDIDATES_ACCOUNT_ASSET_BLOCK_WINDOWS_AND_EXPLICIT_DEPENDENCIES',
+        'mandatory_transaction_ids': sorted(mandatory),
+        'selected_transaction_ids': sorted(selected_ids | mandatory),
+        'excluded_transaction_ids': sorted(all_ids - selected_ids - mandatory),
+        'excluded_reason': 'NO_CURRENT_WINDOW_TOUCH_OR_EXPLICIT_TRANSACTION_DEPENDENCY',
+        'original_rows_retained': True,
+        'planning_only_not_http_or_cost_savings': True,
+    }
 
 
 def _native_receipt_reuse(facts, plan, material, mandatory):
@@ -191,7 +232,7 @@ def _native_receipt_reuse(facts, plan, material, mandatory):
                 'blob_gas_price', 'receipt_blob_gas_used', 'receipt_blob_gas_price',
                 'maxFeePerBlobGas', 'blobVersionedHashes')) for r in tops):
             continue
-        types = [integer(r['type']) for r in tops if r.get('type') is not None]
+        types = [t for r in tops if (t := transaction_type(r)) is not None]
         if any(t not in (0, 1, 2) for t in types) or payer_modeled and (not types or len(set(types)) != 1):
             continue
         reusable[txid] = {'basis':'EXISTING_STRICT_NATIVE_NORMALIZER_AND_COMPLETE_CURRENT_LEDGER',
@@ -209,7 +250,7 @@ def requirements(query, collection, labels, material=None):
     # Derive account/asset membership from current reachability first. A shared
     # provider page cannot add accounts or extend these finite block windows.
     plan = necessary_context_windows(query, collection, (), labels)
-    selected = _project(_rows(material), plan)
+    selected, family_projection = project_necessary_families(collection, _rows(material), plan)
     requests, token_ledgers, observed_logs = [], [], []
     for row in plan['rows']:
         for field in ('before_anchor_block', 'after_anchor_block'):
@@ -224,7 +265,7 @@ def requirements(query, collection, labels, material=None):
                 'requests': [logs_plan(row['address'], row['ledger_start_block'], row['ledger_end_block'], kind)
                              for kind in ('TRANSFER_OUT', 'TRANSFER_IN', 'DEPOSIT', 'WITHDRAWAL')],
                 'coverage_status': 'NOT_INFERRED_FROM_POINT_OR_LOG_ROWS'})
-    original_facts = collection.get('candidate_events', []) + collection.get('context_events', []) + selected
+    original_facts = collection.get('candidate_events', []) + selected
     facts, background_projection = project_context_assets(original_facts, origin='current.context_or_selected_material', candidates=collection.get('candidate_events', []))
     # A foreign token value does not enter the source model or select accounts.
     # Its physical transaction can still pay ETH fees in a current native window.
@@ -268,7 +309,7 @@ def requirements(query, collection, labels, material=None):
         if isinstance(value, dict) and any(log.get('address', '').lower() == CONTRACT for log in value.get('logs', [])):
             mandatory_receipts.add(value['transactionHash'].lower())
     native_reuse = _native_receipt_reuse(facts, plan, material, mandatory_receipts)
-    relevant_txs = set()
+    relevant_txs = set(family_projection['mandatory_transaction_ids'])
     for original in facts:
         event = _event(original)
         if event.get('tx_hash'):
@@ -279,8 +320,12 @@ def requirements(query, collection, labels, material=None):
                 requests.append({'method': 'eth_getTransactionByHash', 'params': [event['tx_hash']]})
         if event.get('block') is not None:
             requests.append({'method': 'eth_getBlockByNumber', 'params': [hex(event['block']), False]})
+    for tx in relevant_txs - {_event(r).get('tx_hash') for r in facts}:
+        requests.extend([{'method':'eth_getTransactionReceipt','params':[tx]},
+                         {'method':'eth_getTransactionByHash','params':[tx]}])
     return {'schema_version': SCHEMA, 'query_id': query['query_id'], 'scope_hash': query['scope_hash'],
             'binding': binding, 'context_plan': plan, 'selected_events': selected,
+            'necessary_transaction_family_projection': family_projection,
             'background_asset_projection': background_projection,
             'point_requests': _unique(requests), 'weth_ledger_requirements': token_ledgers,
             'observed_weth_logs_requiring_full_materialization': observed_logs,
@@ -346,6 +391,12 @@ def _missing_points(requests, headers, balances, receipts, transactions):
 
 def assemble(query, collection, labels, material, *, binding=None):
     """Return a checked document or explicit blocked result; never run methods."""
+    original_material_sha256 = _hash(material)
+    trace_identity_proofs = []
+    for supplement in material.get('provider_trace_supplements', []):
+        from stage1d_trace_provider_identity import reconcile
+        material, proofs = reconcile(material, supplement)
+        trace_identity_proofs.extend(proofs)
     needed = requirements(query, collection, labels, material)
     checked = needed['binding']
     if binding is not None and any(binding.get(k) != checked[k] for k in checked):
@@ -379,7 +430,8 @@ def assemble(query, collection, labels, material, *, binding=None):
                 key: serialize_gaps(value) if key == 'gaps' else copy.deepcopy(value)
                 for key, value in collection.items()}, 'material':copy.deepcopy(material)}}
     else:
-        result = build_document(query, collection, facts, balances, headers, receipts, labels,
+        projected_collection = dict(collection, context_events=[])
+        result = build_document(query, projected_collection, facts, balances, headers, receipts, labels,
                                 coverage=facts['coverage'], context_plan=needed['context_plan'])
     if missing:
         gaps = [{'type':'FINAL_CONTEXT_POINT_REQUEST_MISSING', 'request':copy.deepcopy(request)}
@@ -404,6 +456,10 @@ def assemble(query, collection, labels, material, *, binding=None):
         'missing_points': missing, 'unresolved_frontier': collection.get('unresolved_frontier', []),
         'candidate_acquisition_status': collection.get('status'), 'adapter_status': result['completion_status'],
         'point_success_does_not_certify_ledger': True, 'new_requests_executed': 0}
+    if trace_identity_proofs:
+        context_evidence['original_material_canonical_sha256'] = original_material_sha256
+        context_evidence['trace_provider_identity_proofs'] = trace_identity_proofs
+        result['trace_provider_identity_proofs'] = trace_identity_proofs
     if result.get('cost_boundary_scope') is not None:
         context_evidence['cost_boundary_scope'] = copy.deepcopy(result['cost_boundary_scope'])
         context_evidence['cost_boundary_context'] = copy.deepcopy(needed['context_plan']['cost_boundary_context'])

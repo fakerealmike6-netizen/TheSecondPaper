@@ -21,8 +21,10 @@ def _hex(value,size):
     return value.lower()
 
 
-def _bind(family,tx,receipt,header,evidence):
+def _bind(family,tx,receipt,header,evidence,*,top_origin='CURRENT_RPC'):
     """Pure implementation; public caller must first verify saved export and RPC."""
+    if top_origin not in ('CURRENT_RPC','VERIFIED_PAID_ORDINARY_TOP_FIELDS'):
+        raise ValueError('Explicit verified top-field provenance required')
     rows=deepcopy(family)
     if not rows or len(rows)>100000 or not evidence:raise ValueError('Finite full transaction family and evidence required')
     nulls=[r for r in rows if r.get('trace_address') is None]
@@ -72,7 +74,8 @@ def _bind(family,tx,receipt,header,evidence):
     original_sha=hashlib.sha256(json.dumps(root,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     root['trace_address']='[]'
     root['root_position_binding']={'status':'ROOT_EQUIVALENT','original_trace_address':None,
-        'original_row_sha256':original_sha,'basis':'FULL_EXPORTED_TRANSACTION_FAMILY_AND_CURRENT_RPC_TOP_RECEIPT_HEADER',
+        'original_row_sha256':original_sha,'basis':('FULL_EXPORTED_TRANSACTION_FAMILY_AND_CURRENT_RPC_TOP_RECEIPT_HEADER'
+            if top_origin=='CURRENT_RPC' else 'FULL_EXPORTED_TRANSACTION_FAMILY_AND_VERIFIED_PAID_ORDINARY_TOP_EXACT_HEADER'),
         'source_interpretation':'ETL_EMPTY_LIST_CSV_EMPTY_FIELD_BQ_NULL_COMPATIBILITY','primary_sources':SOURCES,
         'internal_paths_modified':False,'evidence_ids':sorted(set(evidence))}
     for row in rows:
@@ -84,6 +87,64 @@ def _bind(family,tx,receipt,header,evidence):
     if normalized['conflicts']:raise ValueError('Current strict normalizer rejects root equivalence')
     return {'status':'ROOT_EQUIVALENT_BOUND','rows':rows,'current_top_row':top,
             'root_binding':root['root_position_binding'],'full_context_claimed':False,'covered_ranges':0}
+
+
+def paid_top_fields(family):
+    """Eligible exact ordinary BQ operands; no RPC response or receipt is made.
+
+    Caller must already have verified the original SQL, schema, whole page
+    family and immutable raw evidence. Missing/unsupported fields keep the old
+    explicit point gap. Conflicting or inexact fields are rejected.
+    """
+    from stage1d_raw_fields import validate_raw_member,transaction_type
+    tops=[r for r in family if r.get('record_type')=='transaction']
+    if len(tops)!=1:return None
+    top=tops[0];validate_raw_member(top,physical=True)
+    if transaction_type(top) not in (0,1,2):return None
+    if any(top.get(k) is not None for k in ('blob_gas_used','blobGasUsed','blob_gas_price','blobGasPrice','maxFeePerBlobGas')):
+        return None
+    fields=('tx_hash','block_hash','block_number','block_time','tx_index','from_address','to_address',
+            'value_raw','gas_limit','gas_used','effective_gas_price','input_data','success')
+    if any(top.get(k) is None for k in fields):return None
+    if type(top['success']) is not bool:raise ValueError('Exact paid execution status required')
+    for k,size in (('tx_hash',64),('block_hash',64),('from_address',40),('to_address',40)):_hex(top[k],size)
+    if not isinstance(top['input_data'],str) or not re.fullmatch('0x(?:[0-9a-fA-F]{2})*',top['input_data']):
+        raise ValueError('Exact paid input bytes required')
+    gas_limit=integer(top['gas_limit']);gas_used=integer(top['gas_used'])
+    if gas_used>gas_limit:raise ValueError('Paid execution gas exceeds limit')
+    # These are pure field projections for the existing checker, never RPC
+    # envelopes, cached responses, transaction receipts, logs or certificates.
+    tx=dict(hash=top['tx_hash'],blockHash=top['block_hash'],blockNumber=hex(integer(top['block_number'])),
+        transactionIndex=hex(integer(top['tx_index'])),**{'from':top['from_address'],'to':top['to_address']},
+        value=hex(integer(top['value_raw'])),gas=hex(gas_limit),input=top['input_data'],type=hex(transaction_type(top)))
+    fee=dict(transactionHash=top['tx_hash'],blockHash=top['block_hash'],blockNumber=tx['blockNumber'],
+        transactionIndex=tx['transactionIndex'],**{'from':top['from_address'],'to':top['to_address']},
+        status=hex(int(top['success'])),gasUsed=hex(gas_used),effectiveGasPrice=hex(integer(top['effective_gas_price'])),
+        type=tx['type'])
+    return tx,fee
+
+
+def bind_paid_top_header(family,header,evidence):
+    """Same root/tree/physical/fee checks with verified paid ordinary fields.
+
+    A separately verified full historical header remains mandatory. This does
+    not supply receipt logs, prove WETH semantics, or certify prepayment timing.
+    """
+    fields=paid_top_fields(family)
+    if fields is None:raise ValueError('Paid ordinary top fields are not sufficient')
+    top=next(r for r in family if r.get('record_type')=='transaction')
+    stamp=int(datetime.fromisoformat(top['block_time'].replace('Z','+00:00')).timestamp())
+    if stamp!=integer(header['timestamp']):raise ValueError('Paid top time differs from exact header')
+    result=_bind([r for r in family if r.get('record_type')=='trace'],*fields,header,evidence,
+        top_origin='VERIFIED_PAID_ORDINARY_TOP_FIELDS')
+    combined=normalize_rows([top]+result['rows']+[result['current_top_row']])
+    if combined['conflicts']:raise ValueError('Paid field projection conflicts with original family')
+    result['paid_top_field_proof']={'basis':'ORIGINAL_VERIFIED_PAID_TOP_OPERANDS_WITH_EXACT_FULL_HEADER',
+        'original_top_sha256':hashlib.sha256(json.dumps(top,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+        'rpc_transaction_or_receipt_manufactured':False,'full_receipt_or_logs_materialized':False,
+        'protocol_semantics_certified':False,'gas_prepayment_timing_certified':False,
+        'evidence_ids':sorted(set(evidence))}
+    return result
 
 
 def bind_saved_export_root(work,state_path,spec_dependency,tx_hash):

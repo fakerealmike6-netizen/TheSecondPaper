@@ -1,7 +1,8 @@
 """Root-only finite label enrichment on actual current arrivals."""
 from pathlib import Path
-import sys, json, argparse, copy, traceback
+import sys, json, argparse, copy, traceback, os
 R=Path(__file__).resolve().parents[1]; C=R/'code'
+os.environ['HTTP_PROXY']=os.environ['HTTPS_PROXY']='http://127.0.0.1:7890'
 sys.path[:0]=[str(C/'src'),str(C)]
 from context_access_r3 import read,sha,now
 from page_attempts import atomic_json

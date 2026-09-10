@@ -12,7 +12,12 @@ from stage1c_result_gate import scientific_receipt_projection
 
 METHODS=inherited.METHODS
 SOLVER_EXECUTION_POLICY={
-    'schema_version':'stage1d-solver-execution-policy-v1','stage1d_empty_target_recovery':True,
+    'schema_version':'stage1d-solver-execution-policy-v2','stage1d_empty_target_recovery':True,
+    'stage1d_coordinate_recovery':True,
+    'coordinate_recovery_policy':'STAGE1D_UNIFORM_COORDINATE_CERTIFICATE_RECOVERY_V1',
+    'uniform_coordinate_factor':1000000,
+    'coordinate_recovery_bound_reselections_max':32,
+    'coordinate_recovery_preserves_original_exact_model_and_objective':True,
     'policy':'STAGE1D_EMPTY_FIXED_TARGET_CERTIFICATE_RETRY_V1',
     'eligibility':'EMPTY_FIXED_TARGET_UNION_AND_EXACTLY_FIXED_FEASIBILITY_OBJECTIVE',
     'trigger':'ORIGINAL_EXACT_CERTIFICATE_FAILURE','max_additional_attempts_per_endpoint':1,
@@ -298,7 +303,9 @@ def run_batch(tree,batch_dir,output):
         if targets!=inherited.groups(doc):raise ValueError('Common target domains differ')
         preprocessing=time.perf_counter()-begin
         for method in order:
-            value,profile=inherited.measure(doc,method,stage1d_empty_target_recovery=frozen['solver_execution_policy']['stage1d_empty_target_recovery'])
+            value,profile=inherited.measure(doc,method,
+                stage1d_empty_target_recovery=frozen['solver_execution_policy']['stage1d_empty_target_recovery'],
+                stage1d_coordinate_recovery=frozen['solver_execution_policy']['stage1d_coordinate_recovery'])
             native[method]={'first_return':profile.pop('raw_method_return'),'failed_attempts':profile.pop('raw_failed_attempts')}
             results[method]=inherited.attach_identity(doc,method,value,row,frozen);profiles[method]=profile
         write(folder/'RAW_METHOD_RETURNS.json',native);write(folder/'METHOD_RESULTS.json',results)

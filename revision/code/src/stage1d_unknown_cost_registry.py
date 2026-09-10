@@ -41,6 +41,7 @@ class Registry:
     def __init__(self, work, labels=None):
         self.work = Path(work).resolve()
         self.root = self.work.parent
+        self._input_inventory_at_start = self._input_inventory()
         self.labels = labels
         self._bytes = {}; self._json = {}; self._dune = {}; self._code_cache = {}; self._rpc_refs = {}; self._source_cache = {}
         self._activity_cache = {}; self._decision_cache = {}
@@ -251,6 +252,42 @@ class Registry:
             self.raw(ref)
         return True
 
+    def _input_inventory(self):
+        """Optional source presence is part of an operation-local snapshot."""
+        fixed = [POLICY_PATH, CURRENT_PATH,
+            'private/stage1d_inputs/address_registry.csv.gz',
+            'private/stage1d_inputs/HISTORICAL_LABEL_SUCCESS.json']
+        fixed += ['private/stage1d_roles/'+name for name in
+                  ('CURRENT.json','AUTHORITIES.json','USER_TASK_BOUNDARIES.json')]
+        names = [name for name in fixed if (self.work/name).is_file()]
+        names += [p.relative_to(self.work).as_posix()
+                  for p in (self.work/'derived/stage1d/labels').glob('*.json')]
+        return tuple(sorted(names))
+
+    def assert_source_snapshot_unchanged(self):
+        """Freshly rehash every validated original; do not rebuild global views.
+
+        This cannot authorize a different snapshot. A changed, added, removed or
+        redirected input fails closed and requires a fresh Registry operation.
+        No serialized verification flag or file mtime is trusted.
+        """
+        import os
+        if self._input_inventory() != self._input_inventory_at_start:
+            raise ValueError('Registry input inventory changed during operation')
+        total = 0
+        for (name, expected), original in self._bytes.items():
+            relative = Path(os.path.relpath(name, self.work)).as_posix()
+            path = self._path(relative)
+            raw = path.read_bytes()
+            if hashlib.sha256(raw).hexdigest() != expected:
+                raise ValueError('Registered original bytes changed during operation: '+relative)
+            total += len(raw)
+        if self._input_inventory() != self._input_inventory_at_start:
+            raise ValueError('Registry input inventory changed during recheck')
+        return {'status':'ALL_ORIGINAL_SOURCE_HASHES_AND_INPUT_INVENTORY_UNCHANGED',
+                'files_rehashed':len(self._bytes),'bytes_rehashed':total,
+                'global_observation_view_rebuilt':False}
+
     def policy_for_scope(self, scope):
         if self._policy is None:
             return None
@@ -325,6 +362,27 @@ class Registry:
             return self._code_cache[key]
         env = self.read(ref)
         request, response = env.get('request', {}), env.get('response', {})
+        if env.get('evidence_kind') == 'REAL_CHAIN_LEGACY_RAW_REUSE':
+            # Future code observations also need exact headers already admitted
+            # from raw. Reuse the established full admission validator; never
+            # invent an HTTP status or require a fresh paid request.
+            from stage1d_transfers_acquisition import cached_member, verified_member
+            if request.get('method') != 'eth_getBlockByNumber':
+                raise ValueError('Cost Registry admits only legacy exact headers through this adapter')
+            plan = {k:request[k] for k in ('method','params')}
+            member = cached_member(self.work,plan)
+            if (member is None or member['artifact_path'] != ref['path'] or
+                    member['artifact_sha256'] != ref['sha256']):
+                raise ValueError('Legacy header is not the current exact successful cache member')
+            if verified_member(self.work,plan,member) != response['result']:
+                raise ValueError('Legacy header result differs')
+            refs = [ref, {'path':env['raw_path'],'sha256':env['raw_body_sha256']},
+                    {'path':env['manifest_path'],'sha256':env['legacy_source']['manifest_sha256']},
+                    {'path':member['admission_path'],'sha256':member['admission_sha256']}]
+            for item in refs:self.raw(item)
+            self._rpc_refs[key] = refs
+            self._code_cache[key] = (request,response)
+            return request,response
         if env.get('evidence_kind') != 'REAL_CHAIN' or env.get('provider_alias') != PROVIDER or env.get('status') != 'SUCCESS_VALIDATED' or env.get('http_status') != 200 or env.get('response_complete') is not True:
             raise ValueError('Historical code requires a real successful RPC envelope')
         runtime = Runtime()

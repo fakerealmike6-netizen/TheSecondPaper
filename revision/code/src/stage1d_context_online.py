@@ -15,24 +15,30 @@ from context_ledger_r3 import EvidenceConflict
 from read_retry_r4 import logical_key
 from page_attempts import atomic_json
 from stage1d_context_coverage import merge_coverage
+from stage1d_raw_fields import validate_raw_member, UINT_FIELDS, exact_trace_path
+from exact_fields_r4 import exact_uint
+from context_ledger_r3 import trace_path
 
 
 def _number(value):
-    if isinstance(value,bool):raise ValueError('Boolean is not an exact block or amount')
-    return int(value,16) if isinstance(value,str) and value.startswith('0x') else int(value)
+    return exact_uint(value)
 
 
 def _semantic(key,value):
     if value is None:return None
-    if key in {'block_number','tx_index','value_raw','amount_raw','gas_used','gas_limit','gas_price','effective_gas_price','subtraces','withdrawal_index'}:
+    if key=='type' and (type(value) is int or isinstance(value,str) and re.fullmatch(r'(?:[0-9]+|0[xX][0-9a-fA-F]+)',value)):
         return _number(value)
-    if key=='trace_address':return tuple(json.loads(value) if isinstance(value,str) else value)
+    if key in UINT_FIELDS or key in {'transaction_type','transactionType'}:
+        return _number(value)
+    if key in {'trace_address','traceAddress'}:return exact_trace_path(value)
     if key in {'success','tx_success'} and isinstance(value,str):return value.lower()=='true' if value.lower() in {'true','false'} else value
     if isinstance(value,str) and value.startswith('0x'):return value.lower()
     return value
 
 
 def _merge(left,right):
+    validate_raw_member(left)
+    validate_raw_member(right)
     result=copy.deepcopy(left)
     for key,value in right.items():
         old=result.get(key)
@@ -47,6 +53,7 @@ def _merge(left,right):
             continue
         if key in {'id','jsonrpc','request_id','provenance','provider_alias'}:continue
         if _semantic(key,old)!=_semantic(key,value):raise EvidenceConflict('Context physical evidence disagrees at '+key)
+    validate_raw_member(result)
     return result
 
 
@@ -56,6 +63,7 @@ def _result(value):
 
 
 def _row_key(row):
+    validate_raw_member(row,physical=True)
     kind=row.get('record_type',row.get('kind','transaction'))
     tx=str(row.get('tx_hash',row.get('hash','')) or '').lower()
     if kind in {'transaction','top','tx'}:return ('transaction',tx)
@@ -71,6 +79,7 @@ def _row_key(row):
 def _merge_rows(rows,additional):
     found={}
     for row in list(rows)+list(additional):
+        validate_raw_member(row,physical=True)
         key=_row_key(row)
         if key[0] in {'transaction','trace'} and not re.fullmatch('0x[0-9a-f]{64}',key[1]):raise EvidenceConflict('Cached ledger lacks physical transaction identity')
         found[key]=_merge(found[key],row) if key in found else copy.deepcopy(row)
@@ -79,6 +88,8 @@ def _merge_rows(rows,additional):
 
 def _merge_rpc(headers,balances,receipts,plan,value,evidence):
     method,params=plan['method'],plan['params']
+    if isinstance(value,dict):validate_raw_member(value)
+    if method=='eth_getBalance':_number(value)
     if method=='eth_getBlockByNumber':
         block=_number(params[0])
         if not isinstance(value,dict) or _number(value['number'])!=block or not re.fullmatch('0x[0-9a-fA-F]{64}',value.get('hash','')):

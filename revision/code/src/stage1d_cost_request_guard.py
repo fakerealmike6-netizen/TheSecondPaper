@@ -214,10 +214,7 @@ def validate_candidate_entry(work, query, entry):
                     + field + ' ' + digest(original) + ' uncovered=' + json.dumps(outside[:1], sort_keys=True))
             rectangles.append(rectangle)
         checked[field] = {'count': len(rectangles), 'rectangles_sha256': digest(rectangles)}
-    after = Registry(work)
-    after.verify_evidence_refs(evidence_refs)
-    if after.identity != registry.identity or after.policy_for_scope(scope) != policy:
-        raise ValueError('Cost registry or policy changed during candidate guard')
+    source_recheck = registry.assert_source_snapshot_unchanged()
     if _sha(path) != entry['collection_sha256']:
         raise ValueError('Current collection changed during candidate guard')
     result = {'schema_version': SCHEMA, 'status': 'CURRENT_COST_STATE_REQUEST_DOMAIN_VERIFIED',
@@ -227,6 +224,7 @@ def validate_candidate_entry(work, query, entry):
         'decisions_sha256': validated['decisions_sha256'], 'allowed_state_count': len(state_keys),
         'allowed_state_keys_sha256': digest(state_keys), 'excluded_state_counts': excluded,
         'request_sets': checked, 'authorization_domain': 'CANDIDATE_DISCOVERY_ONLY',
+        'source_recheck': source_recheck,
         'provider_coverage_claimed': False, 'source_zero_claimed': False,
         'request_keys_changed': False, 'resource_counters_changed': False}
     return result | {'guard_sha256': digest(result)}

@@ -1,13 +1,22 @@
-# Stage1D interim source snapshot
+# Stage1D interim review R2 — source snapshot
 
-INTERIM_SNAPSHOT / PAUSED / PENDING_REVIEW
+Research is paused pending external guidance. External review is PENDING_REVIEW.
 
-This is an intermediate source export for independent review. Research collection remains paused. It is not a completed Stage1D result or external acceptance.
+This branch preserves general algorithm and synthetic test bytes from the current
+integration repair revision. Source identity is recorded in PUBLIC_SOURCE_INDEX.json.
+Case identifiers, original evidence, credentials, account usage and private
+authority records are not published. Omitted case-specific modules remain complete
+in the private MIN handoff. This public subset is not a replay of the private cases.
 
-Generic production modules and auxiliary source are copied without algorithm changes. Source files that embed private evidence identifiers are explicitly withheld in full; their exact originals are in the private review handoff. See PUBLIC_SOURCE_INDEX.json for the included public files and PUBLIC_OMISSIONS.md for the limitations.
+One offline full current suite ran: 2131 tests, 2128 passes, three failures in the
+foreign-token background projection contract. Those failures are retained, not
+hidden by changing tests. A separate unexecuted local helper has an invalid import.
+Existing result certificates for two available conditional models were rechecked
+without solving or repeating timings. This is not an external scientific acceptance.
 
-Code: revision/code/src/. Tests: revision/code/tests/. Synthetic fixtures are under revision/code/fixtures/ and revision/code/controlled_v1/. Some integration tests require private modules or historical private inputs and are not advertised as independently runnable from this public subset.
+Production code and research data were not modified during this review. No research
+requests were made. No workflow is activated by this snapshot. No prior branch or
+tag is replaced. Main private report and complete reproduction inputs are supplied
+separately to the reviewer.
 
-Workflow originals, if included, are stored outside .github/workflows under workflow_source_snapshot/ and cannot activate Actions on this branch. No provider data, query configuration, private handoff, account usage, or original authorization is published.
-
-Next steps remain subject to external guidance: finish the existing-data-to-context adapter, reconcile pending identity evidence, close current ledgers, then freeze and validate the shared model inputs. No new collection or implementation is authorized by this README.
+Three files retain their algorithms but replace private query / authority / parent-freeze literal values. See SANITIZED_SOURCE_VIEWS.json. They are review views, not byte-identical executables of the private configuration. The private MIN contains their exact originals.

@@ -80,7 +80,7 @@ def _zero(asset):
             'lower_raw':'0','upper_raw':'0','proof':'EMPTY_FIXED_TARGET_UNION_AFTER_FEASIBILITY_CHECK'}
 
 def run_interval(doc, method='FULL_INTERVAL', *, stage1d_empty_target_recovery=False,
-                 joint_zero_optimization=True):
+                 joint_zero_optimization=True, stage1d_coordinate_recovery=False):
     if method not in METHODS:
         raise ValueError('Unknown interval method')
     if not isinstance(joint_zero_optimization, bool):
@@ -96,6 +96,8 @@ def run_interval(doc, method='FULL_INTERVAL', *, stage1d_empty_target_recovery=F
         matrix_was_empty = m._solver_cache is None
         if is_context(doc) and recover_empty_target:
             result = solve_context_interval(m, doc, names, stage1d_empty_target_recovery=True)
+        elif is_context(doc) and stage1d_coordinate_recovery:
+            result = solve_context_interval(m, doc, names, stage1d_coordinate_recovery=True)
         else:
             result = solve_context_interval(m, doc, names) if is_context(doc) else solve_interval(m, names)
         # Native/context routines make one call per saved endpoint; bounded

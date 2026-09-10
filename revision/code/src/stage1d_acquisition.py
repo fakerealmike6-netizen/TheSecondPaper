@@ -97,6 +97,15 @@ class CachedIntervals:
             elif r.get('acquisition_adapter') == 'stage1d-canonical-weth-log-index-v1':
                 from stage1d_weth_log_index import verify_interval_record
                 verify_interval_record(self.work, r)
+            elif r.get('acquisition_adapter') == 'stage1d-dune-canonical-weth-log-index-v1':
+                from stage1d_dune_weth_logs import verify_interval_record
+                verify_interval_record(self.work, r)
+            elif r.get('acquisition_adapter') == 'stage1d-paid-context-native-projection-v1':
+                from stage1d_paid_candidate_projection import verify_interval_record
+                verify_interval_record(self.work, r, memo=content_memo)
+            elif r.get('acquisition_adapter') == 'stage1d-paid-native-candidate-domain-v1':
+                from stage1d_paid_candidate_domains import verify_interval_record
+                verify_interval_record(self.work, r, memo=content_memo)
             elif r.get('coverage_capability') == 'NATIVE_INDEX_ONLY':
                 from stage1d_native_candidate import verify_capability_record
                 verify_capability_record(self.work, r)
