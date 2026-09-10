@@ -30,7 +30,7 @@ class EnvelopeTests(unittest.TestCase):
 folder=R/'checks/semantic_units/current_weth_driver';folder.mkdir(parents=True,exist_ok=True)
 atomic_json(folder/'PRIOR_LOCAL_FAILURE.json',{'status':'FAILED_BEFORE_ADMISSION','error_class':'TypeError',
     'reason':"Event.__init__() got an unexpected keyword argument 'context_only'",'current_driver_fix':'Explicit False candidate envelope field retained in demand; only constructor unwraps it',
-    'new_external_requests':0,'legacy_imports':0,'staged_driver_sha256':'3fe380cb4e12df74bb6820799d22d7eea4699540fe42a76852ba788631837e08'})
+    'new_external_requests':0,'legacy_imports':0,'staged_driver_sha256':'PRIVATE_LITERAL_1'})
 suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(Tests),unittest.defaultTestLoader.loadTestsFromTestCase(EnvelopeTests)])
 with (folder/'TEST_OUTPUT.txt').open('w',encoding='utf8') as f:result=unittest.TextTestRunner(stream=f,verbosity=2).run(suite)
 receipt={'status':'PASS' if result.wasSuccessful() else 'FAIL','tests':result.testsRun,'failures':len(result.failures),'errors':len(result.errors),

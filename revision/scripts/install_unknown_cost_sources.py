@@ -24,13 +24,13 @@ def prepare():
             rows.append({'source':(root/rel).relative_to(R).as_posix(),'target':target,
                 'base_sha256':row['base_sha256'],'new_sha256':row.get('new_sha256',row.get('sha256'))})
     root=R/'staging_root/unknown_cost_collector_candidate'
-    for rel,base in [('src/collector.py','93f9641458ab03d2f344837b162f67c70bc2b74843dafa93037f8701307b74b1'),
-        ('src/stage1d_transfers_acquisition.py','e9ccb925c68445047d9a5f1a9e11d044c98c2df4ed9e7af8fc0773b11f212796'),
+    for rel,base in [('src/collector.py','PRIVATE_LITERAL_2'),
+        ('src/stage1d_transfers_acquisition.py','PRIVATE_LITERAL_3'),
         ('tests/test_unknown_cost_collector.py',None)]:
         rows.append({'source':(root/rel).relative_to(R).as_posix(),'target':'code/'+rel,
             'base_sha256':base,'new_sha256':sha(root/rel)})
     root=R/'staging/transfers_post_cache_selection_candidate'
-    for rel,target,base in [('src/execute_current_transfers.py','scripts/execute_current_transfers.py','7cb422547cffec22c6fa4780d651cf66c8f0e27459c706d85aafb9a85439e4c0'),
+    for rel,target,base in [('src/execute_current_transfers.py','scripts/execute_current_transfers.py','PRIVATE_LITERAL_1'),
         ('tests/test_transfers_post_cache_selection.py','code/tests/test_transfers_post_cache_selection.py',None)]:
         source=root/rel
         if not source.exists() and rel.endswith('execute_current_transfers.py'): source=root/'scripts/execute_current_transfers.py'

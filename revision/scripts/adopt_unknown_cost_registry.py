@@ -11,14 +11,14 @@ def prepare():
     paths=[R/'staging/unknown_cost_registry_inputs/outputs/verified_v2/READY_MANIFEST.json',
         R/'staging/unknown_cost_online_identity_inputs/outputs/verified_v1/READY_MANIFEST.json',
         U/'identity_checks/WEB_IDENTITY_INDEX.json']
-    expected=['d0822a485c37d3e9c81e44e25acfa9f4bc3a56daec0ecb98966451a8b1e4ff31',
-        '6485aa66a6ee49752135d98d9bbc0dcc7e1bd6f265b8ebff1d43f4af36c8fd8a',
-        '6770c35051476bea5299069833b3802d2fa2f123d0febab3dcc5f1c1b0fa1bc2']
+    expected=['PRIVATE_LITERAL_3',
+        'PRIVATE_LITERAL_1',
+        'PRIVATE_LITERAL_2']
     for p,h in zip(paths,expected):
         if sha(p)!=h:raise ValueError('Final evidence index changed')
     evidence,online,web=map(read,paths)
     pp=U/'preparations/UNKNOWN_COST_POLICY.candidate.json'
-    if sha(pp)!='e473ed8581b5f7c27621aed913b949c994127d185a2891ff74de61e0a375c1df':raise ValueError('Fixed policy changed')
+    if sha(pp)!='PRIVATE_LITERAL_4':raise ValueError('Fixed policy changed')
     policy=read(pp)
     doc={'schema_version':'stage1d-unknown-cost-registry-v1',
          'policy_ref':{'path':'private/stage1d_roles/UNKNOWN_COST_POLICY.json','sha256':sha(pp)},

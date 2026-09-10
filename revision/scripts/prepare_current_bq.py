@@ -50,7 +50,7 @@ if need_path.exists() and read(need_path)!=doc:raise ValueError('Immutable curre
 atomic_json(need_path,doc)
 config_path=C/'private/STAGE1D_BIGQUERY_CONFIG_RECOVERY.json'
 schemas=read(C/'private/stage1d_bq_minimal_context_20260908_v2/dryrun_spec.json')['schema_evidence']
-classic_tx=C/'raw/stage1d_bigquery/read-r4-0ba7f089edb948fe955f32895c43b726/receipt.json'
+classic_tx=C/'raw/stage1d_bigquery/read-r4-PRIVATE_LITERAL_1/receipt.json'
 schemas.append({'path':classic_tx.relative_to(C).as_posix(),'sha256':sha(classic_tx),'bytes':classic_tx.stat().st_size})
 manifest=prepare(C,need_path,out,read(config_path),schemas,chunk_days=7)
 verified_preparation(C,out/'PREPARATION.json')

@@ -6,7 +6,7 @@ def denied(*a,**k):raise RuntimeError('Method source comparison is offline')
 socket.socket.connect=denied;socket.create_connection=denied
 from context_access_r3 import sha,now
 import stage1d_bq_context_prepare as h
-saved=C/'private/integration_method_source_versions/07104dbb97b5da62403daa2c8f57b839124469cfd785462dbb0c5c1a5d29e908'
+saved=C/'private/integration_method_source_versions/PRIVATE_LITERAL_1'
 rows=[]
 for p in sorted((saved/'src').glob('*.py')):
  current=C/'src'/p.name

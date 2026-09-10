@@ -12,27 +12,27 @@ Runtime().require_gate(C)
 files=[]
 if a.hotspots:
  stage=R/'staging/batch_binding_immutable_refs_fix'
- if sha(stage/'INSTALLATION_MANIFEST.json')!='4ad7df405bc04d0a8e6a9738c5cd0203ed6012b454ca4169ef45a1c295e2fab9':raise ValueError('Reviewed immutable refs manifest changed')
+ if sha(stage/'INSTALLATION_MANIFEST.json')!='PRIVATE_LITERAL_3':raise ValueError('Reviewed immutable refs manifest changed')
  for row in read(stage/'INSTALLATION_MANIFEST.json')['files']:files.append((stage,row))
  stage=R/'staging/interval_gap_memo_fix'
- if sha(stage/'INSTALLATION_MANIFEST.json')!='22ddb6488424f14a28e98055ce3c3935a1c21a8c29c80be68e1611eb2295d813':raise ValueError('Reviewed gap memo manifest changed')
+ if sha(stage/'INSTALLATION_MANIFEST.json')!='PRIVATE_LITERAL_1':raise ValueError('Reviewed gap memo manifest changed')
  manifest=read(stage/'INSTALLATION_MANIFEST.json')
  files.append((stage,manifest['source']))
  files.append((stage,{'path':manifest['test']['path'],'base_sha256':None,'new_sha256':manifest['test']['sha256']}))
 elif a.trace_index:
  stage=R/'staging/context_trace_child_index_fix'
- if sha(stage/'INSTALLATION_MANIFEST.json')!='e8d11db18ccd72a0fd042e997a75956b04fa7e8ca6a40ae0491952c34d0b4134':raise ValueError('Reviewed trace index manifest changed')
+ if sha(stage/'INSTALLATION_MANIFEST.json')!='PRIVATE_LITERAL_6':raise ValueError('Reviewed trace index manifest changed')
  for row in read(stage/'INSTALLATION_MANIFEST.json')['files']:files.append((stage,row))
 elif a.actual_semantic:
  stage=R/'staging/semantic_emitter_fix'
  manifest=read(stage/'SOURCE_MANIFEST.json')
- if sha(stage/'SOURCE_MANIFEST.json')!='314a4ca4c3352625561c35ea1712a48cbf36ac6c6c044816c59318d8bb07967d':raise ValueError('Reviewed semantic manifest changed')
+ if sha(stage/'SOURCE_MANIFEST.json')!='PRIVATE_LITERAL_2':raise ValueError('Reviewed semantic manifest changed')
  for row in manifest['installation']:files.append((stage,row))
  stage=R/'staging/portable_dependency_fields'
- files.extend([(stage,{'path':'src/stage1d_batch_binding_route.py','base_sha256':'901e7f58ed41e8f6c0ec41ed37dfe7a7d725da515cd3dedd5fafcb3220a3637a','new_sha256':'f92aa2707a11914dec61728e905b3c20a592e5d1babcc3c639f82b3612ed8ac1'}),
-  (stage,{'path':'tests/test_portable_dependency_fields.py','base_sha256':None,'new_sha256':'fdc880e80442176b27444f10434b3cc6d324aa9b5039e32c66d8a960f1d7c5dd'})])
+ files.extend([(stage,{'path':'src/stage1d_batch_binding_route.py','base_sha256':'PRIVATE_LITERAL_5','new_sha256':'PRIVATE_LITERAL_7'}),
+  (stage,{'path':'tests/test_portable_dependency_fields.py','base_sha256':None,'new_sha256':'PRIVATE_LITERAL_8'})])
  stage=R/'staging/context_background_asset_fix'
- if sha(stage/'INSTALLATION_MANIFEST.json')!='8db18d1c1441fa107f377cf251ddfb48ffd164851e9893cf3bc431da816df900':raise ValueError('Reviewed background asset manifest changed')
+ if sha(stage/'INSTALLATION_MANIFEST.json')!='PRIVATE_LITERAL_4':raise ValueError('Reviewed background asset manifest changed')
  for row in read(stage/'INSTALLATION_MANIFEST.json')['files']:files.append((stage,row))
 elif a.context_only:
  stage=R/'staging/closure_context_family_fix'

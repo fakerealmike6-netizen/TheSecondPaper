@@ -20,3 +20,5 @@ tag is replaced. Main private report and complete reproduction inputs are suppli
 separately to the reviewer.
 
 Three files retain their algorithms but replace private query / authority / parent-freeze literal values. See SANITIZED_SOURCE_VIEWS.json. They are review views, not byte-identical executables of the private configuration. The private MIN contains their exact originals.
+
+Publication correction: the first R2 commit inadvertently retained dependency hashes / operation identifiers in several driver files. The current public views redact these literals as well. No raw evidence or credentials were uploaded. The earlier commit remains in history; no force push or history rewrite was performed. See SANITIZED_SOURCE_VIEWS.json for all current redactions.

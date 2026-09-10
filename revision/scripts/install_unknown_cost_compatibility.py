@@ -8,9 +8,9 @@ from page_attempts import atomic_json
 from adopt_8ac4 import safe_point
 safe_point(C)
 if read(C/'STAGE1D_PREFLIGHT_GATE.json')['status']!='PENDING_AFFECTED_TESTS':raise ValueError('Expected closed pending gate')
-bases={'src/collector.py':'4b00367c48bd918c6998449533fce9f002d673e4416f7f4841ec55ae8fca634f',
- 'src/stage1d_context.py':'04ddf25fa895128a71b46123484c64e5034bceb59b3d7b8311a1fb268cfb30e9',
- 'src/stage1d_cost_boundary_context.py':'994e1690b726e43bdac511ee9b52966eec553af8c446dd05d283e2d059dc8e8a',
+bases={'src/collector.py':'PRIVATE_LITERAL_2',
+ 'src/stage1d_context.py':'PRIVATE_LITERAL_1',
+ 'src/stage1d_cost_boundary_context.py':'PRIVATE_LITERAL_3',
  'tests/test_cost_legacy_compatibility.py':None}
 for rel,old in bases.items():
  if (sha(C/rel) if (C/rel).exists() else None)!=old:raise ValueError('Changed production base '+rel)

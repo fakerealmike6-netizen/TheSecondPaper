@@ -7,7 +7,7 @@ socket.socket.connect=blocked;socket.create_connection=blocked
 from stage1d_code_cache_admission import admit_operation
 from context_access_r3 import sha
 from page_attempts import atomic_json
-p=R/'operations/unknown_cost_code_e8faf9ccbaaf4f129f6cb0fec4747e8c.json'
+p=R/'operations/unknown_cost_code_PRIVATE_LITERAL_1.json'
 out=R/'operations/integration_repair';out.mkdir(exist_ok=True)
 ref={'path':'../'+p.relative_to(R).as_posix(),'sha256':sha(p)}
 dbs=[C/'private/shared_budget_r4.sqlite',C/'private/read_retry_r4.sqlite',C/'private/dune_request_attempts.sqlite']
